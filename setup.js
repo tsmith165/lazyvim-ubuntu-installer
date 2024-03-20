@@ -8,6 +8,13 @@ const { runCommand, checkVersion } = require('./utils/helpers');
 const installSteps = require('./utils/installSteps');
 const pluginConfigs = require('./utils/pluginConfigs');
 
+// Check if the script is being run from install.sh
+if (process.env.LAZYVIM_INSTALLER !== 'true') {
+    logError('This script should only be run from the install.sh script.');
+    logError('Please run the install.sh script instead.');
+    process.exit(1);
+}
+
 for (const step of installSteps) {
     log(`Checking ${step.name}...`);
 
