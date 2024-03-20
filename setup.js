@@ -8,10 +8,14 @@ const { runCommand, checkVersion } = require('./utils/helpers');
 const installSteps = require('./utils/installSteps');
 const pluginConfigs = require('./utils/pluginConfigs');
 
-// Check if the script is being run from install.sh
-if (process.env.LAZYVIM_INSTALLER !== 'true') {
-    logError('This script should only be run from the install.sh script.');
-    logError('Please run the install.sh script instead.');
+// Check if Node.js is installed with the required version
+log('Checking Node.js installation...');
+try {
+    checkVersion('Node.js', 'node --version', '20.0.0');
+    log('Node.js is installed with the required version.');
+} catch (error) {
+    logError('Node.js is not installed or does not meet the required version.');
+    logError('Please install Node.js version 20.0.0 or higher and run the script again.');
     process.exit(1);
 }
 
@@ -40,6 +44,11 @@ for (const step of installSteps) {
         log(`${step.name} installation completed.`);
     }
 }
+
+// Install xclip for clipboard support
+log('Installing xclip...');
+runCommand('sudo apt-get install -y xclip');
+log('xclip installation completed.');
 
 // Clone the LazyVim starter template repository
 log('Cloning the LazyVim starter template repository...');
@@ -73,5 +82,18 @@ pluginsConfig += '\n}\n';
 
 fs.writeFileSync(pluginsConfigFile, pluginsConfig);
 log('LazyVim configuration updated.');
+
+// Configure Neovim to use the clipboard provider
+log('Configuring Neovim to use the clipboard provider...');
+const initConfigFile = path.join(nvimDir, 'init.lua');
+let initConfig = fs.readFileSync(initConfigFile, 'utf8');
+
+initConfig += `
+-- Enable clipboard support
+vim.opt.clipboard = 'unnamedplus'
+`;
+
+fs.writeFileSync(initConfigFile, initConfig);
+log('Neovim clipboard configuration updated.');
 
 log('Setup completed successfully!');
