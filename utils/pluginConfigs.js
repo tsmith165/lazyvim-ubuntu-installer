@@ -4,22 +4,9 @@ const pluginConfigs = [
         config: `
   {
     "neovim/nvim-lspconfig",
-    dependencies = {
-      "nvimtools/none-ls.nvim",
-    },
     opts = {
       servers = {
         pyright = {},
-      },
-      setup = {
-        pyright = function(_, opts)
-          require("lazyvim.util").lsp.on_attach(function(client, buffer)
-            if client.name == "pyright" then
-              require("none-ls").setup({})
-            end
-          end)
-          require("lspconfig").pyright.setup(opts)
-        end,
       },
     },
   },
@@ -30,22 +17,9 @@ const pluginConfigs = [
         config: `
   {
     "neovim/nvim-lspconfig",
-    dependencies = {
-      "nvimtools/none-ls.nvim",
-    },
     opts = {
       servers = {
         tsserver = {},
-      },
-      setup = {
-        tsserver = function(_, opts)
-          require("lazyvim.util").lsp.on_attach(function(client, buffer)
-            if client.name == "tsserver" then
-              require("none-ls").setup({})
-            end
-          end)
-          require("lspconfig").tsserver.setup(opts)
-        end,
       },
     },
   },

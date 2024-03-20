@@ -83,6 +83,22 @@ pluginsConfig += '\n}\n';
 fs.writeFileSync(pluginsConfigFile, pluginsConfig);
 log('LazyVim configuration updated.');
 
+// Enable the lazyvim.plugins.extras.lsp.none-ls extra
+log('Enabling the lazyvim.plugins.extras.lsp.none-ls extra...');
+const lazyConfigFile = path.join(nvimDir, 'lua', 'config', 'lazy.lua');
+let lazyConfig = fs.readFileSync(lazyConfigFile, 'utf8');
+
+lazyConfig = lazyConfig.replace(
+    'spec = { import = "lazyvim.config.spec" },',
+    `spec = { import = "lazyvim.config.spec" },
+  extras = {
+    "lazyvim.plugins.extras.lsp.none-ls",
+  },`
+);
+
+fs.writeFileSync(lazyConfigFile, lazyConfig);
+log('lazyvim.plugins.extras.lsp.none-ls extra enabled.');
+
 // Configure Neovim to use the clipboard provider
 log('Configuring Neovim to use the clipboard provider...');
 const initConfigFile = path.join(nvimDir, 'init.lua');
