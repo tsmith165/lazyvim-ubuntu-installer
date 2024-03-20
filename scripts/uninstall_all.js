@@ -30,15 +30,6 @@ runCommand('rm -rf ~/.local/share/fonts/JetBrainsMono.zip');
 runCommand('rm -rf ~/.local/share/fonts/JetBrains*.ttf');
 runCommand('fc-cache -fv');
 
-// Uninstall Node.js and npm
-log('Uninstalling Node.js and npm...');
-runCommand('sudo apt-get remove nodejs npm');
-runCommand('sudo apt-get autoremove');
-
-// Remove the Node.js source list
-log('Removing the Node.js source list...');
-runCommand('sudo rm /etc/apt/sources.list.d/nodesource.list');
-
 // Uninstall Yarn
 log('Uninstalling Yarn...');
 runCommand('sudo apt-get remove yarn');
