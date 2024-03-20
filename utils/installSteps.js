@@ -22,6 +22,11 @@ const installSteps = [
         },
     },
     {
+        name: 'Fontconfig',
+        preCheck: 'fc-cache --version',
+        installCommands: ['sudo apt-get install -y fontconfig'],
+    },
+    {
         name: 'JetBrains Mono Nerd Font',
         preCheck: 'fc-list | grep -i "JetBrains Mono"',
         installCommands: [
