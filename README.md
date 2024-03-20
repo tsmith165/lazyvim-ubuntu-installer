@@ -17,9 +17,7 @@ A Node.js script to automate the setup of LazyVim (Neovim config) on Ubuntu 22.0
 Before running the setup script, ensure that your system meets the following requirements:
 
 -   Ubuntu 22.04
--   Node.js (version 20.0.0 or higher)hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
--   npm (version 6.0.0 or higher)
--   Git (version 2.19.0 or higher)
+-   Git (version 2 or higher)
 
 ## Setup Script Steps
 
