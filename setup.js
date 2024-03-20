@@ -49,13 +49,27 @@ log('LazyVim starter template cloned.');
 
 // Update the LazyVim configuration
 log('Updating the LazyVim configuration...');
-const pluginsConfigFile = path.join(nvimDir, 'lua', 'plugins', 'init.lua');
+const pluginsConfigDir = path.join(nvimDir, 'lua', 'plugins');
+const pluginsConfigFile = path.join(pluginsConfigDir, 'init.lua');
+
+// Create the plugins directory if it doesn't exist
+if (!fs.existsSync(pluginsConfigDir)) {
+    fs.mkdirSync(pluginsConfigDir, { recursive: true });
+}
+
+// Create the init.lua file if it doesn't exist
+if (!fs.existsSync(pluginsConfigFile)) {
+    fs.writeFileSync(pluginsConfigFile, '-- LazyVim plugins configuration\n\nreturn {\n');
+}
+
 let pluginsConfig = fs.readFileSync(pluginsConfigFile, 'utf8');
 
 for (const plugin of pluginConfigs) {
     log(`Adding ${plugin.name} configuration...`);
     pluginsConfig += plugin.config;
 }
+
+pluginsConfig += '\n}\n';
 
 fs.writeFileSync(pluginsConfigFile, pluginsConfig);
 log('LazyVim configuration updated.');
