@@ -94,4 +94,25 @@ lazyConfig = lazyConfig.replace(
 fs.writeFileSync(lazyConfigFile, lazyConfig);
 log('lazyvim.plugins.extras.lsp.none-ls extra enabled.');
 
+// Set up the key mappings for copy and paste using xsel
+log('Setting up the key mappings for copy and paste using xsel...');
+const keymapsFile = path.join(nvimDir, 'lua', 'config', 'keymaps.lua');
+let keymapsConfig = fs.readFileSync(keymapsFile, 'utf8');
+keymapsConfig += `
+-- Copy and paste using xsel
+vim.keymap.set("n", "+y", '"+y')
+vim.keymap.set("n", "+p", '"+p')
+
+-- Copy file contents and path to system clipboard
+vim.keymap.set("n", "<leader>ai", function()
+  local file_path = vim.fn.expand("%:p")
+  local file_contents = table.concat(vim.fn.readfile(file_path), "\\n")
+  local copied_text = "// " .. file_path .. "\\n\\n\\\`\\\`\\\`\\n" .. file_contents .. "\\n\\\`\\\`\\\`"
+  vim.fn.setreg("+", copied_text)
+  vim.notify("Copied file contents and path to system clipboard")
+end)
+`;
+fs.writeFileSync(keymapsFile, keymapsConfig);
+log('Key mappings for copy and paste using xsel set up.');
+
 log('Setup completed successfully!');

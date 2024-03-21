@@ -74,6 +74,15 @@ const installSteps = [
             minVersion: '1.0.0',
         },
     },
+    {
+        name: 'xsel',
+        preCheck: 'xsel --version',
+        installCommands: ['sudo apt-get install -y xsel'],
+        postCheck: {
+            command: 'xsel --version',
+            minVersion: '1.2.0',
+        },
+    },
 ];
 
 module.exports = installSteps;
