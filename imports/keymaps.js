@@ -7,10 +7,8 @@ vim.keymap.set("n", "+p", '"+p')
 vim.keymap.set("n", "<leader>cf", function()
   local file_path = vim.fn.expand("%:p")
   local file_contents = table.concat(vim.fn.readfile(file_path), "\\n")
-  local copied_text = "// " .. file_path .. "\\n\\n'''\n" .. file_contents .. "\\n'''"
+  local copied_text = "// " .. file_path .. "\\n\\n\`\`\`\\n" .. file_contents .. "\\n\`\`\`"
   vim.fn.setreg("+", copied_text)
   vim.notify("Copied file contents and path to system clipboard")
 end)
 `;
-
-module.exports = keymaps;
