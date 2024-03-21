@@ -42,10 +42,11 @@ Before running the setup script, ensure that your system meets the following req
    `cd lazyvim-ubuntu-installer`
 
 4. Run the setup script:
-   `node setup.js`
+   `./install.sh`
 
-5. Once the setup.js script is successfully completed, close all instances of Terminal
-6. Open Terminal at the directory you want to edit
+5. Once the install.sh script is successfully completed, close any open shell/ssh sessions
+6. Navigate to the directory you want to start editing in
+   `cd /root/dev/main/project/`
 
 7. Launch Neovim with LazyVim by running:
    `nvim`
