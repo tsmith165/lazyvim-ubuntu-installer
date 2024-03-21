@@ -1,6 +1,6 @@
 const { execSync } = require('child_process');
 const { log, logError } = require('../utils/logger');
-const installSteps = require('../imports/installSteps');
+const installSteps = require('../imports/install_steps');
 
 function runCommand(command) {
     try {
