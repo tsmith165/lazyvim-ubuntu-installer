@@ -44,9 +44,9 @@ runCommand('sudo apt-get remove python2.7 python3.10 -y');
 runCommand('sudo apt-get autoremove -y');
 
 // Remove the Git repository
-log('Removing the Git repository...');
-const repoPath = path.join(__dirname, '..');
-runCommand(`sudo rm -rf ${repoPath}`);
+// log('Removing the Git repository...');
+// const repoPath = path.join(__dirname, '..');
+// runCommand(`sudo rm -rf ${repoPath}`);
 
 // Clean up any remaining dependencies
 log('Cleaning up any remaining dependencies...');
