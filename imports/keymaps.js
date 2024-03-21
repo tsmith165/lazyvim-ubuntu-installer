@@ -12,3 +12,5 @@ vim.keymap.set("n", "<leader>cf", function()
   vim.notify("Copied file contents and path to system clipboard")
 end)
 `;
+
+module.exports = keymaps;
