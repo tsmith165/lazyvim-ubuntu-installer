@@ -1,28 +1,33 @@
 const pluginConfigs = [
     {
-        name: 'Python LSP (pyright)',
+        name: 'TypeScript LSP (tsserver)',
         config: `
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        pyright = {},
-      },
+{
+  "neovim/nvim-lspconfig",
+  opts = {
+    servers = {
+      tsserver = {},
     },
   },
+},
 `,
     },
     {
-        name: 'TypeScript LSP (tsserver)',
+        name: 'TypeScript Tools',
         config: `
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        tsserver = {},
-      },
+{
+  "pmizio/typescript-tools.nvim",
+  dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+  opts = {},
+},
+`,
     },
-  },
+    {
+        name: 'Plenary',
+        config: `
+{
+  "nvim-lua/plenary.nvim",
+},
 `,
     },
 ];
