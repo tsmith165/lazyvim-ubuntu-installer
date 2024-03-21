@@ -45,11 +45,6 @@ for (const step of installSteps) {
     }
 }
 
-// Install xclip for clipboard support
-log('Installing xclip...');
-runCommand('sudo apt-get install -y xclip');
-log('xclip installation completed.');
-
 // Clone the LazyVim starter template repository
 log('Cloning the LazyVim starter template repository...');
 const nvimDir = path.join(process.env.HOME, '.config', 'nvim');
@@ -98,18 +93,5 @@ lazyConfig = lazyConfig.replace(
 
 fs.writeFileSync(lazyConfigFile, lazyConfig);
 log('lazyvim.plugins.extras.lsp.none-ls extra enabled.');
-
-// Configure Neovim to use the clipboard provider
-log('Configuring Neovim to use the clipboard provider...');
-const initConfigFile = path.join(nvimDir, 'init.lua');
-let initConfig = fs.readFileSync(initConfigFile, 'utf8');
-
-initConfig += `
--- Enable clipboard support
-vim.opt.clipboard = 'unnamedplus'
-`;
-
-fs.writeFileSync(initConfigFile, initConfig);
-log('Neovim clipboard configuration updated.');
 
 log('Setup completed successfully!');
