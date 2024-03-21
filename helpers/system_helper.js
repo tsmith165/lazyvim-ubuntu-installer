@@ -1,6 +1,9 @@
 const { execSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
 const { log, logError } = require('../utils/logger');
 const installSteps = require('../imports/install_steps');
+const bash_rc = require('../imports/bash_rc');
 
 function runCommand(command) {
     try {
@@ -46,6 +49,21 @@ function checkNodeVersion() {
     }
 }
 
+function updateBashrc() {
+    log('Updating bashrc with custom commands...');
+    const bashrcPath = path.join(process.env.HOME, '.bashrc');
+    let bashrcContent = fs.readFileSync(bashrcPath, 'utf8');
+
+    for (const command of bash_rc) {
+        if (!bashrcContent.includes(command)) {
+            bashrcContent += `\n${command}\n`;
+        }
+    }
+
+    fs.writeFileSync(bashrcPath, bashrcContent);
+    log('bashrc updated with custom commands.');
+}
+
 function runInstallSteps() {
     for (const step of installSteps) {
         log(`Checking ${step.name}...`);
@@ -78,5 +96,6 @@ module.exports = {
     runCommand,
     checkVersion,
     checkNodeVersion,
+    updateBashrc,
     runInstallSteps,
 };

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const { log } = require('./utils/logger');
-const { checkNodeVersion, runInstallSteps } = require('./helpers/system_helper');
+const { log } = require('./imports/logger');
+const { checkNodeVersion, runInstallSteps, updateBashrc } = require('./helpers/system_helper');
 const { cloneLazyVimStarterTemplate, updateLazyVimConfig, enableLazyVimExtras, setupKeymaps } = require('./helpers/install_helper');
 
 // Check if Node.js is installed with the required version
@@ -16,10 +16,13 @@ cloneLazyVimStarterTemplate();
 // Update the LazyVim configuration
 updateLazyVimConfig();
 
-// Enable the lazyvim.plugins.extras.lsp.none-ls extra
+// Enable LazyVim extras
 enableLazyVimExtras();
 
 // Set up the key mappings for copy and paste using xsel
 setupKeymaps();
+
+// Update bashrc with custom commands
+updateBashrc();
 
 log('Setup completed successfully!');
