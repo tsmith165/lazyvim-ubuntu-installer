@@ -66,7 +66,7 @@ function updateBashrc() {
 
 function sourceBashrc() {
     log('Sourcing the updated .bashrc file in the current shell session...');
-    execSync('source ~/.bashrc', { stdio: 'inherit' });
+    execSync('. ~/.bashrc', { stdio: 'inherit', shell: '/bin/bash' });
     log('bashrc sourced successfully.');
 }
 
