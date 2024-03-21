@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const { log } = require('./utils/logger');
-const { checkNodeVersion, runInstallSteps, updateBashrc } = require('./helpers/system_helper');
+const { checkNodeVersion, runInstallSteps, updateBashrc, sourceBashrc } = require('./helpers/system_helper');
 const { cloneLazyVimStarterTemplate, updateLazyVimConfig, enableLazyVimExtras, setupKeymaps } = require('./helpers/install_helper');
 
 // Check if Node.js is installed with the required version
@@ -24,5 +24,8 @@ setupKeymaps();
 
 // Update bashrc with custom commands
 updateBashrc();
+
+// Source the updated bashrc file in the current shell session
+sourceBashrc();
 
 log('Setup completed successfully!');

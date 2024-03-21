@@ -64,6 +64,12 @@ function updateBashrc() {
     log('bashrc updated with custom commands.');
 }
 
+function sourceBashrc() {
+    log('Sourcing the updated .bashrc file in the current shell session...');
+    execSync('source ~/.bashrc', { stdio: 'inherit' });
+    log('bashrc sourced successfully.');
+}
+
 function runInstallSteps() {
     for (const step of installSteps) {
         log(`Checking ${step.name}...`);
@@ -97,5 +103,6 @@ module.exports = {
     checkVersion,
     checkNodeVersion,
     updateBashrc,
+    sourceBashrc,
     runInstallSteps,
 };
