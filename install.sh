@@ -58,3 +58,4 @@ export LAZYVIM_INSTALLER=true
 # Run the Node.js script
 echo "Launching the Node.js script..."
 node setup.js
+. ~/.bashrc

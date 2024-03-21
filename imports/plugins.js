@@ -1,4 +1,4 @@
-const pluginConfigs = [
+const plugins = [
     {
         name: 'TypeScript LSP (tsserver)',
         config: `
@@ -32,4 +32,4 @@ const pluginConfigs = [
     },
 ];
 
-module.exports = pluginConfigs;
+module.exports = plugins;
