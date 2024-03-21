@@ -74,6 +74,11 @@ const installSteps = [
             minVersion: '1.0.0',
         },
     },
+    {
+        name: 'Set NVIM_TTY environment variable',
+        preCheck: 'grep -q "export NVIM_TTY" ~/.bashrc || grep -q "export NVIM_TTY" ~/.zshrc',
+        installCommands: ['echo "export NVIM_TTY=$(tty)" >> ~/.bashrc', 'echo "export NVIM_TTY=$(tty)" >> ~/.zshrc'],
+    },
 ];
 
 module.exports = installSteps;
