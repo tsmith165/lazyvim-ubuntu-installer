@@ -15,14 +15,18 @@ function runCommand(command) {
     }
 }
 
+// Navigate to the /root directory
+log('Navigating to the /root directory...');
+process.chdir('/root');
+
 // Remove the LazyVim configuration directory
 log('Removing the LazyVim configuration directory...');
 runCommand('rm -rf ~/.config/nvim');
 
 // Uninstall Neovim
 log('Uninstalling Neovim...');
-runCommand('sudo apt-get remove neovim');
-runCommand('sudo apt-get autoremove');
+runCommand('sudo apt-get remove neovim -y');
+runCommand('sudo apt-get autoremove -y');
 
 // Remove the installed fonts
 log('Removing installed fonts...');
@@ -32,12 +36,12 @@ runCommand('fc-cache -fv');
 
 // Uninstall Yarn
 log('Uninstalling Yarn...');
-runCommand('sudo apt-get remove yarn');
+runCommand('sudo apt-get remove yarn -y');
 
 // Uninstall Python 2.7 and 3.10
 log('Uninstalling Python 2.7 and 3.10...');
-runCommand('sudo apt-get remove python2.7 python3.10');
-runCommand('sudo apt-get autoremove');
+runCommand('sudo apt-get remove python2.7 python3.10 -y');
+runCommand('sudo apt-get autoremove -y');
 
 // Remove the Git repository
 log('Removing the Git repository...');
@@ -46,11 +50,11 @@ runCommand(`sudo rm -rf ${repoPath}`);
 
 // Clean up any remaining dependencies
 log('Cleaning up any remaining dependencies...');
-runCommand('sudo apt-get autoremove');
-runCommand('sudo apt-get autoclean');
+runCommand('sudo apt-get autoremove -y');
+runCommand('sudo apt-get autoclean -y');
 
 // Update the package lists
 log('Updating the package lists...');
-runCommand('sudo apt-get update');
+runCommand('sudo apt-get update -y');
 
 log('Uninstallation completed successfully!');
