@@ -9,7 +9,6 @@ const {
     setupKeymaps,
     setGuiFont,
     setupNeoTreeConfig,
-    setupIconsConfig,
 } = require('./helpers/install_helper');
 
 const args = process.argv.slice(2);
@@ -39,9 +38,6 @@ if (args.includes('-p') || args.includes('--plugins') || args.length === 0) {
 
     // Set up the neo-tree configuration
     setupNeoTreeConfig();
-
-    // Set up the icons configuration
-    setupIconsConfig();
 }
 
 if (args.includes('-k') || args.includes('--keymaps') || args.length === 0) {

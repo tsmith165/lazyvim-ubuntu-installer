@@ -97,33 +97,6 @@ function setupNeoTreeConfig() {
     log('neo-tree configuration set up.');
 }
 
-function setupIconsConfig() {
-    log('Setting up the icons configuration...');
-    const nvimDir = path.join(process.env.HOME, '.config', 'nvim');
-    const iconsConfigFile = path.join(nvimDir, 'lua', 'config', 'icons.lua');
-
-    const iconsConfig = `
-  -- Set up custom icon configuration
-  local icons = require("nvim-web-devicons")
-  
-  icons.set_icon({
-    ["js"] = {
-      icon = "",
-      color = "#f7df1e",
-      name = "Js",
-    },
-    ["svg"] = {
-      icon = "",
-      color = "#ffb13b",
-      name = "Svg",
-    },
-  })
-  `;
-
-    fs.writeFileSync(iconsConfigFile, iconsConfig);
-    log('Icons configuration set up.');
-}
-
 module.exports = {
     cloneLazyVimStarterTemplate,
     updateLazyVimConfig,
@@ -131,5 +104,4 @@ module.exports = {
     setupKeymaps,
     setGuiFont,
     setupNeoTreeConfig,
-    setupIconsConfig,
 };
