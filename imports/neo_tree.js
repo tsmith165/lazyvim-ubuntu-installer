@@ -1,4 +1,4 @@
-// /imports/neo_tree.js
+-- /imports/neo_tree.js
 
 const neoTreeConfig = `
 require("neo-tree").setup({
@@ -41,14 +41,36 @@ require("neo-tree").setup({
     },
     special_files = {
       ["package.json"] = 1,
-      ["webpack.config.js"] = 1,
+      ["vercel.json"] = 1,
+      ["schema.prisma"] = 1,
       ["tsconfig.json"] = 1,
-      ["jest.config.js"] = 1,
-      ["babel.config.js"] = 1,
-      ["eslint.config.js"] = 1,
-      ["prettierrc.js"] = 1,
-      ["*.js"] = 1,
-      ["*.svg"] = 1,
+      ["yarn.lock"] = 1,
+      ["jsonconfig.json"] = 1,
+      ["Cargo.toml"] = 1,
+      ["README.md"] = 1,
+      ["Makefile"] = 1,
+      ["COPYING"] = 1,
+      ["LICENSE"] = 1,
+      ["Dockerfile"] = 1,
+      ["docker-compose.yml"] = 1,
+    },
+    filtered_items = {
+      visible = false, -- when true, hide files/folders that match the glob patterns
+      hide_dotfiles = false,
+      hide_gitignored = false,
+      hide_hidden = false, -- only works on Windows for hidden files/folders
+      hide_by_name = {
+        ".DS_Store",
+        "thumbs.db",
+        "node_modules",
+      },
+      hide_by_pattern = {
+        "*.meta",
+      },
+      never_show = {
+        ".DS_Store",
+        "thumbs.db",
+      },
     },
   },
 })
