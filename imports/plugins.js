@@ -44,7 +44,7 @@ const plugins = [
             vim.g.tagbar_singleclick = 1
             vim.g.tagbar_foldlevel = 2
     
-            vim.keymap.set("n", "<F8>", ":TagbarToggle<CR>")
+            vim.keymap.set("n", "<leader>t", ":TagbarToggle<CR>")
           end,
         },
       `,
@@ -105,50 +105,54 @@ const plugins = [
     {
         name: 'Harpoon',
         config: `
-        {
-          "ThePrimeagen/harpoon",
-          dependencies = {
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope.nvim",
-          },
-          config = function()
-            require("harpoon").setup({
-              global_settings = {
-                save_on_toggle = false,
-                save_on_change = true,
-                enter_on_sendcmd = false,
-                excluded_filetypes = { "harpoon" },
-              },
-            })
-  
-            local mark = require("harpoon.mark")
-            local ui = require("harpoon.ui")
-  
-            vim.keymap.set("n", "<leader>ha", mark.add_file)
-            vim.keymap.set("n", "<leader>hs", function()
-              require("telescope").extensions.harpoon.marks()
-            end)
-            vim.keymap.set("n", "<leader>hn", function()
-              require("harpoon.ui").nav_next()
-            end)
-            vim.keymap.set("n", "<leader>hp", function()
-              require("harpoon.ui").nav_prev()
-            end)
-            vim.keymap.set("n", "<leader>h1", function()
-              require("harpoon.ui").nav_file(1)
-            end)
-            vim.keymap.set("n", "<leader>h2", function()
-              require("harpoon.ui").nav_file(2)
-            end)
-            vim.keymap.set("n", "<leader>h3", function()
-              require("harpoon.ui").nav_file(3)
-            end)
-            vim.keymap.set("n", "<leader>h4", function()
-              require("harpoon.ui").nav_file(4)
-            end)
-          end,
+      {
+        "ThePrimeagen/harpoon",
+        dependencies: {
+          "nvim-lua/plenary.nvim",
+          "nvim-telescope/telescope.nvim",
         },
-      `,
+        config = function()
+          require("harpoon").setup({
+            global_settings = {
+              save_on_toggle = false,
+              save_on_change = true,
+              enter_on_sendcmd = false,
+              excluded_filetypes = { "harpoon" },
+            },
+          })
+
+          local mark = require("harpoon.mark")
+          local ui = require("harpoon.ui")
+
+          vim.keymap.set("n", "<leader>ha", mark.add_file)
+          vim.keymap.set("n", "<leader>hs", function()
+            require("telescope").extensions.harpoon.marks()
+          end)
+          vim.keymap.set("n", "<leader>hn", function()
+            require("harpoon.ui").nav_next()
+          end)
+          vim.keymap.set("n", "<leader>hp", function()
+            require("harpoon.ui").nav_prev()
+          end)
+          vim.keymap.set("n", "<leader>h1", function()
+            require("harpoon.ui").nav_file(1)
+          end)
+          vim.keymap.set("n", "<leader>h2", function()
+            require("harpoon.ui").nav_file(2)
+          end)
+          vim.keymap.set("n", "<leader>h3", function()
+            require("harpoon.ui").nav_file(3)
+          end)
+          vim.keymap.set("n", "<leader>h4", function()
+            require("harpoon.ui").nav_file(4)
+          end)
+          vim.keymap.set("n", "<leader>hd", function()
+            local index = vim.fn.input('Mark number to clear: ')
+            require('harpoon.mark').clear_mark(tonumber(index))
+          end)
+        end,
+      },
+    `,
     },
 ];
 
