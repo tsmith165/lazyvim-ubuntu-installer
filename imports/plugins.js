@@ -105,8 +105,7 @@ const plugins = [
     {
         name: 'Harpoon',
         config: `
-    {
-      use = {
+      {
         "ThePrimeagen/harpoon",
         requires = {"nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim"},
         config = function()
@@ -138,8 +137,7 @@ const plugins = [
           end)
         end
       }
-    }
-  `,
+      `,
     },
 ];
 
