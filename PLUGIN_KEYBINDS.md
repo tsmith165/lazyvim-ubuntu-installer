@@ -24,6 +24,7 @@ This document provides an overview of the keybinds specific to plugins and custo
 -   `<leader>lc`: Open LazyVim config
 -   `<leader>lp`: Open LazyVim plugins
 -   `<leader>ls`: Sync LazyVim plugins
+-   `<leader>uC`: Change color scheme
 
 ## CoC
 
