@@ -7,6 +7,7 @@ const {
     updateLazyVimConfig,
     enableLazyVimExtras,
     setupKeymaps,
+    setGuiFont,
     setupNeoTreeConfig,
 } = require('./helpers/install_helper');
 
@@ -31,6 +32,9 @@ if (args.includes('-p') || args.includes('--plugins') || args.length === 0) {
 
     // Enable LazyVim extras
     enableLazyVimExtras();
+
+    // Set the GUI font
+    setGuiFont();
 
     // Set up the neo-tree configuration
     setupNeoTreeConfig();

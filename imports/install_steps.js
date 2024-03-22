@@ -37,6 +37,16 @@ const installSteps = [
         ],
     },
     {
+        name: 'Hack Nerd Font',
+        preCheck: 'fc-list | grep -i "Hack Nerd Font"',
+        installCommands: [
+            'mkdir -p ~/.local/share/fonts',
+            'cd ~/.local/share/fonts && curl -fLo "Hack.zip" https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip',
+            'cd ~/.local/share/fonts && unzip Hack.zip',
+            'fc-cache -fv',
+        ],
+    },
+    {
         name: 'C Compiler',
         preCheck: 'gcc --version',
         installCommands: ['sudo apt-get install -y gcc'],

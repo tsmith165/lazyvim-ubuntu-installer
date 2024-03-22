@@ -76,6 +76,18 @@ function setupKeymaps() {
     log('Key mappings for copy and paste using xsel set up.');
 }
 
+function setGuiFont() {
+    log('Setting the Vim guifont to Hack Nerd Font...');
+    const nvimDir = path.join(process.env.HOME, '.config', 'nvim');
+    const initLuaFile = path.join(nvimDir, 'init.lua');
+
+    let initLuaConfig = fs.readFileSync(initLuaFile, 'utf8');
+    initLuaConfig += "\nvim.opt.guifont = 'Hack Nerd Font:h12'\n";
+
+    fs.writeFileSync(initLuaFile, initLuaConfig);
+    log('Vim guifont set to Hack Nerd Font.');
+}
+
 function setupNeoTreeConfig() {
     log('Setting up the neo-tree configuration...');
     const nvimDir = path.join(process.env.HOME, '.config', 'nvim');
@@ -90,5 +102,6 @@ module.exports = {
     updateLazyVimConfig,
     enableLazyVimExtras,
     setupKeymaps,
+    setGuiFont,
     setupNeoTreeConfig,
 };
