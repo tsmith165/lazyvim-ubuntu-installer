@@ -1,34 +1,57 @@
+// /imports/plugins.js
+
 const plugins = [
     {
-        name: 'TypeScript LSP (tsserver)',
+        name: 'CoC',
         config: `
-{
-  "neovim/nvim-lspconfig",
-  opts = {
-    servers = {
-      tsserver = {},
-    },
-  },
-},
-`,
+      {
+        "neoclide/coc.nvim",
+        branch = "release",
+        dependencies = {
+          "nvim-lua/plenary.nvim",
+          "neovim/nvim-lspconfig",
+        },
+        config = function()
+          vim.g.coc_global_extensions = {
+            "coc-tsserver",
+            "coc-pyright",
+            "coc-json",
+            "coc-yaml",
+            "coc-tailwindcss",
+            "coc-markdown-preview-enhanced",
+            "coc-sh",
+          }
+        end,
+      },
+    `,
     },
     {
-        name: 'TypeScript Tools',
+        name: 'Tagbar',
         config: `
-{
-  "pmizio/typescript-tools.nvim",
-  dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-  opts = {},
-},
-`,
+      {
+        "preservim/tagbar",
+        opts = {},
+      },
+    `,
+    },
+    {
+        name: 'Surround',
+        config: `
+      {
+        "kylechui/nvim-surround",
+        version = "*",
+        event = "VeryLazy",
+        opts = {},
+      },
+    `,
     },
     {
         name: 'Plenary',
         config: `
-{
-  "nvim-lua/plenary.nvim",
-},
-`,
+      {
+        "nvim-lua/plenary.nvim",
+      },
+    `,
     },
 ];
 

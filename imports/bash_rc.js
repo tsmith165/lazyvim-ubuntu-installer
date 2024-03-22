@@ -3,6 +3,7 @@ const bash_rc = [
     "alias cds='cd /root/dev/scripts/'",
     `alias cdl='cd "$(ls -dt */ | head -1)"'`,
     "alias sbrc='source ~/.bashrc'",
+    "alias nbrc='nvim ~/.bashrc'",
     // Add more bashrc commands here as needed
 ];
 
