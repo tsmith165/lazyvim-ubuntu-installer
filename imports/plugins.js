@@ -117,12 +117,13 @@ const plugins = [
               excluded_filetypes = {"harpoon"},
             },
           })
-  
+    
           local mark = require("harpoon.mark")
           local ui = require("harpoon.ui")
-  
+    
           vim.keymap.set("n", "<leader>ha", mark.add_file)
-          vim.keymap.set("n", "<leader>hs", function()
+          vim.keymap.set("n", "<leader>hs", ui.toggle_quick_menu)
+          vim.keymap.set("n", "<leader>ht", function()
             require("telescope").extensions.harpoon.marks()
           end)
           vim.keymap.set("n", "<leader>hn", ui.nav_next)
@@ -131,9 +132,10 @@ const plugins = [
           vim.keymap.set("n", "<leader>h2", function() ui.nav_file(2) end)
           vim.keymap.set("n", "<leader>h3", function() ui.nav_file(3) end)
           vim.keymap.set("n", "<leader>h4", function() ui.nav_file(4) end)
-          vim.keymap.set("n", "<leader>hd", function()
-            local index = vim.fn.input('Mark number to clear: ')
-            require('harpoon.mark').clear_mark(tonumber(index))
+          vim.keymap.set("n", "<leader>hc", function()
+            local index = vim.fn.input('Mark index to clear: ')
+            mark.rm_file(tonumber(index))
+            ui.toggle_quick_menu()
           end)
         end
       }
