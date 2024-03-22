@@ -27,22 +27,11 @@ const installSteps = [
         installCommands: ['sudo apt-get install -y fontconfig'],
     },
     {
-        name: 'JetBrains Mono Nerd Font',
-        preCheck: 'fc-list | grep -i "JetBrains Mono"',
+        name: 'DevIcons Font',
+        preCheck: 'fc-list | grep -i "DevIcons"',
         installCommands: [
             'mkdir -p ~/.local/share/fonts',
-            'cd ~/.local/share/fonts && curl -fLo "JetBrainsMono.zip" https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip',
-            'cd ~/.local/share/fonts && unzip JetBrainsMono.zip',
-            'fc-cache -fv',
-        ],
-    },
-    {
-        name: 'Hack Nerd Font',
-        preCheck: 'fc-list | grep -i "Hack Nerd Font"',
-        installCommands: [
-            'mkdir -p ~/.local/share/fonts',
-            'cd ~/.local/share/fonts && curl -fLo "Hack.zip" https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip',
-            'cd ~/.local/share/fonts && unzip Hack.zip',
+            'cd ~/.local/share/fonts && curl -fLo "devicons.ttf" https://raw.githubusercontent.com/vorillaz/devicons/master/fonts/devicons.ttf',
             'fc-cache -fv',
         ],
     },

@@ -77,15 +77,15 @@ function setupKeymaps() {
 }
 
 function setGuiFont() {
-    log('Setting the Vim guifont to Hack Nerd Font...');
+    log('Setting the Vim guifont to DevIcons...');
     const nvimDir = path.join(process.env.HOME, '.config', 'nvim');
     const initLuaFile = path.join(nvimDir, 'init.lua');
 
     let initLuaConfig = fs.readFileSync(initLuaFile, 'utf8');
-    initLuaConfig += "\nvim.opt.guifont = 'Hack Nerd Font:h12'\n";
+    initLuaConfig += "\nvim.opt.guifont = 'DevIcons:h12'\n";
 
     fs.writeFileSync(initLuaFile, initLuaConfig);
-    log('Vim guifont set to Hack Nerd Font.');
+    log('Vim guifont set to DevIcons.');
 }
 
 function setupNeoTreeConfig() {
