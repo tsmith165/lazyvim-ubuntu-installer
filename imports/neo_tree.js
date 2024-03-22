@@ -51,6 +51,9 @@ require("neo-tree").setup({
       ["LICENSE"] = 1,
       ["Dockerfile"] = 1,
       ["docker-compose.yml"] = 1,
+      ["*.js"] = 1,
+      ["*.ts"] = 1,
+      ["*.svg"] = 1,
     },
     filtered_items = {
       visible = false, -- when true, hide files/folders that match the glob patterns
