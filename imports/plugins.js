@@ -30,7 +30,20 @@ const plugins = [
         config: `
       {
         "preservim/tagbar",
-        opts = {},
+        config = function()
+          vim.g.tagbar_width = 30
+          vim.g.tagbar_autoclose = 1
+          vim.g.tagbar_autofocus = 1
+          vim.g.tagbar_sort = 0
+          vim.g.tagbar_compact = 1
+          vim.g.tagbar_indent = 1
+          vim.g.tagbar_show_linenumbers = 2
+          vim.g.tagbar_show_visibility = 1
+          vim.g.tagbar_previewwin_pos = "rightbelow"
+          vim.g.tagbar_autopreview = 1
+          vim.g.tagbar_singleclick = 1
+          vim.g.tagbar_foldlevel = 2
+        end,
       },
     `,
     },
