@@ -17,6 +17,7 @@ const plugins = [
             "coc-pyright",
             "coc-json",
             "coc-yaml",
+            "coc-prisma",
             "coc-tailwindcss",
             "coc-markdown-preview-enhanced",
             "coc-sh",
