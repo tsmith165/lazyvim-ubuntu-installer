@@ -91,6 +91,15 @@ const plugins = [
         },
       `,
     },
+    {
+        name: 'Nvim Web Devicons',
+        config: `
+        {
+          "nvim-tree/nvim-web-devicons",
+          opts = {},
+        },
+      `,
+    },
 ];
 
 module.exports = plugins;
