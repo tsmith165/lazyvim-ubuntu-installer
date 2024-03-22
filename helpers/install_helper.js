@@ -91,10 +91,27 @@ function setGuiFont() {
 function setupNeoTreeConfig() {
     log('Setting up the neo-tree configuration...');
     const nvimDir = path.join(process.env.HOME, '.config', 'nvim');
-    const neoTreeConfigFile = path.join(nvimDir, 'lua', 'config', 'neo-tree.lua');
+    const neoTreeConfigDir = path.join(nvimDir, 'lua', 'config');
+    const neoTreeConfigFile = path.join(neoTreeConfigDir, 'neo-tree.lua');
+    const initLuaFile = path.join(nvimDir, 'init.lua');
+
+    // Create the config directory if it doesn't exist
+    if (!fs.existsSync(neoTreeConfigDir)) {
+        fs.mkdirSync(neoTreeConfigDir, { recursive: true });
+    }
 
     fs.writeFileSync(neoTreeConfigFile, neoTreeConfig);
-    log('neo-tree configuration set up.');
+    log('neo-tree configuration file created.');
+
+    // Add the neo-tree configuration to init.lua
+    let initLuaContent = fs.readFileSync(initLuaFile, 'utf8');
+    if (!initLuaContent.includes('require("config.neo-tree")')) {
+        initLuaContent += '\nrequire("config.neo-tree")\n';
+        fs.writeFileSync(initLuaFile, initLuaContent);
+        log('neo-tree configuration added to init.lua.');
+    } else {
+        log('neo-tree configuration already exists in init.lua. Skipping addition.');
+    }
 }
 
 module.exports = {
