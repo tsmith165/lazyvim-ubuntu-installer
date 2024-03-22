@@ -126,9 +126,9 @@ const plugins = [
     
           local function add_file_to_slot(file_path, slot_index)
             local current_file = file_path or vim.fn.expand("%:p")
-            local slots = mark.get_marked_files()
-            slots[slot_index] = current_file
-            mark.set_current_at(slot_index)
+            local marked_files = mark.get_current_list()
+            marked_files[slot_index] = current_file
+            mark.set_mark_list(marked_files)
             ui.toggle_quick_menu()
           end
     
