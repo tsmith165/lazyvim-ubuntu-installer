@@ -33,7 +33,9 @@ function updateLazyVimConfig() {
     // Start with an empty plugins configuration
     let pluginsConfig = '-- LazyVim plugins configuration\n\nreturn {\n';
 
-    for (const plugin of plugins) {
+    const enabledPlugins = plugins.filter((plugin) => !plugin.disabled);
+
+    for (const plugin of enabledPlugins) {
         log(`Adding ${plugin.name} configuration...`);
         pluginsConfig += plugin.config;
     }

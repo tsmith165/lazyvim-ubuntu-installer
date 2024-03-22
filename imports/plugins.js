@@ -1,8 +1,13 @@
-// /imports/plugins.js
+const ENABLE_COC = true;
+const ENABLE_TAGBAR = true;
+const ENABLE_WEB_DEVICONS = false; // Disable nvim-web-devicons
+const ENABLE_ONEDARK = true;
+const ENABLE_HARPOON = true;
 
 const plugins = [
     {
         name: 'CoC',
+        disabled: !ENABLE_COC,
         config: `
       {
         "neoclide/coc.nvim",
@@ -28,6 +33,7 @@ const plugins = [
     },
     {
         name: 'Tagbar',
+        disabled: !ENABLE_TAGBAR,
         config: `
         {
           "preservim/tagbar",
@@ -44,7 +50,7 @@ const plugins = [
             vim.g.tagbar_autopreview = 1
             vim.g.tagbar_singleclick = 1
             vim.g.tagbar_foldlevel = 2
-            vim.g.tagbar_ctags_bin = '/usr/bin/ctags' -- Add this line
+            vim.g.tagbar_ctags_bin = '/usr/bin/ctags'
     
             vim.keymap.set("n", "<leader>t", ":TagbarToggle<CR>")
           end,
@@ -53,6 +59,7 @@ const plugins = [
     },
     {
         name: 'Web DevIcons',
+        disabled: !ENABLE_WEB_DEVICONS,
         config: `
         {
           "kyazdani42/nvim-web-devicons",
@@ -66,16 +73,17 @@ const plugins = [
     },
     {
         name: 'OneDark',
+        disabled: !ENABLE_ONEDARK,
         config: `
         {
           "navarasu/onedark.nvim",
           config = function()
             require("onedark").setup({
-              style = "dark", -- Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer' and 'light'
-              transparent = false, -- Show/hide background
-              term_colors = true, -- Change terminal color as per the selected theme style
-              ending_tildes = false, -- Show the end-of-buffer tildes
-              cmp_itemkind_reverse = false, -- Reverse item kind highlights in cmp menu
+              style = "dark",
+              transparent = false,
+              term_colors = true,
+              ending_tildes = false,
+              cmp_itemkind_reverse = false,
               code_style = {
                 comments = "italic",
                 keywords = "none",
@@ -91,6 +99,7 @@ const plugins = [
     },
     {
         name: 'Harpoon',
+        disabled: !ENABLE_HARPOON,
         config: `
       {
         "ThePrimeagen/harpoon",
