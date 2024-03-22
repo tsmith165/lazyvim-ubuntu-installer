@@ -28,16 +28,15 @@ function updateLazyVimConfig() {
     if (!fs.existsSync(pluginsConfigDir)) {
         fs.mkdirSync(pluginsConfigDir, { recursive: true });
     }
-    // Create the init.lua file if it doesn't exist
-    if (!fs.existsSync(pluginsConfigFile)) {
-        fs.writeFileSync(pluginsConfigFile, '-- LazyVim plugins configuration\n\nreturn {\n');
-    }
 
-    let pluginsConfig = fs.readFileSync(pluginsConfigFile, 'utf8');
+    // Start with an empty plugins configuration
+    let pluginsConfig = '-- LazyVim plugins configuration\n\nreturn {\n';
+
     for (const plugin of plugins) {
         log(`Adding ${plugin.name} configuration...`);
         pluginsConfig += plugin.config;
     }
+
     pluginsConfig += '\n}\n';
 
     fs.writeFileSync(pluginsConfigFile, pluginsConfig);
