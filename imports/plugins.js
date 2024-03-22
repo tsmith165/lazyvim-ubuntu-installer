@@ -124,12 +124,18 @@ const plugins = [
           local mark = require("harpoon.mark")
           local ui = require("harpoon.ui")
     
+          local function add_file_to_slot(file_path, slot_index)
+            local current_file = file_path or vim.fn.expand("%:p")
+            local slots = mark.get_marked_files()
+            slots[slot_index] = current_file
+            mark.set_current_at(slot_index)
+            ui.toggle_quick_menu()
+          end
+    
           vim.keymap.set("n", "<leader>ha", mark.add_file)
           vim.keymap.set("n", "<leader>hA", function()
-            local current_file = vim.fn.expand("%:p")
             local index = vim.fn.input('Add file to Harpoon slot: ')
-            mark.add_file(current_file, tonumber(index))
-            ui.toggle_quick_menu()
+            add_file_to_slot(nil, tonumber(index))
           end)
           vim.keymap.set("n", "<leader>hs", ui.toggle_quick_menu)
           vim.keymap.set("n", "<leader>ht", function()
