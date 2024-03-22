@@ -26,28 +26,27 @@ check_nodejs_installation() {
 check_nodejs_installation
 
 if [ $? -eq 0 ]; then
-    echo "Node.js is already installed with the required version. Skipping installation."
+  echo "Node.js is already installed with the required version. Skipping installation."
 else
-    # Install Node.js
-    echo "Installing Node.js..."
-    curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-    sudo apt-get install -y nodejs
+  # Install Node.js
+  echo "Installing Node.js..."
+  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+  sudo apt-get install -y nodejs
 
-    # Check if Node.js installation was successful
-    if [ $? -eq 0 ]; then
-        echo "Node.js installation completed successfully."
-    else
-        echo "Node.js installation failed."
-        exit 1
-    fi
+  # Check if Node.js installation was successful
+  if [ $? -eq 0 ]; then
+    echo "Node.js installation completed successfully."
+  else
+    echo "Node.js installation failed."
+    exit 1
+  fi
 
-    # Check if installed Node.js meets the required version
-    check_nodejs_installation
-
-    if [ $? -ne 0 ]; then
-        echo "Installed Node.js version does not meet the required version."
-        exit 1
-    fi
+  # Check if installed Node.js meets the required version
+  check_nodejs_installation
+  if [ $? -ne 0 ]; then
+    echo "Installed Node.js version does not meet the required version."
+    exit 1
+  fi
 fi
 
 echo "Node.js is installed and meets the required version."
@@ -55,7 +54,8 @@ echo "Node.js is installed and meets the required version."
 # Set the environment variable to indicate running from install.sh
 export LAZYVIM_INSTALLER=true
 
-# Run the Node.js script
+# Run the Node.js script with the provided arguments
 echo "Launching the Node.js script..."
-node setup.js
+node setup.js "$@"
+
 . ~/.bashrc

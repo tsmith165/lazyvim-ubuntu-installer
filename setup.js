@@ -4,28 +4,36 @@ const { log } = require('./utils/logger');
 const { checkNodeVersion, runInstallSteps, updateBashrc, sourceBashrc } = require('./helpers/system_helper');
 const { cloneLazyVimStarterTemplate, updateLazyVimConfig, enableLazyVimExtras, setupKeymaps } = require('./helpers/install_helper');
 
-// Check if Node.js is installed with the required version
-checkNodeVersion();
+const args = process.argv.slice(2);
 
-// Run the install steps
-runInstallSteps();
+if (args.includes('--install') || args.length === 0) {
+    // Check if Node.js is installed with the required version
+    checkNodeVersion();
 
-// Clone the LazyVim starter template repository
-cloneLazyVimStarterTemplate();
+    // Run the install steps
+    runInstallSteps();
+}
 
-// Update the LazyVim configuration
-updateLazyVimConfig();
+if (args.includes('--config') || args.length === 0) {
+    // Clone the LazyVim starter template repository
+    cloneLazyVimStarterTemplate();
 
-// Enable LazyVim extras
-enableLazyVimExtras();
+    // Update the LazyVim configuration
+    updateLazyVimConfig();
 
-// Set up the key mappings for copy and paste using xsel
-setupKeymaps();
+    // Enable LazyVim extras
+    enableLazyVimExtras();
 
-// Update bashrc with custom commands
-updateBashrc();
+    // Set up the key mappings for copy and paste using xsel
+    setupKeymaps();
+}
 
-// Source the updated bashrc file in the current shell session
-sourceBashrc();
+if (args.includes('--bashrc') || args.length === 0) {
+    // Update bashrc with custom commands
+    updateBashrc();
+
+    // Source the updated bashrc file in the current shell session
+    sourceBashrc();
+}
 
 log('Setup completed successfully!');

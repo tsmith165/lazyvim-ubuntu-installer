@@ -66,6 +66,31 @@ const plugins = [
       },
     `,
     },
+    {
+        name: 'OneDark',
+        config: `
+        {
+          "navarasu/onedark.nvim",
+          config = function()
+            require("onedark").setup({
+              style = "dark", -- Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer' and 'light'
+              transparent = false, -- Show/hide background
+              term_colors = true, -- Change terminal color as per the selected theme style
+              ending_tildes = false, -- Show the end-of-buffer tildes
+              cmp_itemkind_reverse = false, -- Reverse item kind highlights in cmp menu
+              code_style = {
+                comments = "italic",
+                keywords = "none",
+                functions = "none",
+                strings = "none",
+                variables = "none",
+              },
+            })
+            vim.cmd("colorscheme onedark")
+          end,
+        },
+      `,
+    },
 ];
 
 module.exports = plugins;
