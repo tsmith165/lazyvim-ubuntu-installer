@@ -43,6 +43,7 @@ const plugins = [
             vim.g.tagbar_autopreview = 1
             vim.g.tagbar_singleclick = 1
             vim.g.tagbar_foldlevel = 2
+            vim.g.tagbar_ctags_bin = '/usr/bin/ctags' -- Add this line
     
             vim.keymap.set("n", "<leader>t", ":TagbarToggle<CR>")
           end,

@@ -46,15 +46,15 @@ This document provides an overview of the keybinds specific to plugins and custo
 
 ## Tagbar
 
--   `<F8>`: Toggle Tagbar
+-   `<leader>t`: Toggle Tagbar
 
 ## Harpoon
 
 -   `<leader>ha`: Add file to Harpoon
--   `<leader>hs`: Search Harpoon files
+-   `<leader>hA`: Add file to a specific Harpoon slot
+-   `<leader>hs`: Toggle Harpoon quick menu
+-   `<leader>ht`: Open Telescope list of Harpoon marks
 -   `<leader>hn`: Navigate to the next Harpoon file
 -   `<leader>hp`: Navigate to the previous Harpoon file
--   `<leader>h1`: Navigate to the first Harpoon file
--   `<leader>h2`: Navigate to the second Harpoon file
--   `<leader>h3`: Navigate to the third Harpoon file
--   `<leader>h4`: Navigate to the fourth Harpoon file
+-   `<leader>h1` to `<leader>h6`: Navigate to Harpoon files in slots 1 to 6
+-   `<leader>hc`: Clear a Harpoon mark by index
