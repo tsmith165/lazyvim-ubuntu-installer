@@ -42,6 +42,15 @@ const installSteps = [
         installCommands: ['sudo apt-get install -y gcc'],
     },
     {
+        name: 'Exuberant Ctags',
+        preCheck: 'ctags --version',
+        installCommands: ['sudo apt-get install -y exuberant-ctags'],
+        postCheck: {
+            command: 'ctags --version',
+            minVersion: '5.0.0',
+        },
+    },
+    {
         name: 'Node.js',
         preCheck: 'node --version',
         installCommands: ['curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -', 'sudo apt-get install -y nodejs'],

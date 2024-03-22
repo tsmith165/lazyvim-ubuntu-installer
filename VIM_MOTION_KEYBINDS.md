@@ -1,6 +1,6 @@
-# Generic Vim/Tmux/Linux Keybinds
+# Generic Vim/Tmux Motion Keybinds
 
-This document provides an overview of the generic keybinds for Vim, Tmux, and Linux in the Neovim setup.
+This document provides an overview of the generic keybinds for Vim and Tmux.
 
 ## Vim
 

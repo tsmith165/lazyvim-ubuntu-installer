@@ -5,12 +5,18 @@ const { runCommand } = require('./system_helper');
 const plugins = require('../imports/plugins');
 const keymaps = require('../imports/keymaps');
 const extras = require('../imports/extras');
+const neoTreeConfig = require('../imports/neo_tree');
 
 function cloneLazyVimStarterTemplate() {
     log('Cloning the LazyVim starter template repository...');
     const nvimDir = path.join(process.env.HOME, '.config', 'nvim');
-    runCommand(`git clone https://github.com/LazyVim/starter ${nvimDir}`);
-    log('LazyVim starter template cloned.');
+
+    if (!fs.existsSync(nvimDir)) {
+        runCommand(`git clone https://github.com/LazyVim/starter ${nvimDir}`);
+        log('LazyVim starter template cloned.');
+    } else {
+        log('LazyVim starter template directory already exists. Skipping cloning.');
+    }
 }
 
 function updateLazyVimConfig() {
@@ -23,16 +29,15 @@ function updateLazyVimConfig() {
     if (!fs.existsSync(pluginsConfigDir)) {
         fs.mkdirSync(pluginsConfigDir, { recursive: true });
     }
-    // Create the init.lua file if it doesn't exist
-    if (!fs.existsSync(pluginsConfigFile)) {
-        fs.writeFileSync(pluginsConfigFile, '-- LazyVim plugins configuration\n\nreturn {\n');
-    }
 
-    let pluginsConfig = fs.readFileSync(pluginsConfigFile, 'utf8');
+    // Start with an empty plugins configuration
+    let pluginsConfig = '-- LazyVim plugins configuration\n\nreturn {\n';
+
     for (const plugin of plugins) {
         log(`Adding ${plugin.name} configuration...`);
         pluginsConfig += plugin.config;
     }
+
     pluginsConfig += '\n}\n';
 
     fs.writeFileSync(pluginsConfigFile, pluginsConfig);
@@ -71,9 +76,19 @@ function setupKeymaps() {
     log('Key mappings for copy and paste using xsel set up.');
 }
 
+function setupNeoTreeConfig() {
+    log('Setting up the neo-tree configuration...');
+    const nvimDir = path.join(process.env.HOME, '.config', 'nvim');
+    const neoTreeConfigFile = path.join(nvimDir, 'lua', 'config', 'neo-tree.lua');
+
+    fs.writeFileSync(neoTreeConfigFile, neoTreeConfig);
+    log('neo-tree configuration set up.');
+}
+
 module.exports = {
     cloneLazyVimStarterTemplate,
     updateLazyVimConfig,
     enableLazyVimExtras,
     setupKeymaps,
+    setupNeoTreeConfig,
 };
