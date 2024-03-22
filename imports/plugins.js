@@ -134,7 +134,18 @@ const plugins = [
           end)
           vim.keymap.set("n", "<leader>hs", ui.toggle_quick_menu)
           vim.keymap.set("n", "<leader>ht", function()
-            require("telescope").extensions.harpoon.marks()
+            require("telescope").extensions.harpoon.marks({
+              attach_mappings = function(_, map)
+                map("i", "<C-d>", function(prompt_bufnr)
+                  local selection = require("telescope.actions.state").get_selected_entry()
+                  local index = tonumber(selection.value:match("^(.*):.+$"))
+                  mark.rm_file(index)
+                  require("telescope.actions").delete_buffer(prompt_bufnr)
+                  ui.toggle_quick_menu()
+                end)
+                return true
+              end,
+            })
           end)
           vim.keymap.set("n", "<leader>hn", ui.nav_next)
           vim.keymap.set("n", "<leader>hp", ui.nav_prev)
