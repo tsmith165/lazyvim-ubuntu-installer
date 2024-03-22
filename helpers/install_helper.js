@@ -5,6 +5,7 @@ const { runCommand } = require('./system_helper');
 const plugins = require('../imports/plugins');
 const keymaps = require('../imports/keymaps');
 const extras = require('../imports/extras');
+const neoTreeConfig = require('../imports/neo-tree');
 
 function cloneLazyVimStarterTemplate() {
     log('Cloning the LazyVim starter template repository...');
@@ -75,9 +76,19 @@ function setupKeymaps() {
     log('Key mappings for copy and paste using xsel set up.');
 }
 
+function setupNeoTreeConfig() {
+    log('Setting up the neo-tree configuration...');
+    const nvimDir = path.join(process.env.HOME, '.config', 'nvim');
+    const neoTreeConfigFile = path.join(nvimDir, 'lua', 'config', 'neo-tree.lua');
+
+    fs.writeFileSync(neoTreeConfigFile, neoTreeConfig);
+    log('neo-tree configuration set up.');
+}
+
 module.exports = {
     cloneLazyVimStarterTemplate,
     updateLazyVimConfig,
     enableLazyVimExtras,
     setupKeymaps,
+    setupNeoTreeConfig,
 };

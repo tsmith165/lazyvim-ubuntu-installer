@@ -2,7 +2,13 @@
 
 const { log } = require('./utils/logger');
 const { checkNodeVersion, runInstallSteps, updateBashrc, sourceBashrc } = require('./helpers/system_helper');
-const { cloneLazyVimStarterTemplate, updateLazyVimConfig, enableLazyVimExtras, setupKeymaps } = require('./helpers/install_helper');
+const {
+    cloneLazyVimStarterTemplate,
+    updateLazyVimConfig,
+    enableLazyVimExtras,
+    setupKeymaps,
+    setupNeoTreeConfig,
+} = require('./helpers/install_helper');
 
 const args = process.argv.slice(2);
 
@@ -25,6 +31,9 @@ if (args.includes('-p') || args.includes('--plugins') || args.length === 0) {
 
     // Enable LazyVim extras
     enableLazyVimExtras();
+
+    // Set up the neo-tree configuration
+    setupNeoTreeConfig();
 }
 
 if (args.includes('-k') || args.includes('--keymaps') || args.length === 0) {
