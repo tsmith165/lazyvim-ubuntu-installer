@@ -65,6 +65,25 @@ const plugins = [
       `,
     },
     {
+        name: 'Surround',
+        config: `
+      {
+        "kylechui/nvim-surround",
+        version = "*",
+        event = "VeryLazy",
+        opts = {},
+      },
+    `,
+    },
+    {
+        name: 'Plenary',
+        config: `
+      {
+        "nvim-lua/plenary.nvim",
+      },
+    `,
+    },
+    {
         name: 'OneDark',
         config: `
         {
