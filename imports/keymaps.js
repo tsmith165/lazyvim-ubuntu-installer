@@ -1,5 +1,5 @@
 const copiedTextString = `
-  local copied_text = "---\\n// " .. file_path .. "\\n" .. file_contents .. "\\n\\n---"
+  local copied_text = "--\\n// " .. file_path .. "\\n" .. file_contents .. "\\n\\n--"
 `;
 
 const keymaps = `
