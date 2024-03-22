@@ -9,8 +9,13 @@ const extras = require('../imports/extras');
 function cloneLazyVimStarterTemplate() {
     log('Cloning the LazyVim starter template repository...');
     const nvimDir = path.join(process.env.HOME, '.config', 'nvim');
-    runCommand(`git clone https://github.com/LazyVim/starter ${nvimDir}`);
-    log('LazyVim starter template cloned.');
+
+    if (!fs.existsSync(nvimDir)) {
+        runCommand(`git clone https://github.com/LazyVim/starter ${nvimDir}`);
+        log('LazyVim starter template cloned.');
+    } else {
+        log('LazyVim starter template directory already exists. Skipping cloning.');
+    }
 }
 
 function updateLazyVimConfig() {

@@ -6,7 +6,7 @@ const { cloneLazyVimStarterTemplate, updateLazyVimConfig, enableLazyVimExtras, s
 
 const args = process.argv.slice(2);
 
-if (args.includes('--install') || args.length === 0) {
+if (args.includes('-i') || args.includes('--install') || args.length === 0) {
     // Check if Node.js is installed with the required version
     checkNodeVersion();
 
@@ -14,21 +14,25 @@ if (args.includes('--install') || args.length === 0) {
     runInstallSteps();
 }
 
-if (args.includes('--config') || args.length === 0) {
+if (args.length === 0) {
     // Clone the LazyVim starter template repository
     cloneLazyVimStarterTemplate();
+}
 
+if (args.includes('-p') || args.includes('--plugins') || args.length === 0) {
     // Update the LazyVim configuration
     updateLazyVimConfig();
 
     // Enable LazyVim extras
     enableLazyVimExtras();
+}
 
+if (args.includes('-k') || args.includes('--keymaps') || args.length === 0) {
     // Set up the key mappings for copy and paste using xsel
     setupKeymaps();
 }
 
-if (args.includes('--bashrc') || args.length === 0) {
+if (args.includes('-b') || args.includes('--bashrc') || args.length === 0) {
     // Update bashrc with custom commands
     updateBashrc();
 
