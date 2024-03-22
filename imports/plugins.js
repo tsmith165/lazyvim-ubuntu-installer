@@ -115,6 +115,9 @@ const plugins = [
               save_on_change = true,
               enter_on_sendcmd = false,
               excluded_filetypes = {"harpoon"},
+              menu = {
+                width = vim.api.nvim_win_get_width(0) - 20,
+              },
             },
           })
     
@@ -122,16 +125,18 @@ const plugins = [
           local ui = require("harpoon.ui")
     
           vim.keymap.set("n", "<leader>ha", mark.add_file)
+          vim.keymap.set("n", "<leader>hA", function()
+            local current_file = vim.fn.expand("%:p")
+            local index = vim.fn.input('Add file to Harpoon slot: ')
+            mark.add_file(current_file, tonumber(index))
+            ui.toggle_quick_menu()
+          end)
           vim.keymap.set("n", "<leader>hs", ui.toggle_quick_menu)
           vim.keymap.set("n", "<leader>ht", function()
             require("telescope").extensions.harpoon.marks()
           end)
           vim.keymap.set("n", "<leader>hn", ui.nav_next)
           vim.keymap.set("n", "<leader>hp", ui.nav_prev)
-          vim.keymap.set("n", "<leader>h1", function() ui.nav_file(1) end)
-          vim.keymap.set("n", "<leader>h2", function() ui.nav_file(2) end)
-          vim.keymap.set("n", "<leader>h3", function() ui.nav_file(3) end)
-          vim.keymap.set("n", "<leader>h4", function() ui.nav_file(4) end)
           vim.keymap.set("n", "<leader>hc", function()
             local index = vim.fn.input('Mark index to clear: ')
             mark.rm_file(tonumber(index))
