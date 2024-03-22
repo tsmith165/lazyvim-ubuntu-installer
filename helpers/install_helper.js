@@ -5,7 +5,7 @@ const { runCommand } = require('./system_helper');
 const plugins = require('../imports/plugins');
 const keymaps = require('../imports/keymaps');
 const extras = require('../imports/extras');
-const neoTreeConfig = require('../imports/neo-tree');
+const neoTreeConfig = require('../imports/neo_tree');
 
 function cloneLazyVimStarterTemplate() {
     log('Cloning the LazyVim starter template repository...');

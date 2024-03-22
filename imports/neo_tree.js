@@ -1,6 +1,6 @@
--- /imports/neo-tree.lua
+// /imports/neo_tree.js
 
-local neoTreeConfig = `
+const neoTreeConfig = `
 require("neo-tree").setup({
   renderer = {
     icons = {
@@ -41,6 +41,6 @@ require("neo-tree").setup({
     },
   },
 })
-`
+`;
 
-return neoTreeConfig
+module.exports = neoTreeConfig;
