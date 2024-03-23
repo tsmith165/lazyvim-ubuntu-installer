@@ -116,11 +116,39 @@ function setupNeoTreeConfig() {
     }
 }
 
+function setupDeviconsConfig() {
+    log('Setting up the nvim-web-devicons configuration...');
+    const nvimDir = path.join(process.env.HOME, '.config', 'nvim');
+    const deviconsConfigFile = path.join(__dirname, 'devicons.lua');
+    const targetDeviconsConfigFile = path.join(nvimDir, 'lua', 'config', 'devicons.lua');
+
+    fs.copyFileSync(deviconsConfigFile, targetDeviconsConfigFile);
+    log('nvim-web-devicons configuration file copied.');
+}
+
+function updateInitLua() {
+    log('Updating the init.lua file...');
+    const nvimDir = path.join(process.env.HOME, '.config', 'nvim');
+    const initLuaFile = path.join(nvimDir, 'init.lua');
+
+    let initLuaContent = fs.readFileSync(initLuaFile, 'utf8');
+
+    // Add the devicons configuration
+    if (!initLuaContent.includes('require("config.devicons")')) {
+        initLuaContent += '\nrequire("config.devicons")\n';
+    }
+
+    fs.writeFileSync(initLuaFile, initLuaContent);
+    log('init.lua file updated.');
+}
+
 module.exports = {
     cloneLazyVimStarterTemplate,
     updateLazyVimConfig,
     enableLazyVimExtras,
     setupKeymaps,
     setGuiFont,
+    setupDeviconsConfig,
     setupNeoTreeConfig,
+    updateInitLua,
 };

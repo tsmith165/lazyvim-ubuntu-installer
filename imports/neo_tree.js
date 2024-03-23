@@ -13,22 +13,13 @@ require("neo-tree").setup({
         git = true
       },
       glyphs = {
-        default = "",
-        symlink = "",
-        bookmark = "",
-        file = {
-          default = "*",
-        },
-        folder = {
-          arrow_closed = "",
-          arrow_open = "",
-          default = "",
-          open = "",
-          empty = "",
-          empty_open = "",
-          symlink = "",
-          symlink_open = ""
-        },
+        folder_closed = "",
+        folder_open = "",
+        folder_empty = "󰜌",
+        -- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
+        -- then these will never be used.
+        default = "*",
+        highlight = "NeoTreeFileIcon"
         git = {
           unstaged = "✗",
           staged = "✓",

@@ -1,6 +1,5 @@
 const ENABLE_COC = true;
 const ENABLE_TAGBAR = true;
-const ENABLE_WEB_DEVICONS = true;
 const ENABLE_ONEDARK = true;
 const ENABLE_HARPOON = true;
 
@@ -53,20 +52,6 @@ const plugins = [
             vim.g.tagbar_ctags_bin = '/usr/bin/ctags'
     
             vim.keymap.set("n", "<leader>t", ":TagbarToggle<CR>")
-          end,
-        },
-      `,
-    },
-    {
-        name: 'Web DevIcons',
-        disabled: !ENABLE_WEB_DEVICONS,
-        config: `
-        {
-          "kyazdani42/nvim-web-devicons",
-          config = function()
-            require('nvim-web-devicons').setup {
-              default = true;
-            }
           end,
         },
       `,
