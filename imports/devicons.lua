@@ -5,19 +5,39 @@ devicons.set_icon({
     color = "#f7df1e",
     name = "nf-dev-javascript_badge",
   },
+  ["config.js"] = {
+    icon = "",
+    color = "#ffb13b",
+    name = "nf-dev-javascript_badge",
+  },
+  ["tailwind.config.js"] = {
+    icon = "",
+    color = "#06B6D4",
+    name = "nf-fa-leaf",
+  },
+  ["tsconfig.json"] = {
+    icon = "",
+    color = "#007acc",
+    name = "nf-seti-json",
+  },
+  ["jsconfig.json"] = {
+    icon = "",
+    color = "#f7df1e",
+    name = "nf-seti-json",
+  },
   ["log"] = {
-    icon = "",
-    color = "#ffffff",
+    icon = "",
+    color = "#4A90E2",
     name = "nf-oct-log",
   },
   ["txt"] = {
-    icon = "󰦨",
-    color = "#ffffff",
-    name = "nf-md-text",
+    icon = "",
+    color = "#7ED321",
+    name = "nf-na-file-text",
   },
   ["svg"] = {
-    icon = "󰜡",
+    icon = "",
     color = "#ffb13b",
-    name = "nf-md-svg",
+    name = "nf-fa-image",
   },
 })
