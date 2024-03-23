@@ -1,6 +1,6 @@
 const ENABLE_COC = true;
 const ENABLE_TAGBAR = true;
-const ENABLE_WEB_DEVICONS = false; // Disable nvim-web-devicons
+const ENABLE_WEB_DEVICONS = true;
 const ENABLE_ONEDARK = true;
 const ENABLE_HARPOON = true;
 

@@ -17,10 +17,7 @@ require("neo-tree").setup({
         symlink = "",
         bookmark = "",
         file = {
-          default = "",
-          ["js"] = "",
-          ["txt"] = "",
-          ["log"] = "",
+          default = "*",
         },
         folder = {
           arrow_closed = "",
