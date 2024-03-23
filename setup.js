@@ -8,9 +8,9 @@ const {
     enableLazyVimExtras,
     setupKeymaps,
     setGuiFont,
-    setupDeviconsConfig
+    setupDeviconsConfig,
     setupNeoTreeConfig,
-    updateInitLua
+    updateInitLua,
 } = require('./helpers/install_helper');
 
 const args = process.argv.slice(2);
