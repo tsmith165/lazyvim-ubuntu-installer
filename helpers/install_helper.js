@@ -119,7 +119,7 @@ function setupNeoTreeConfig() {
 function setupDeviconsConfig() {
     log('Setting up the nvim-web-devicons configuration...');
     const nvimDir = path.join(process.env.HOME, '.config', 'nvim');
-    const deviconsConfigFile = path.join(__dirname, 'devicons.lua');
+    const deviconsConfigFile = path.join(__dirname, '..', 'imports', 'devicons.lua');
     const targetDeviconsConfigFile = path.join(nvimDir, 'lua', 'config', 'devicons.lua');
 
     fs.copyFileSync(deviconsConfigFile, targetDeviconsConfigFile);
