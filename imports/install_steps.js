@@ -27,11 +27,11 @@ const installSteps = [
         installCommands: ['sudo apt-get install -y fontconfig'],
     },
     {
-        name: 'JetBrains Mono Nerd Font',
-        preCheck: 'fc-list | grep -i "JetBrains Mono Nerd Font"',
+        name: 'Fira Code Nerd Font',
+        preCheck: 'fc-list | grep -i "Fira Code Nerd Font"',
         installCommands: [
             'mkdir -p ~/.local/share/fonts',
-            'cd ~/.local/share/fonts && curl -fLo "JetBrains Mono Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/JetBrainsMono/Ligatures/Regular/JetBrainsMonoNerdFontPropo-Regular.ttf',
+            'cd ~/.local/share/fonts && curl -fLo "Fira Code Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/FiraCodeNerdFontMono-Regular.ttf',
             'fc-cache -fv',
         ],
     },
