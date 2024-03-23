@@ -31,7 +31,7 @@ const installSteps = [
         preCheck: 'fc-list | grep -i "JetBrains Mono Nerd Font"',
         installCommands: [
             'mkdir -p ~/.local/share/fonts',
-            'cd ~/.local/share/fonts && curl -fLo "JetBrains Mono Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/JetBrainsMono/Ligatures/Regular/complete/JetBrains%20Mono%20Regular%20Nerd%20Font%20Complete.ttf',
+            'cd ~/.local/share/fonts && curl -fLo "JetBrains Mono Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/JetBrainsMono/Regular/complete/JetBrains%20Mono%20Regular%20Nerd%20Font%20Complete.ttf',
             'fc-cache -fv',
         ],
     },
