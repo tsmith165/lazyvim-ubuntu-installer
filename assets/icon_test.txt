@@ -1,0 +1,3 @@
+JavaScript Icon: 
+Text File Icon: 
+Log File Icon: 

@@ -16,6 +16,12 @@ require("neo-tree").setup({
         default = "",
         symlink = "",
         bookmark = "",
+        file = {
+          default = "",
+          ["js"] = "",
+          ["txt"] = "",
+          ["log"] = "",
+        },
         folder = {
           arrow_closed = "",
           arrow_open = "",
