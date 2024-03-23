@@ -33,7 +33,9 @@ function updateLazyVimConfig() {
     // Start with an empty plugins configuration
     let pluginsConfig = '-- LazyVim plugins configuration\n\nreturn {\n';
 
-    for (const plugin of plugins) {
+    const enabledPlugins = plugins.filter((plugin) => !plugin.disabled);
+
+    for (const plugin of enabledPlugins) {
         log(`Adding ${plugin.name} configuration...`);
         pluginsConfig += plugin.config;
     }
@@ -76,13 +78,68 @@ function setupKeymaps() {
     log('Key mappings for copy and paste using xsel set up.');
 }
 
+function setGuiFont() {
+    log('Setting the Vim guifont to Fira Code Nerd Font...');
+    const nvimDir = path.join(process.env.HOME, '.config', 'nvim');
+    const initLuaFile = path.join(nvimDir, 'init.lua');
+
+    let initLuaConfig = fs.readFileSync(initLuaFile, 'utf8');
+    initLuaConfig += "\nvim.opt.guifont = 'FiraCode Nerd Font:h12'\n";
+
+    fs.writeFileSync(initLuaFile, initLuaConfig);
+    log('Vim guifont set to Fira Code Nerd Font.');
+}
+
 function setupNeoTreeConfig() {
     log('Setting up the neo-tree configuration...');
     const nvimDir = path.join(process.env.HOME, '.config', 'nvim');
-    const neoTreeConfigFile = path.join(nvimDir, 'lua', 'config', 'neo-tree.lua');
+    const neoTreeConfigDir = path.join(nvimDir, 'lua', 'config');
+    const neoTreeConfigFile = path.join(neoTreeConfigDir, 'neo-tree.lua');
+    const initLuaFile = path.join(nvimDir, 'init.lua');
+
+    // Create the config directory if it doesn't exist
+    if (!fs.existsSync(neoTreeConfigDir)) {
+        fs.mkdirSync(neoTreeConfigDir, { recursive: true });
+    }
 
     fs.writeFileSync(neoTreeConfigFile, neoTreeConfig);
-    log('neo-tree configuration set up.');
+    log('neo-tree configuration file created.');
+
+    // Add the neo-tree configuration to init.lua
+    let initLuaContent = fs.readFileSync(initLuaFile, 'utf8');
+    if (!initLuaContent.includes('require("config.neo-tree")')) {
+        initLuaContent += '\nrequire("config.neo-tree")\n';
+        fs.writeFileSync(initLuaFile, initLuaContent);
+        log('neo-tree configuration added to init.lua.');
+    } else {
+        log('neo-tree configuration already exists in init.lua. Skipping addition.');
+    }
+}
+
+function setupDeviconsConfig() {
+    log('Setting up the nvim-web-devicons configuration...');
+    const nvimDir = path.join(process.env.HOME, '.config', 'nvim');
+    const deviconsConfigFile = path.join(__dirname, '..', 'imports', 'devicons.lua');
+    const targetDeviconsConfigFile = path.join(nvimDir, 'lua', 'config', 'devicons.lua');
+
+    fs.copyFileSync(deviconsConfigFile, targetDeviconsConfigFile);
+    log('nvim-web-devicons configuration file copied.');
+}
+
+function updateInitLua() {
+    log('Updating the init.lua file...');
+    const nvimDir = path.join(process.env.HOME, '.config', 'nvim');
+    const initLuaFile = path.join(nvimDir, 'init.lua');
+
+    let initLuaContent = fs.readFileSync(initLuaFile, 'utf8');
+
+    // Add the devicons configuration
+    if (!initLuaContent.includes('require("config.devicons")')) {
+        initLuaContent += '\nrequire("config.devicons")\n';
+    }
+
+    fs.writeFileSync(initLuaFile, initLuaContent);
+    log('init.lua file updated.');
 }
 
 module.exports = {
@@ -90,5 +147,8 @@ module.exports = {
     updateLazyVimConfig,
     enableLazyVimExtras,
     setupKeymaps,
+    setGuiFont,
+    setupDeviconsConfig,
     setupNeoTreeConfig,
+    updateInitLua,
 };

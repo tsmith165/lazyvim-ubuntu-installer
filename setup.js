@@ -7,7 +7,10 @@ const {
     updateLazyVimConfig,
     enableLazyVimExtras,
     setupKeymaps,
+    setGuiFont,
+    setupDeviconsConfig,
     setupNeoTreeConfig,
+    updateInitLua,
 } = require('./helpers/install_helper');
 
 const args = process.argv.slice(2);
@@ -32,8 +35,17 @@ if (args.includes('-p') || args.includes('--plugins') || args.length === 0) {
     // Enable LazyVim extras
     enableLazyVimExtras();
 
+    // Set the GUI font
+    setGuiFont();
+
     // Set up the neo-tree configuration
     setupNeoTreeConfig();
+
+    // Set up the devicons configuration
+    setupDeviconsConfig();
+
+    // Update the init.lua file
+    updateInitLua();
 }
 
 if (args.includes('-k') || args.includes('--keymaps') || args.length === 0) {
