@@ -99,16 +99,16 @@ fi
 
 # Install VSCode extensions
 log "Step: Installing VSCode extensions..."
-sudo -u "$SUDO_USER" code --install-extension torreysmith.copyfilepathandcontent || failure "Failed to install extension: torreysmith.copyfilepathandcontent"
-sudo -u "$SUDO_USER" code --install-extension github.copilot || failure "Failed to install extension: github.copilot"
-sudo -u "$SUDO_USER" code --install-extension github.copilot-chat || failure "Failed to install extension: github.copilot-chat"
-sudo -u "$SUDO_USER" code --install-extension bradlc.vscode-tailwindcss || failure "Failed to install extension: bradlc.vscode-tailwindcss"
-sudo -u "$SUDO_USER" code --install-extension vscode-icons-team.vscode-icons || failure "Failed to install extension: vscode-icons-team.vscode-icons"
-sudo -u "$SUDO_USER" code --install-extension quick-lint.quick-lint-js || failure "Failed to install extension: quick-lint.quick-lint-js"
-sudo -u "$SUDO_USER" code --install-extension ms-python.python || failure "Failed to install extension: ms-python.python"
-sudo -u "$SUDO_USER" code --install-extension ms-python.vscode-pylance || failure "Failed to install extension: ms-python.vscode-pylance"
-sudo -u "$SUDO_USER" code --install-extension yoavbls.pretty-ts-errors || failure "Failed to install extension: yoavbls.pretty-ts-errors"
-sudo -u "$SUDO_USER" code --install-extension pmndrs.pmndrs || failure "Failed to install extension: pmndrs.pmndrs"
+code --user-data-dir /root/.vscode-root --no-sandbox --install-extension torreysmith.copyfilepathandcontent || failure "Failed to install extension: torreysmith.copyfilepathandcontent"
+code --user-data-dir /root/.vscode-root --no-sandbox --install-extension github.copilot || failure "Failed to install extension: github.copilot"
+code --user-data-dir /root/.vscode-root --no-sandbox --install-extension github.copilot-chat || failure "Failed to install extension: github.copilot-chat"
+code --user-data-dir /root/.vscode-root --no-sandbox --install-extension bradlc.vscode-tailwindcss || failure "Failed to install extension: bradlc.vscode-tailwindcss"
+code --user-data-dir /root/.vscode-root --no-sandbox --install-extension vscode-icons-team.vscode-icons || failure "Failed to install extension: vscode-icons-team.vscode-icons"
+code --user-data-dir /root/.vscode-root --no-sandbox --install-extension quick-lint.quick-lint-js || failure "Failed to install extension: quick-lint.quick-lint-js"
+code --user-data-dir /root/.vscode-root --no-sandbox --install-extension ms-python.python || failure "Failed to install extension: ms-python.python"
+code --user-data-dir /root/.vscode-root --no-sandbox --install-extension ms-python.vscode-pylance || failure "Failed to install extension: ms-python.vscode-pylance"
+code --user-data-dir /root/.vscode-root --no-sandbox --install-extension yoavbls.pretty-ts-errors || failure "Failed to install extension: yoavbls.pretty-ts-errors"
+code --user-data-dir /root/.vscode-root --no-sandbox --install-extension pmndrs.pmndrs || failure "Failed to install extension: pmndrs.pmndrs"
 success "VSCode extensions installed"
 
 # Create VSCode settings directory if it doesn't exist
