@@ -145,10 +145,15 @@ log "Step: Installing D-Bus package..."
 sudo apt install -y dbus-x11 || failure "Failed to install D-Bus package"
 success "D-Bus package installed"
 
+# Install gnome-settings-daemon and metacity packages
+log "Step: Installing gnome-settings-daemon and metacity packages..."
+sudo apt install -y gnome-settings-daemon metacity || failure "Failed to install gnome-settings-daemon and metacity packages"
+success "gnome-settings-daemon and metacity packages installed"
+
 # Configure VNC server
 log "Step: Configuring VNC server..."
 mkdir -p ~/.vnc
-echo '$localhost = "no"' > ~/.vnc/config
+echo 'localhost = no' > ~/.vnc/config
 echo 'geometry = 1920x1080' >> ~/.vnc/config
 echo 'depth = 24' >> ~/.vnc/config
 success "VNC server configured"
