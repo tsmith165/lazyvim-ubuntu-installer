@@ -47,6 +47,12 @@ mkdir -p ~/.config/Code/User
 # Download settings.json from the GitHub repository
 curl -fsSL https://raw.githubusercontent.com/tsmith165/vscode_settings/main/settings.json -o ~/.config/Code/User/settings.json
 
+# Install VNC server
+sudo apt install -y tightvncserver
+
+# Set up VNC server
+vncserver
+
 # Print installed versions
 echo "Node.js version: $(node -v)"
 echo "Yarn version: $(yarn --version)"
