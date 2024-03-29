@@ -135,10 +135,10 @@ log "Step: Installing missing font packages..."
 sudo apt install -y xfonts-75dpi xfonts-100dpi || failure "Failed to install missing font packages"
 success "Missing font packages installed"
 
-# Install vnc4server package
-log "Step: Installing vnc4server package..."
-sudo apt install -y vnc4server || failure "Failed to install vnc4server package"
-success "vnc4server package installed"
+# Install tigervnc-standalone-server package
+log "Step: Installing tigervnc-standalone-server package..."
+sudo apt install -y tigervnc-standalone-server || failure "Failed to install tigervnc-standalone-server package"
+success "tigervnc-standalone-server package installed"
 
 # Install D-Bus package
 log "Step: Installing D-Bus package..."
