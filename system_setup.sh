@@ -143,6 +143,9 @@ log "Step: Creating VNC xstartup file..."
 cat > ~/.vnc/xstartup <<EOF
 #!/bin/sh
 
+export SHELL=/bin/bash
+export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
 # Uncomment the following two lines for normal desktop:
 # unset SESSION_MANAGER
 # exec /etc/X11/xinit/xinitrc
@@ -150,8 +153,14 @@ cat > ~/.vnc/xstartup <<EOF
 [ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
 [ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
 xsetroot -solid grey
+
 vncconfig -iconic &
-dbus-launch --exit-with-session gnome-session &
+gnome-panel &
+gnome-settings-daemon &
+metacity &
+nautilus &
+gnome-terminal &
+
 EOF
 chmod +x ~/.vnc/xstartup
 success "VNC xstartup file created"
