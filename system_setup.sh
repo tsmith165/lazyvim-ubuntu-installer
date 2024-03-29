@@ -130,6 +130,21 @@ else
   installed "VNC server"
 fi
 
+# Install missing font packages
+log "Step: Installing missing font packages..."
+sudo apt install -y xfonts-75dpi xfonts-100dpi || failure "Failed to install missing font packages"
+success "Missing font packages installed"
+
+# Install vnc4server package
+log "Step: Installing vnc4server package..."
+sudo apt install -y vnc4server || failure "Failed to install vnc4server package"
+success "vnc4server package installed"
+
+# Install D-Bus package
+log "Step: Installing D-Bus package..."
+sudo apt install -y dbus-x11 || failure "Failed to install D-Bus package"
+success "D-Bus package installed"
+
 # Configure VNC server
 log "Step: Configuring VNC server..."
 mkdir -p ~/.vnc
@@ -145,10 +160,6 @@ cat > ~/.vnc/xstartup <<EOF
 
 export SHELL=/bin/bash
 export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-
-# Uncomment the following two lines for normal desktop:
-# unset SESSION_MANAGER
-# exec /etc/X11/xinit/xinitrc
 
 [ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
 [ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
