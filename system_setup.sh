@@ -5,8 +5,8 @@ git_repo_url="https://github.com/your-username/lazyvim-ubuntu-installer.git"
 utils_file="utils.sh"
 logger_file="logger.sh"
 
-curl -fsSL "$git_repo_url/raw/main/$utils_file" -o "$utils_file"
-curl -fsSL "$git_repo_url/raw/main/$logger_file" -o "$logger_file"
+curl -fsSL "$git_repo_url/raw/main/utils/sytem_setup/$utils_file" -o "$utils_file"
+curl -fsSL "$git_repo_url/raw/main/utils/sytem_setup/$logger_file" -o "$logger_file"
 
 # Load utility functions
 source "./$utils_file"
