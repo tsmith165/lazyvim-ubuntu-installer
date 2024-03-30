@@ -125,13 +125,17 @@ install_x11vnc() {
   log_success "x11vnc package installed"
 }
 
-set_x11vnc_password() {
+sset_x11vnc_password() {
   log_info "Step: Setting up x11vnc password..."
+  
+  # Create the /root/.vnc directory if it doesn't exist
+  mkdir -p /root/.vnc
   
   # Generate a random password
   x11vnc_password=$(openssl rand -base64 12)
   
   # Use the generated password with x11vnc's -storepasswd option
+  log_info "Setting x11vnc password to: '$x11vnc_password' in /root/.vnc/x11vnc.passwd"
   echo "$x11vnc_password" | x11vnc -storepasswd stdin /root/.vnc/x11vnc.passwd
   
   # Verify the password file was created
