@@ -125,8 +125,18 @@ install_x11vnc() {
   log_success "x11vnc package installed"
 }
 
-set_x11vnc_password() {
-  log_info "Step: Setting up x11vnc password from user input..."
+setup_x11vnc_with_gnome() {
+  log_info "Step: Setting up x11vnc to start with GNOME desktop..."
+  mkdir -p ~/.vnc
+  
+  log_info "Checking if Xorg server is already running on display :1..."
+  if [ -f /tmp/.X1-lock ]; then
+    log_orange "An Xorg server is already active on display :1. Proceeding without starting a new one."
+  else
+    log_info "Starting Xorg display server on display :1"
+    sudo Xorg :1 &
+    sleep 5 # Wait a bit to ensure Xorg is ready
+  fi
   
   while true; do
     read -s -p "Enter the x11vnc password: " x11vnc_password
@@ -140,22 +150,6 @@ set_x11vnc_password() {
       echo "Passwords do not match. Please try again."
     fi
   done
-  
-  log_success "x11vnc password set"
-}
-
-setup_x11vnc_with_gnome() {
-  log_info "Step: Setting up x11vnc to start with GNOME desktop..."
-  mkdir -p ~/.vnc
-  
-  log_info "Checking if Xorg server is already running on display :1..."
-  if [ -f /tmp/.X1-lock ]; then
-    log_orange "An Xorg server is already active on display :1. Proceeding without starting a new one."
-  else
-    log_info "Starting Xorg display server on display :1"
-    sudo Xorg :1 &
-    sleep 5 # Wait a bit to ensure Xorg is ready
-  fi
   
   cat > ~/.vnc/xstartup <<EOF
 #!/bin/sh
@@ -283,17 +277,14 @@ main_process() {
   # 13. Install x11vnc
   install_x11vnc || log_failure "Failed to install x11vnc"
 
-  # 14. Set x11vnc password (prompt user for password)
-  set_x11vnc_password || log_failure "Failed to set x11vnc password"
-
-  # 15. Set up x11vnc to start with GNOME desktop
+  # 14. Set up x11vnc to start with GNOME desktop
   setup_x11vnc_with_gnome || log_failure "Failed to set up x11vnc with GNOME desktop"
 
-  # 16. Start x11vnc with GNOME desktop
+  # 15. Start x11vnc with GNOME desktop
   stop_x11vnc_with_gnome || log_failure "Failed to stop x11vnc server"
   start_x11vnc_with_gnome || log_failure "Failed to start x11vnc with GNOME desktop"
 
-  # 17. Verify x11vnc listening
+  # 16. Verify x11vnc listening
   verify_x11vnc_listening || log_failure "Failed to verify x11vnc listening"
 
   # Get the IP address
