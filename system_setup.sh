@@ -139,13 +139,20 @@ setup_x11vnc_with_gnome() {
 #!/bin/sh
 
 # Start the GNOME desktop environment on display :1
-DISPLAY=:1 gnome-session &
+export DISPLAY=:1
+gnome-session &
 
 # Start x11vnc server
 x11vnc -auth /root/.Xauthority -display :1 -rfbport 5901 -forever -shared -bg -rfbauth ~/.vnc/x11vnc.passwd -o ~/.vnc/x11vnc.log
 EOF
   chmod +x ~/.vnc/xstartup
   log_success "x11vnc setup completed"
+}
+
+start_x11vnc_with_gnome() {
+  log_info "Step: Starting x11vnc with GNOME desktop..."
+  ~/.vnc/xstartup &
+  log_success "x11vnc server started with GNOME desktop"
 }
 
 stop_x11vnc_with_gnome() {
