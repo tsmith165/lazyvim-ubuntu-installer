@@ -283,7 +283,7 @@ main_process() {
   # 13. Install x11vnc
   install_x11vnc || log_failure "Failed to install x11vnc"
 
-  # 14. Set x11vnc password
+  # 14. Set x11vnc password (prompt user for password)
   set_x11vnc_password || log_failure "Failed to set x11vnc password"
 
   # 15. Set up x11vnc to start with GNOME desktop
@@ -300,12 +300,13 @@ main_process() {
   ip_address=$(get_ip_address)
 
   # Print connection details
+  log_info "--------------------------------------------------------"
   log_info "VNC Connection Details:"
   echo "IP Address: $ip_address"
   echo "Port: 5901"
-  echo "Password: $x11vnc_password"
 
   # Print installed versions
+  log_info "--------------------------------------------------------"
   log_info "Installation complete. Versions:"
   echo "Node.js version: $(node -v)"
   echo "Yarn version: $(yarn --version)"
