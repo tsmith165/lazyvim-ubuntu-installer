@@ -135,6 +135,12 @@ set_x11vnc_password() {
 setup_x11vnc_with_gnome() {
   log_info "Step: Setting up x11vnc to start with GNOME desktop..."
   mkdir -p ~/.vnc
+  
+  # Start Xorg display server on display :1
+  log_info "Starting Xorg display server on display :1"
+  sudo Xorg :1 &
+  sleep 5 # Wait a bit to ensure Xorg is ready
+  
   cat > ~/.vnc/xstartup <<EOF
 #!/bin/sh
 
@@ -146,7 +152,7 @@ gnome-session &
 x11vnc -auth /root/.Xauthority -display :1 -rfbport 5901 -forever -shared -bg -rfbauth ~/.vnc/x11vnc.passwd -o ~/.vnc/x11vnc.log
 EOF
   chmod +x ~/.vnc/xstartup
-  log_success "x11vnc setup completed"
+  log_success "x11vnc setup completed with Xorg display server"
 }
 
 start_x11vnc_with_gnome() {
@@ -159,6 +165,17 @@ stop_x11vnc_with_gnome() {
   log_info "Step: Stopping x11vnc server..."
   pkill x11vnc
   log_success "x11vnc server stopped"
+}
+
+verify_x11vnc_listening() {
+  log_info "Verifying that x11vnc is listening on port 5901..."
+  
+  # Check if x11vnc is listening on port 5901
+  if netstat -tunlp | grep ":5901" > /dev/null; then
+    log_success "x11vnc is successfully listening on port 5901"
+  else
+    log_failure "x11vnc is not listening on port 5901. Please check the configuration."
+  fi
 }
 
 #######################
@@ -250,6 +267,9 @@ main_process() {
   # 16. Start x11vnc with GNOME desktop
   stop_x11vnc_with_gnome || log_failure "Failed to stop x11vnc server"
   start_x11vnc_with_gnome || log_failure "Failed to start x11vnc with GNOME desktop"
+
+  # 17. Verify x11vnc listening
+  verify_x11vnc_listening || log_failure "Failed to verify x11vnc listening"
 
   # Print x11vnc password
   log_orange "x11vnc password: $x11vnc_password"
