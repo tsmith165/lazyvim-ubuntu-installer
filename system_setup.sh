@@ -138,8 +138,8 @@ setup_x11vnc_with_gnome() {
   cat > ~/.vnc/xstartup <<EOF
 #!/bin/sh
 
-# Start the GNOME desktop environment
-gnome-session &
+# Start the GNOME desktop environment on display :1
+DISPLAY=:1 gnome-session &
 
 # Start x11vnc server
 x11vnc -auth /root/.Xauthority -display :1 -rfbport 5901 -forever -shared -bg -rfbauth ~/.vnc/x11vnc.passwd -o ~/.vnc/x11vnc.log
@@ -148,10 +148,10 @@ EOF
   log_success "x11vnc setup completed"
 }
 
-start_x11vnc_with_gnome() {
-  log_info "Step: Starting x11vnc with GNOME desktop..."
-  ~/.vnc/xstartup &
-  log_success "x11vnc and GNOME desktop started"
+stop_x11vnc_with_gnome() {
+  log_info "Step: Stopping x11vnc server..."
+  pkill x11vnc
+  log_success "x11vnc server stopped"
 }
 
 #######################
@@ -241,6 +241,7 @@ main_process() {
   setup_x11vnc_with_gnome || log_failure "Failed to set up x11vnc with GNOME desktop"
 
   # 16. Start x11vnc with GNOME desktop
+  stop_x11vnc_with_gnome || log_failure "Failed to stop x11vnc server"
   start_x11vnc_with_gnome || log_failure "Failed to start x11vnc with GNOME desktop"
 
   # Print x11vnc password
