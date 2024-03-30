@@ -169,8 +169,8 @@ fi
 
 success "gnome-panel and gnome-settings-daemon packages installed"
 
-# Generate random VNC password
-vnc_password=$(openssl rand -base64 8)
+# Set fixed VNC password
+vnc_password="password"
 
 # Set VNC password
 log "Step: Setting up VNC password..."
