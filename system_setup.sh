@@ -156,10 +156,14 @@ setup_x11vnc_with_gnome() {
   log_info "Step: Setting up x11vnc to start with GNOME desktop..."
   mkdir -p ~/.vnc
   
-  # Start Xorg display server on display :1
-  log_info "Starting Xorg display server on display :1"
-  sudo Xorg :1 &
-  sleep 5 # Wait a bit to ensure Xorg is ready
+  log_info "Checking if Xorg server is already running on display :1..."
+  if [ -f /tmp/.X1-lock ]; then
+    log_orange "An Xorg server is already active on display :1. Proceeding without starting a new one."
+  else
+    log_info "Starting Xorg display server on display :1"
+    sudo Xorg :1 &
+    sleep 5 # Wait a bit to ensure Xorg is ready
+  fi
   
   cat > ~/.vnc/xstartup <<EOF
 #!/bin/sh
