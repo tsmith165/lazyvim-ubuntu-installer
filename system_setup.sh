@@ -125,7 +125,7 @@ install_x11vnc() {
   log_success "x11vnc package installed"
 }
 
-sset_x11vnc_password() {
+set_x11vnc_password() {
   log_info "Step: Setting up x11vnc password..."
   
   # Create the /root/.vnc directory if it doesn't exist
