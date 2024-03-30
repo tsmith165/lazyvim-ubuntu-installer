@@ -136,8 +136,8 @@ set_x11vnc_password() {
   # Note: Be aware of security implications of logging sensitive information
   log_orange "Generated x11vnc password: $x11vnc_password"
   
-  # Use the generated password with x11vnc's -storepasswd option
-  echo $x11vnc_password | x11vnc -storepasswd stdin /root/.vnc/x11vnc.passwd
+  # Store the password directly in the password file
+  echo "$x11vnc_password" > /root/.vnc/x11vnc.passwd
   
   # Verify the password file was created
   if [ -f /root/.vnc/x11vnc.passwd ]; then
