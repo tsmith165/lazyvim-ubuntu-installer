@@ -128,10 +128,10 @@ install_x11vnc() {
 set_x11vnc_password() {
   log_info "Step: Setting up x11vnc password..."
   
-  # Use a fixed password
-  x11vnc_password="your_desired_password"
+  # Generate a random password
+  x11vnc_password=$(openssl rand -base64 12)
   
-  # Use the fixed password with x11vnc's -storepasswd option
+  # Use the generated password with x11vnc's -storepasswd option
   echo "$x11vnc_password" | x11vnc -storepasswd stdin /root/.vnc/x11vnc.passwd
   
   # Verify the password file was created
@@ -196,6 +196,11 @@ verify_x11vnc_listening() {
   else
     log_failure "x11vnc is not listening on port 5901. Please check the configuration."
   fi
+}
+
+get_ip_address() {
+  ip_address=$(hostname -I | awk '{print $1}')
+  echo $ip_address
 }
 
 #######################
@@ -291,8 +296,14 @@ main_process() {
   # 17. Verify x11vnc listening
   verify_x11vnc_listening || log_failure "Failed to verify x11vnc listening"
 
-  # Print x11vnc password
-  log_orange "x11vnc password: $x11vnc_password"
+  # Get the IP address
+  ip_address=$(get_ip_address)
+
+  # Print connection details
+  log_info "VNC Connection Details:"
+  echo "IP Address: $ip_address"
+  echo "Port: 5901"
+  echo "Password: $x11vnc_password"
 
   # Print installed versions
   log_info "Installation complete. Versions:"
