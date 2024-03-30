@@ -126,7 +126,7 @@ install_x11vnc() {
 }
 
 set_x11vnc_password() {
-  log_info "Step: Setting up x11vnc password..."
+  log_info "Step: Setting up x11vnc password file..."
   # Generate a random password
   x11vnc_password=$(openssl rand -base64 8)
   # Store the password in a file securely
