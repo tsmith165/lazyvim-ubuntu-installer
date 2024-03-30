@@ -6,6 +6,7 @@ export DEBIAN_FRONTEND=noninteractive
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 YELLOW='\033[0;33m'
+ORANGE='\033[0;33m'
 NC='\033[0m' # No Color
 
 log() {
@@ -26,6 +27,10 @@ installed() {
   echo -e "[$(date +%Y-%m-%d\ %H:%M:%S)] ${YELLOW}$1 is already installed, skipping installation${NC}"
 }
 
+installing() {
+  echo -e "[$(date +%Y-%m-%d\ %H:%M:%S)] ${ORANGE}Installing $1...${NC}"
+}
+
 # Update package lists
 log "Step: Updating package lists..."
 sudo apt update || failure "Failed to update package lists"
@@ -33,7 +38,7 @@ success "Package lists updated"
 
 # Check if desktop GUI (GNOME) is already installed
 if ! dpkg -s ubuntu-desktop &> /dev/null; then
-  log "Step: Installing desktop GUI (GNOME)..."
+  installing "desktop GUI (GNOME)"
   sudo apt install -y ubuntu-desktop || failure "Failed to install desktop GUI (GNOME)"
   success "Desktop GUI (GNOME) installed"
 else
@@ -42,7 +47,7 @@ fi
 
 # Install Git 2+ (if not already installed)
 if ! command -v git &> /dev/null; then
-  log "Step: Installing Git 2+..."
+  installing "Git 2+"
   sudo apt install -y git || failure "Failed to install Git 2+"
   success "Git 2+ installed"
 else
@@ -51,7 +56,7 @@ fi
 
 # Install Node.js 20.x (if not already installed)
 if ! command -v node &> /dev/null; then
-  log "Step: Installing Node.js 20.x..."
+  installing "Node.js 20.x"
   curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - || failure "Failed to set up Node.js 20.x repository"
   sudo apt install -y nodejs || failure "Failed to install Node.js 20.x"
   success "Node.js 20.x installed"
@@ -61,7 +66,7 @@ fi
 
 # Install Yarn (if not already installed)
 if ! command -v yarn &> /dev/null; then
-  log "Step: Installing Yarn..."
+  installing "Yarn"
   sudo npm install -g yarn || failure "Failed to install Yarn"
   success "Yarn installed"
 else
@@ -70,7 +75,7 @@ fi
 
 # Install Bun (if not already installed)
 if ! command -v bun &> /dev/null; then
-  log "Step: Installing Bun..."
+  installing "Bun"
   curl -fsSL https://bun.sh/install | bash || failure "Failed to install Bun"
   success "Bun installed"
 else
@@ -90,7 +95,7 @@ fi
 
 # Install Visual Studio Code (if not already installed)
 if ! command -v code &> /dev/null; then
-  log "Step: Installing Visual Studio Code..."
+  installing "Visual Studio Code"
   sudo snap install --classic code || failure "Failed to install Visual Studio Code"
   success "Visual Studio Code installed"
 else
@@ -123,7 +128,7 @@ success "settings.json downloaded"
 
 # Install VNC server (if not already installed)
 if ! command -v vncserver &> /dev/null; then
-  log "Step: Installing VNC server..."
+  installing "VNC server"
   sudo apt install -y tightvncserver || failure "Failed to install VNC server"
   success "VNC server installed"
 else
@@ -131,23 +136,29 @@ else
 fi
 
 # Install missing font packages
-log "Step: Installing missing font packages..."
+installing "missing font packages"
 sudo apt install -y xfonts-75dpi xfonts-100dpi || failure "Failed to install missing font packages"
 success "Missing font packages installed"
 
 # Install tigervnc-standalone-server package
-log "Step: Installing tigervnc-standalone-server package..."
+installing "tigervnc-standalone-server package"
 sudo apt install -y tigervnc-standalone-server || failure "Failed to install tigervnc-standalone-server package"
 success "tigervnc-standalone-server package installed"
 
 # Install D-Bus package
-log "Step: Installing D-Bus package..."
+installing "D-Bus package"
 sudo apt install -y dbus-x11 || failure "Failed to install D-Bus package"
 success "D-Bus package installed"
 
 # Install gnome-panel and gnome-settings-daemon packages
-log "Step: Installing gnome-panel and gnome-settings-daemon packages..."
+installing "gnome-panel and gnome-settings-daemon packages"
 sudo apt install -y gnome-panel gnome-settings-daemon || failure "Failed to install gnome-panel and gnome-settings-daemon packages"
+
+# Check if gnome-panel is available in the system path
+if ! command -v gnome-panel &> /dev/null; then
+  failure "gnome-panel is not available in the system path"
+fi
+
 success "gnome-panel and gnome-settings-daemon packages installed"
 
 # Configure VNC server
