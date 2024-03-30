@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { log } = require('./utils/next_setup/logger');
+const { log } = require('./utils/logger');
 const { checkNodeVersion, runInstallSteps, updateBashrc, sourceBashrc } = require('./helpers/system_helper');
 const {
     cloneLazyVimStarterTemplate,

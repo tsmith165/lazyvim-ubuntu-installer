@@ -1,7 +1,7 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const { log, logError } = require('../utils/next_setup/logger');
+const { log, logError } = require('../utils/logger');
 const installSteps = require('../imports/install_steps');
 const bash_rc = require('../imports/bash_rc');
 
