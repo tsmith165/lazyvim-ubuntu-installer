@@ -169,12 +169,29 @@ fi
 
 success "gnome-panel and gnome-settings-daemon packages installed"
 
-# Set fixed VNC password
-vnc_password="password"
+# Install expect (if not already installed)
+if ! command -v expect &> /dev/null; then
+  installing "expect"
+  sudo apt install -y expect || failure "Failed to install expect"
+  success "expect installed"
+else
+  installed "expect"
+fi
 
-# Set VNC password
+# Generate random VNC password
+vnc_password=$(openssl rand -base64 8)
+
+# Set VNC password using expect
 log "Step: Setting up VNC password..."
-echo "$vnc_password" | vncpasswd -f > ~/.vnc/passwd
+expect <<EOF
+spawn vncpasswd
+expect "Password:"
+send "$vnc_password\r"
+expect "Verify:"
+send "$vnc_password\r"
+expect eof
+exit
+EOF
 success "VNC password set"
 
 # Configure VNC server
