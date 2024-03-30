@@ -136,19 +136,13 @@ set_x11vnc_password() {
   # Ensure the .vnc directory exists
   mkdir -p /root/.vnc
   
-  # Attempt to store the password in a file securely and capture any errors
-  echo $x11vnc_password | x11vnc -storepasswd /root/.vnc/x11vnc.passwd 2>&1 | while IFS= read -r line; do
-    if [[ "$line" == *"error"* ]]; then
-      log_failure "Error setting x11vnc password: $line"
-      exit 1
-    fi
-  done
+  # Manually create the password file in a format x11vnc understands
+  echo $x11vnc_password | openssl enc -base64 > /root/.vnc/x11vnc.passwd
   
-  # Confirm where the password file is written to and ensure it exists
+  # Verify creation and set permissions
   if [ -f /root/.vnc/x11vnc.passwd ]; then
+    chmod 600 /root/.vnc/x11vnc.passwd
     log_success "x11vnc password set in /root/.vnc/x11vnc.passwd"
-    # For debugging: Output the whole password file securely
-    log_info "Verifying password file was created..."
     ls -l /root/.vnc/x11vnc.passwd
   else
     log_failure "Failed to create x11vnc password file."
