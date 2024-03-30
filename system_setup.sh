@@ -1,10 +1,18 @@
 #!/bin/bash
 
+# Download the required files from the Git repository
+git_repo_url="https://github.com/your-username/lazyvim-ubuntu-installer.git"
+utils_file="utils.sh"
+logger_file="logger.sh"
+
+curl -fsSL "$git_repo_url/raw/main/$utils_file" -o "$utils_file"
+curl -fsSL "$git_repo_url/raw/main/$logger_file" -o "$logger_file"
+
 # Load utility functions
-source "./utils/system_setup/utils.sh"
+source "./$utils_file"
 
 # Load logging functions
-source "./utils/system_setup/logger.sh"
+source "./$logger_file"
 
 # 1. Update package lists
 update_package_lists || log_failure "Failed to update package lists"
