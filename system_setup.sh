@@ -170,7 +170,11 @@ stop_x11vnc_with_gnome() {
 verify_x11vnc_listening() {
   log_info "Verifying that x11vnc is listening on port 5901..."
   
-  # Check if x11vnc is listening on port 5901
+  sleep 2 # Wait a bit to give x11vnc time to start listening
+  
+  # For debugging: output the netstat command's result
+  netstat -tunlp | grep ":5901"
+  
   if netstat -tunlp | grep ":5901" > /dev/null; then
     log_success "x11vnc is successfully listening on port 5901"
   else
