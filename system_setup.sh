@@ -127,10 +127,13 @@ install_x11vnc() {
 
 set_x11vnc_password() {
   log_info "Step: Setting up x11vnc password..."
+  # Generate a random password
   x11vnc_password=$(openssl rand -base64 8)
-  printf "$x11vnc_password\n$x11vnc_password\n" | x11vnc -storepasswd ~/.vnc/x11vnc.passwd
+  # Store the password in a file securely
+  echo $x11vnc_password | x11vnc -storepasswd /root/.vnc/x11vnc.passwd
   log_success "x11vnc password set"
 }
+
 
 setup_x11vnc_with_gnome() {
   log_info "Step: Setting up x11vnc to start with GNOME desktop..."
@@ -149,7 +152,7 @@ export DISPLAY=:1
 gnome-session &
 
 # Start x11vnc server
-x11vnc -auth /root/.Xauthority -display :1 -rfbport 5901 -forever -shared -bg -rfbauth ~/.vnc/x11vnc.passwd -o ~/.vnc/x11vnc.log
+x11vnc -auth /root/.Xauthority -display :1 -rfbport 5901 -forever -shared -bg -rfbauth /root/.vnc/x11vnc.passwd -o /root/.vnc/x11vnc.log
 EOF
   chmod +x ~/.vnc/xstartup
   log_success "x11vnc setup completed with Xorg display server"
