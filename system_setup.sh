@@ -183,9 +183,9 @@ success "VNC xstartup file created"
 
 # Restart VNC server
 log "Step: Restarting VNC server..."
-vncserver -kill :1 || failure "Failed to stop VNC server"
+vncserver -list | grep -q ":1" && vncserver -kill :1
 vncserver :1 || failure "Failed to start VNC server"
-success "VNC server restarted"
+success "VNC server started"
 
 # Print installed versions
 log "Installation complete. Versions:"
