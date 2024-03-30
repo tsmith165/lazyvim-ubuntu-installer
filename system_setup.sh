@@ -31,6 +31,18 @@ installing() {
   echo -e "[$(date +%Y-%m-%d\ %H:%M:%S)] ${ORANGE}Installing $1...${NC}"
 }
 
+get_vnc_password() {
+  read -s -p "Enter VNC password: " vnc_password
+  echo
+  read -s -p "Confirm VNC password: " vnc_password_confirm
+  echo
+
+  if [ "$vnc_password" != "$vnc_password_confirm" ]; then
+    echo "Passwords do not match. Please try again."
+    get_vnc_password
+  fi
+}
+
 # Update package lists
 log "Step: Updating package lists..."
 sudo apt update || failure "Failed to update package lists"
@@ -169,6 +181,11 @@ fi
 
 success "gnome-panel and gnome-settings-daemon packages installed"
 
+# Get VNC password from the user
+log "Step: Setting up VNC password..."
+get_vnc_password
+success "VNC password set"
+
 # Configure VNC server
 log "Step: Configuring VNC server..."
 mkdir -p ~/.vnc
@@ -199,6 +216,7 @@ success "VNC xstartup file created"
 # Restart VNC server
 log "Step: Restarting VNC server..."
 vncserver -list | grep -q ":1" && vncserver -kill :1
+echo "$vnc_password" | vncpasswd -f > ~/.vnc/passwd
 vncserver :1 || failure "Failed to start VNC server"
 success "VNC server started"
 
