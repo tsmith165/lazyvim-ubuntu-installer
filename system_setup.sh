@@ -182,7 +182,7 @@ export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 xsetroot -solid grey
 
 vncconfig -iconic &
-dbus-launch --exit-with-session gnome-session &
+/usr/bin/gnome-session &
 
 EOF
 chmod +x ~/.vnc/xstartup
