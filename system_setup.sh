@@ -126,7 +126,7 @@ install_x11vnc() {
 }
 
 set_x11vnc_password() {
-  log_info "Step: Setting up x11vnc password..."
+  log_info "Step: Setting up x11vnc password from user input..."
   
   while true; do
     read -s -p "Enter the x11vnc password: " x11vnc_password
