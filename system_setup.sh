@@ -145,10 +145,10 @@ log "Step: Installing D-Bus package..."
 sudo apt install -y dbus-x11 || failure "Failed to install D-Bus package"
 success "D-Bus package installed"
 
-# Install gnome-settings-daemon and metacity packages
-log "Step: Installing gnome-settings-daemon and metacity packages..."
-sudo apt install -y gnome-settings-daemon metacity || failure "Failed to install gnome-settings-daemon and metacity packages"
-success "gnome-settings-daemon and metacity packages installed"
+# Install gnome-panel and gnome-settings-daemon packages
+log "Step: Installing gnome-panel and gnome-settings-daemon packages..."
+sudo apt install -y gnome-panel gnome-settings-daemon || failure "Failed to install gnome-panel and gnome-settings-daemon packages"
+success "gnome-panel and gnome-settings-daemon packages installed"
 
 # Configure VNC server
 log "Step: Configuring VNC server..."
@@ -171,11 +171,7 @@ export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 xsetroot -solid grey
 
 vncconfig -iconic &
-gnome-panel &
-gnome-settings-daemon &
-metacity &
-nautilus &
-gnome-terminal &
+dbus-launch --exit-with-session gnome-session &
 
 EOF
 chmod +x ~/.vnc/xstartup
