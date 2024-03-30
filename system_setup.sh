@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Download the required files from the Git repository
-git_repo_url="https://raw.githubusercontent.com/tsmith165/lazyvim-ubuntu-installer/main"
+git_repo_url="https://raw.githubusercontent.com/tsmith165/lazyvim-ubuntu-installer/main/"
 utils_file="utils.sh"
 logger_file="logger.sh"
 
