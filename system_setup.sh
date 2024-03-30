@@ -8,9 +8,9 @@ logger_file="logger.sh"
 uitls_git_repo_url="$git_repo_url/raw/main/utils/sytem_setup/$utils_file"
 logger_git_repo_url="$git_repo_url/raw/main/utils/sytem_setup/$logger_file"
 
-log_info "Downloading utils file with: curl -fsSL $uitls_git_repo_url" 
+echo -e "Downloading utils file with: curl -fsSL $uitls_git_repo_url" 
 curl -fsSL $uitls_git_repo_url
-log_info "Downloading logger file with: curl -fsSL $logger_git_repo_url"
+echo -e "Downloading logger file with: curl -fsSL $logger_git_repo_url"
 curl -fsSL $logger_git_repo_url
 
 # Load utility functions
