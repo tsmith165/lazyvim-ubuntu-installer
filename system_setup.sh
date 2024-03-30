@@ -133,15 +133,27 @@ set_x11vnc_password() {
   # Display the generated password for verification
   log_orange "Generated x11vnc password: $x11vnc_password"
   
-  # Store the password in a file securely
-  echo -e "$x11vnc_password\n$x11vnc_password" | x11vnc -storepasswd /root/.vnc/x11vnc.passwd > /dev/null 2>&1
+  # Ensure the .vnc directory exists
+  mkdir -p /root/.vnc
   
-  # Confirm where the password file is written to
-  log_success "x11vnc password set in /root/.vnc/x11vnc.passwd"
+  # Attempt to store the password in a file securely and capture any errors
+  echo $x11vnc_password | x11vnc -storepasswd /root/.vnc/x11vnc.passwd 2>&1 | while IFS= read -r line; do
+    if [[ "$line" == *"error"* ]]; then
+      log_failure "Error setting x11vnc password: $line"
+      exit 1
+    fi
+  done
   
-  # For debugging: Output the whole password file
-  log_info "Contents of /root/.vnc/x11vnc.passwd:"
-  cat /root/.vnc/x11vnc.passwd
+  # Confirm where the password file is written to and ensure it exists
+  if [ -f /root/.vnc/x11vnc.passwd ]; then
+    log_success "x11vnc password set in /root/.vnc/x11vnc.passwd"
+    # For debugging: Output the whole password file securely
+    log_info "Verifying password file was created..."
+    ls -l /root/.vnc/x11vnc.passwd
+  else
+    log_failure "Failed to create x11vnc password file."
+    exit 1
+  fi
 }
 
 setup_x11vnc_with_gnome() {
