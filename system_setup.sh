@@ -36,6 +36,11 @@ log "Step: Updating package lists..."
 sudo apt update || failure "Failed to update package lists"
 success "Package lists updated"
 
+# Install xterm package
+installing "xterm package"
+sudo apt install -y xterm || failure "Failed to install xterm package"
+success "xterm package installed"
+
 # Check if desktop GUI (GNOME) is already installed
 if ! dpkg -s ubuntu-desktop &> /dev/null; then
   installing "desktop GUI (GNOME)"
@@ -43,6 +48,9 @@ if ! dpkg -s ubuntu-desktop &> /dev/null; then
   success "Desktop GUI (GNOME) installed"
 else
   installed "Desktop GUI (GNOME)"
+  log "Step: Reinstalling desktop GUI (GNOME)..."
+  sudo apt install --reinstall -y ubuntu-desktop || failure "Failed to reinstall desktop GUI (GNOME)"
+  success "Desktop GUI (GNOME) reinstalled"
 fi
 
 # Install Git 2+ (if not already installed)
@@ -182,7 +190,7 @@ export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 xsetroot -solid grey
 
 vncconfig -iconic &
-/usr/bin/gnome-session &
+exec gnome-session
 
 EOF
 chmod +x ~/.vnc/xstartup
