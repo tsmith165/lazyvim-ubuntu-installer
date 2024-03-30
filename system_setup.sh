@@ -130,6 +130,7 @@ set_x11vnc_password() {
   
   # Generate a random password
   x11vnc_password=$(openssl rand -base64 8)
+  x11vnc_password="pass"
   
   # Log the generated password for verification
   # Note: Be aware of security implications of logging sensitive information
@@ -142,6 +143,14 @@ set_x11vnc_password() {
   if [ -f /root/.vnc/x11vnc.passwd ]; then
     chmod 600 /root/.vnc/x11vnc.passwd
     log_success "x11vnc password set in /root/.vnc/x11vnc.passwd"
+
+    # Verify the content of the password file
+    if grep -q "$x11vnc_password" /root/.vnc/x11vnc.passwd; then
+      log_success "x11vnc password file contains the correct password"
+    else
+      log_failure "x11vnc password file does not contain the correct password"
+      exit 1
+    fi
   else
     log_failure "Failed to create x11vnc password file."
     exit 1
@@ -169,7 +178,7 @@ export DISPLAY=:1
 gnome-session &
 
 # Start x11vnc server
-x11vnc -auth /root/.Xauthority -display :1 -rfbport 5901 -forever -shared -bg -rfbauth /root/.vnc/x11vnc.passwd -o /root/.vnc/x11vnc.log
+x11vnc -auth /root/.Xauthority -display :1 -rfbport 5901 -forever -shared -bg -passwd /root/.vnc/x11vnc.passwd -o /root/.vnc/x11vnc.log
 EOF
   chmod +x ~/.vnc/xstartup
   log_success "x11vnc setup completed with Xorg display server"
