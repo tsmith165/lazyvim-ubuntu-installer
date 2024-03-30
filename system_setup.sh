@@ -128,24 +128,20 @@ install_x11vnc() {
 set_x11vnc_password() {
   log_info "Step: Setting up x11vnc password..."
   
-  # Create the /root/.vnc directory if it doesn't exist
-  mkdir -p /root/.vnc
+  while true; do
+    read -s -p "Enter the x11vnc password: " x11vnc_password
+    echo
+    read -s -p "Confirm the x11vnc password: " x11vnc_password_confirm
+    echo
+    
+    if [ "$x11vnc_password" = "$x11vnc_password_confirm" ]; then
+      break
+    else
+      echo "Passwords do not match. Please try again."
+    fi
+  done
   
-  # Generate a random password
-  x11vnc_password=$(openssl rand -base64 12)
-  
-  # Use the generated password with x11vnc's -storepasswd option
-  log_info "Setting x11vnc password to: '$x11vnc_password' in /root/.vnc/x11vnc.passwd"
-  echo "$x11vnc_password" | x11vnc -storepasswd stdin /root/.vnc/x11vnc.passwd
-  
-  # Verify the password file was created
-  if [ -f /root/.vnc/x11vnc.passwd ]; then
-    chmod 600 /root/.vnc/x11vnc.passwd
-    log_success "x11vnc password set in /root/.vnc/x11vnc.passwd"
-  else
-    log_failure "Failed to create x11vnc password file."
-    exit 1
-  fi
+  log_success "x11vnc password set"
 }
 
 setup_x11vnc_with_gnome() {
@@ -168,8 +164,8 @@ setup_x11vnc_with_gnome() {
 export DISPLAY=:1
 gnome-session &
 
-# Start x11vnc server
-x11vnc -auth /root/.Xauthority -display :1 -rfbport 5901 -forever -shared -bg -rfbauth /root/.vnc/x11vnc.passwd -o /root/.vnc/x11vnc.log
+# Start x11vnc server with the user-provided password
+x11vnc -auth /root/.Xauthority -display :1 -rfbport 5901 -forever -shared -bg -passwd "$x11vnc_password" -o /root/.vnc/x11vnc.log
 EOF
   chmod +x ~/.vnc/xstartup
   log_success "x11vnc setup completed with Xorg display server"
