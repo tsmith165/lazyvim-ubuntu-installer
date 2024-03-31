@@ -229,9 +229,6 @@ configure_display_settings() {
   # Add 2560x1440 resolution option
   echo "2560x1440" | sudo tee -a /usr/share/gnome-session/sessions/ubuntu.session > /dev/null
   
-  # Set default resolution to 1920x1080
-  gsettings set org.gnome.desktop.screen-resolution default-resolution 1920x1080
-  
   log_success "Display settings configured"
 }
 
