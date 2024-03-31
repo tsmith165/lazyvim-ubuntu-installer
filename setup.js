@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const { log } = require('./utils/logger');
-const { checkNodeVersion, runInstallSteps, updateBashrc, sourceBashrc } = require('./helpers/system_helper');
+const { checkNodeVersion, runInstallSteps } = require('./helpers/system_helper');
 const {
     cloneLazyVimStarterTemplate,
     updateLazyVimConfig,
@@ -51,14 +51,6 @@ if (args.includes('-p') || args.includes('--plugins') || args.length === 0) {
 if (args.includes('-k') || args.includes('--keymaps') || args.length === 0) {
     // Set up the key mappings for copy and paste using xsel
     setupKeymaps();
-}
-
-if (args.includes('-b') || args.includes('--bashrc') || args.length === 0) {
-    // Update bashrc with custom commands
-    updateBashrc();
-
-    // Source the updated bashrc file in the current shell session
-    sourceBashrc();
 }
 
 log('Setup completed successfully!');

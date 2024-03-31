@@ -1,8 +1,8 @@
-# Ubuntu System Setup and LazyVim Installation
+# LazyVim Ubuntu Installer
 
 ![LazyVim Logo](assets/lazyvim-ubuntu-installer-logo.png)
 
-This project provides a comprehensive system setup script (`system_setup.sh`) to automate the installation and configuration of a GUI environment from a headless Ubuntu 22.04 image, along with a script (`setup.js`) that handles the installation of LazyVim (Neovim config) and various development tools.
+A comprehensive setup script (`ubuntu_setup.sh`) to automate the installation and configuration of a GUI environment from a headless Ubuntu 22.04 image, along with the installation of LazyVim (Neovim config) and various development tools.
 
 ## Features
 
@@ -21,25 +21,12 @@ Before running the setup script, ensure that your system meets the following req
 -   Ubuntu 22.04 (headless or server image)
 -   Internet connection
 
-## Setup Script Steps
-
-1. Update package lists and install essential packages
-2. Install and configure the desktop GUI (GNOME)
-3. Install and configure VNC server (x11vnc) for remote access
-4. Install and configure Alacritty terminal emulator with Fira Code Nerd Font
-5. Install Git, Node.js, Yarn, and Bun
-6. Install and configure Visual Studio Code with essential extensions
-7. Clone and configure the LazyVim repository
-8. Install and configure LSPs for Python and TypeScript/JavaScript
-9. Configure additional plugins like Harpoon, Tagbar, and Surround
-10. Set up custom keybinds for plugins and generic Vim/Tmux/Linux usage
-
 ## Usage
 
 1. Run the following command to execute the system setup script:
 
 ```
-curl -fsSL https://raw.githubusercontent.com/tsmith165/lazyvim-ubuntu-installer/main/system_setup.sh | bash
+curl -fsSL https://raw.githubusercontent.com/tsmith165/lazyvim-ubuntu-installer/main/ubuntu_setup.sh | bash
 ```
 
 2. Set the VNC password:
@@ -56,31 +43,9 @@ x11vnc -storepasswd ~/.vnc/passwd
 
 4. Open a VNC session using the IP address and port provided by the script, and enter the user-defined password.
 
-5. Open the Alacritty terminal emulator.
+5. Once connected to the VNC session, everything should be set up and ready to use
 
-6. Create a directory for setup and navigate to it:
-
-```
-mkdir -p /root/dev/setup/;cd /root/dev/setup/
-```
-
-7. Clone the LazyVim Ubuntu Installer repository:
-
-```
-git clone https://github.com/tsmith165/lazyvim-ubuntu-installer.git
-```
-
-8. Navigate to the cloned repository:
-
-```
-cd lazyvim-ubuntu-installer
-```
-
-9. Run the LazyVim installation script:
-
-```
-./install.sh
-```
+![LazyVim Logo](assets/lazyvim-screenshot.png)
 
 ## Customization
 

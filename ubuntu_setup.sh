@@ -230,6 +230,22 @@ EOF
   log_success "Alacritty desktop icon created"
 }
 
+clone_lazyvim_installer_repo() {
+  log_info "Step: Cloning LazyVim Ubuntu Installer repository..."
+  mkdir -p /root/dev/setup
+  cd /root/dev/setup
+  git clone https://github.com/tsmith165/lazyvim-ubuntu-installer.git
+  cd lazyvim-ubuntu-installer
+  log_success "LazyVim Ubuntu Installer repository cloned"
+}
+
+run_setup_js_script() {
+  log_info "Step: Running setup.js script..."
+  chmod +x setup.js
+  ./setup.js
+  log_success "setup.js script execution completed"
+}
+
 #######################
 # Logging Functions
 #######################
@@ -328,6 +344,12 @@ main_process() {
   # 19. Create Alacritty desktop icon
   create_alacritty_desktop_icon || log_failure "Failed to create Alacritty desktop icon"
 
+  # 20. Clone LazyVim Ubuntu Installer repository
+  clone_lazyvim_installer_repo || log_failure "Failed to clone LazyVim Ubuntu Installer repository"
+
+  # 21. Run setup.js script
+  run_setup_js_script || log_failure "Failed to run setup.js script"
+
   # Get the IP address
   ip_address=$(get_ip_address)
 
@@ -346,11 +368,12 @@ main_process() {
   echo "VNC IP: $ip_address"
   echo "VNC Port: 5901"
 
-  log_success "System setup completed successfully"
+  log_success "System setup and LazyVim installation completed successfully"
   log_info "Run the following commands to set the VNC password and start the VNC server:"
   log_info "1. Set VNC password: x11vnc -storepasswd ~/.vnc/passwd"
   log_info "2. Start VNC server: ~/.vnc/xstartup &"
-  log_info "You can now connect to the VNC server using the IP address and port mentioned above."
+  log_info "Once the VNC server is running, you can connect to it using the IP address and port mentioned above."
+  log_info "Everything should be set up and ready to use."
 }
 
 #######################
