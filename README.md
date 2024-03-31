@@ -46,8 +46,15 @@ x11vnc -storepasswd ~/.vnc/passwd
 5. Once connected to the VNC session, everything should be set up and ready to use
 
 6. To open the Alacritty terminal use one of the following options:
+
     - During setup we created a desktop icon, if you see it on the gnome-desktop, double click it.
     - Alternatively you can run `ctrl + alt + t` to open the default ubuntu terminal. In the terminal run `alacritty`.
+
+7. To open LazyVim run:
+
+```
+nvim
+```
 
 ![LazyVim Logo](assets/lazyvim-screenshot.png)
 

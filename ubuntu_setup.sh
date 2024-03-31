@@ -370,7 +370,7 @@ main_process() {
 
   log_success "System setup and LazyVim installation completed successfully"
   log_info "Run the following commands to set the VNC password and start the VNC server:"
-  log_info "1. Set VNC password: x11vnc -storepasswd ~/.vnc/passwd"
+  log_info "1. Set VNC password: x11vnc -storepasswd ~/.vnc/"
   log_info "2. Start VNC server: ~/.vnc/xstartup &"
   log_info "Once the VNC server is running, you can connect to it using the IP address and port mentioned above."
   log_info "Everything should be set up and ready to use."
