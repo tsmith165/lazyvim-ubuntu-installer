@@ -13,6 +13,7 @@ A comprehensive setup script (`ubuntu_setup.sh`) to automate the installation an
 -   Installs and configures Visual Studio Code with essential extensions
 -   Installs and sets up LazyVim (Neovim config) with LSPs, plugins, and custom keybinds
 -   Configures devicons for enhanced visual file type recognition in Neovim
+-   Configures gnome-desktop to be able to render in 2560x1440
 
 ## Prerequisites
 
@@ -32,7 +33,7 @@ curl -fsSL https://raw.githubusercontent.com/tsmith165/lazyvim-ubuntu-installer/
 2. Set the VNC password:
 
 ```
-x11vnc -storepasswd ~/.vnc/passwd
+x11vnc -storepasswd
 ```
 
 3. Start the VNC server:
