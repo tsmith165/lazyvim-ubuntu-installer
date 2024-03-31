@@ -65,8 +65,8 @@ If you want to customize the LazyVim configuration, you can modify the files in 
 
 For information on the custom keybinds and plugins, refer to the following files:
 
--   [Plugin and Custom Keybinds](PLUGIN_KEYBINDS.md)
--   [Generic Vim/Tmux/Linux Keybinds](GENERIC_KEYBINDS.md)
+-   [Plugin and Custom Keybinds](VIM_PLUGIN_KEYBINDS.md)
+-   [Generic Vim/Tmux/Linux Keybinds](VIM_MOTION_KEYBINDS.md)
 
 ## Troubleshooting
 

@@ -16,7 +16,7 @@ This document provides an overview of the keybinds specific to plugins and custo
 
 ## LazyVim
 
--   `<leader>lf`: Open file tree
+-   `<leader>e`: Open file tree
 -   `<leader>ff`: Find files
 -   `<leader>fg`: Live grep (search within files)
 -   `<leader>fr`: Find and replace
