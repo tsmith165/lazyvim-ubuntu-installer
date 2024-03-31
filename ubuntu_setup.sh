@@ -299,7 +299,7 @@ main_process() {
   install_desktop_gui || log_failure "Failed to install desktop GUI (GNOME)"
 
   # 4. Configure display settings
-  configure_display_settings || log_failure "Failed to configure display settings"
+  # configure_display_settings || log_failure "Failed to configure display settings"
 
   # 5. Install Git
   install_git || log_failure "Failed to install Git"
