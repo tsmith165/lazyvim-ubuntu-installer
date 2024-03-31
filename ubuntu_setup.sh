@@ -7,6 +7,8 @@
 bashrc_lines=(
   'alias code="code --user-data-dir /root/.vscode-root --no-sandbox"'
   'alias ala="alacritty"'
+  'export PATH="$PATH:/root/tools/bun/bin"'
+  'export PATH="$PATH:/root/tools/alacritty"'
 )
 
 #######################
@@ -72,22 +74,11 @@ install_yarn() {
 install_bun() {
   if ! command -v bun &> /dev/null; then
     log_installing "Bun"
-    curl -fsSL https://bun.sh/install | bash
+    mkdir -p /root/tools
+    curl -fsSL https://bun.sh/install | bash -s -- --install-path /root/tools/bun
     log_success "Bun installed"
   else
     log_installed "Bun"
-  fi
-}
-
-add_bun_to_path() {
-  if ! echo $PATH | grep -q "$HOME/.bun"; then
-    log_info "Step: Adding Bun to PATH..."
-    echo 'export BUN_INSTALL="$HOME/.bun"' >> ~/.bashrc
-    echo 'export PATH="$BUN_INSTALL/bin:$PATH"' >> ~/.bashrc
-    source ~/.bashrc
-    log_success "Bun added to PATH"
-  else
-    log_installed "Bun is already in PATH, skipping addition"
   fi
 }
 
@@ -169,7 +160,9 @@ get_ip_address() {
 install_alacritty() {
   if ! command -v alacritty &> /dev/null; then
     log_installing "Alacritty"
+    mkdir -p /root/tools
     sudo apt install -y alacritty
+    sudo ln -s /usr/bin/alacritty /root/tools/alacritty
     log_success "Alacritty installed"
   else
     log_installed "Alacritty"
@@ -228,6 +221,18 @@ Categories=System;TerminalEmulator;
 EOF
   chmod +x ~/Desktop/alacritty.desktop
   log_success "Alacritty desktop icon created"
+}
+
+configure_display_settings() {
+  log_info "Step: Configuring display settings..."
+  
+  # Add 2560x1440 resolution option
+  echo "2560x1440" | sudo tee -a /usr/share/gnome-session/sessions/ubuntu.session > /dev/null
+  
+  # Set default resolution to 1920x1080
+  gsettings set org.gnome.desktop.screen-resolution default-resolution 1920x1080
+  
+  log_success "Display settings configured"
 }
 
 clone_lazyvim_installer_repo() {
@@ -296,20 +301,20 @@ main_process() {
   # 3. Install desktop GUI (GNOME)
   install_desktop_gui || log_failure "Failed to install desktop GUI (GNOME)"
 
-  # 4. Install Git
+  # 4. Configure display settings
+  configure_display_settings || log_failure "Failed to configure display settings"
+
+  # 5. Install Git
   install_git || log_failure "Failed to install Git"
 
-  # 5. Install Node.js
+  # 6. Install Node.js
   install_nodejs || log_failure "Failed to install Node.js"
 
-  # 6. Install Yarn
+  # 7. Install Yarn
   install_yarn || log_failure "Failed to install Yarn"
 
-  # 7. Install Bun
+  # 8. Install Bun
   install_bun || log_failure "Failed to install Bun"
-
-  # 8. Add Bun to PATH
-  add_bun_to_path || log_failure "Failed to add Bun to PATH"
 
   # 9. Install Visual Studio Code
   install_vscode || log_failure "Failed to install Visual Studio Code"
@@ -337,6 +342,9 @@ main_process() {
 
   # 17. Update bashrc
   update_bashrc || log_failure "Failed to update bashrc"
+
+  # Source the updated bashrc file
+  source ~/.bashrc
 
   # 18. Install Fira Code Nerd Font
   install_fira_code_nerd_font || log_failure "Failed to install Fira Code Nerd Font"
@@ -370,14 +378,15 @@ main_process() {
 
   log_success "System setup and LazyVim installation completed successfully"
   log_info "Run the following commands to set the VNC password and start the VNC server:"
-  log_info "1. Set VNC password: x11vnc -storepasswd ~/.vnc/"
+  log_info "1. Set VNC password: x11vnc -storepasswd"
   log_info "2. Start VNC server: ~/.vnc/xstartup &"
   log_info "Once the VNC server is running, you can connect to it using the IP address and port mentioned above."
   log_info "Everything should be set up and ready to use."
 }
 
 #######################
-# Script Execution
+
+Script Execution
 #######################
 
 main_process
