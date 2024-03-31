@@ -64,10 +64,10 @@ const installSteps = [
         installCommands: [
             'sudo apt-get install -y python2.7 python3.9',
             'mkdir -p /root/tools',
-            'sudo ln -s /usr/bin/python2.7 /root/tools/python27',
-            'sudo ln -s /usr/bin/python3.9 /root/tools/python39',
-            'sudo ln -s /root/tools/python27 /usr/local/bin/py2',
-            'sudo ln -s /root/tools/python39 /usr/local/bin/py3',
+            'if [ ! -e /root/tools/python27 ]; then sudo ln -s /usr/bin/python2.7 /root/tools/python27; fi',
+            'if [ ! -e /root/tools/python39 ]; then sudo ln -s /usr/bin/python3.9 /root/tools/python39; fi',
+            'if [ ! -e /usr/local/bin/py2 ]; then sudo ln -s /root/tools/python27 /usr/local/bin/py2; fi',
+            'if [ ! -e /usr/local/bin/py3 ]; then sudo ln -s /root/tools/python39 /usr/local/bin/py3; fi',
         ],
         postCheck: [
             {
