@@ -60,18 +60,18 @@ const installSteps = [
     },
     {
         name: 'Python',
-        preCheck: 'py2 --version && py3 --version',
+        preCheck: 'py2 --version && python3 --version',
         installCommands: [
-            'sudo apt-get install -y python2.7 python3.9',
+            'sudo apt-get install -y python2.7 python3',
             'mkdir -p /root/tools',
             'sudo rm -f /root/tools/python27',
-            'sudo rm -f /root/tools/python39',
+            'sudo rm -f /root/tools/python310',
             'sudo ln -s /usr/bin/python2.7 /root/tools/python27',
-            'sudo ln -s /usr/bin/python3.9 /root/tools/python39',
+            'sudo ln -s /usr/bin/python3 /root/tools/python310',
             'sudo rm -f /usr/local/bin/py2',
             'sudo rm -f /usr/local/bin/py3',
             'sudo ln -s /root/tools/python27 /usr/local/bin/py2',
-            'sudo ln -s /root/tools/python39 /usr/local/bin/py3',
+            'sudo ln -s /root/tools/python310 /usr/local/bin/py3',
         ],
         postCheck: [
             {
@@ -80,7 +80,7 @@ const installSteps = [
             },
             {
                 command: 'py3 --version',
-                minVersion: '3.9.0',
+                minVersion: '3.10.0',
             },
         ],
     },
