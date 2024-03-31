@@ -157,6 +157,53 @@ get_ip_address() {
   echo $ip_address
 }
 
+install_alacritty() {
+  if ! command -v alacritty &> /dev/null; then
+    log_installing "Alacritty"
+    sudo apt install -y alacritty
+    log_success "Alacritty installed"
+  else
+    log_installed "Alacritty"
+  fi
+}
+
+configure_alacritty_font() {
+  log_info "Step: Configuring Alacritty font..."
+  mkdir -p ~/.config/alacritty
+  cat > ~/.config/alacritty/alacritty.yml <<EOF
+font:
+  normal:
+    family: "FiraCode Nerd Font"
+    style: Regular
+  bold:
+    family: "FiraCode Nerd Font"
+    style: Bold
+  italic:
+    family: "FiraCode Nerd Font"
+    style: Italic
+  size: 12.0
+EOF
+  log_success "Alacritty font configured"
+}
+
+update_bashrc_with_alias() {
+  log_info "Step: Updating bashrc with alias..."
+  echo 'alias code="code --user-data-dir /root/.vscode-root --no-sandbox"' >> ~/.bashrc
+  log_success "Alias added to bashrc"
+}
+
+install_fira_code_nerd_font() {
+  if ! fc-list | grep -qi "FiraCode Nerd Font"; then
+    log_installing "Fira Code Nerd Font"
+    mkdir -p ~/.local/share/fonts
+    curl -fLo ~/.local/share/fonts/FiraCodeNerdFontMono-Regular.ttf https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/FiraCodeNerdFontMono-Regular.ttf
+    fc-cache -fv
+    log_success "Fira Code Nerd Font installed"
+  else
+    log_installed "Fira Code Nerd Font"
+  fi
+}
+
 #######################
 # Logging Functions
 #######################
@@ -240,6 +287,18 @@ main_process() {
   # 14. Set up x11vnc to start with GNOME desktop
   setup_x11vnc_with_gnome || log_failure "Failed to set up x11vnc with GNOME desktop"
 
+  # 15. Install Alacritty
+  install_alacritty || log_failure "Failed to install Alacritty"
+
+  # 16. Configure Alacritty font
+  configure_alacritty_font || log_failure "Failed to configure Alacritty font"
+
+  # 17. Update bashrc with alias
+  update_bashrc_with_alias || log_failure "Failed to update bashrc with alias"
+
+  # 18. Install Fira Code Nerd Font
+  install_fira_code_nerd_font || log_failure "Failed to install Fira Code Nerd Font"
+
   # Get the IP address
   ip_address=$(get_ip_address)
 
@@ -251,6 +310,7 @@ main_process() {
   echo "Bun version: $(bun -v)"
   echo "Git version: $(git --version)"
   echo "Visual Studio Code version: $(code --version)"
+  echo "Alacritty version: $(alacritty --version)"
 
   # Print connection details
   log_info "VNC Connection Details:"
