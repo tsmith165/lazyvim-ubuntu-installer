@@ -1,6 +1,15 @@
 #!/bin/bash
 
 #######################
+# Configuration
+#######################
+
+bashrc_lines=(
+  'alias code="code --user-data-dir /root/.vscode-root --no-sandbox"'
+  'alias ala="alacritty"'
+)
+
+#######################
 # Utility Functions
 #######################
 
@@ -186,10 +195,12 @@ EOF
   log_success "Alacritty font configured"
 }
 
-update_bashrc_with_alias() {
-  log_info "Step: Updating bashrc with alias..."
-  echo 'alias code="code --user-data-dir /root/.vscode-root --no-sandbox"' >> ~/.bashrc
-  log_success "Alias added to bashrc"
+update_bashrc() {
+  log_info "Step: Updating bashrc..."
+  for line in "${bashrc_lines[@]}"; do
+    echo "$line" >> ~/.bashrc
+  done
+  log_success "Bashrc updated"
 }
 
 install_fira_code_nerd_font() {
@@ -202,6 +213,21 @@ install_fira_code_nerd_font() {
   else
     log_installed "Fira Code Nerd Font"
   fi
+}
+
+create_alacritty_desktop_icon() {
+  log_info "Step: Creating Alacritty desktop icon..."
+  cat > ~/Desktop/alacritty.desktop <<EOF
+[Desktop Entry]
+Type=Application
+Name=Alacritty
+Exec=alacritty
+Icon=utilities-terminal
+Terminal=false
+Categories=System;TerminalEmulator;
+EOF
+  chmod +x ~/Desktop/alacritty.desktop
+  log_success "Alacritty desktop icon created"
 }
 
 #######################
@@ -293,11 +319,14 @@ main_process() {
   # 16. Configure Alacritty font
   configure_alacritty_font || log_failure "Failed to configure Alacritty font"
 
-  # 17. Update bashrc with alias
-  update_bashrc_with_alias || log_failure "Failed to update bashrc with alias"
+  # 17. Update bashrc
+  update_bashrc || log_failure "Failed to update bashrc"
 
   # 18. Install Fira Code Nerd Font
   install_fira_code_nerd_font || log_failure "Failed to install Fira Code Nerd Font"
+
+  # 19. Create Alacritty desktop icon
+  create_alacritty_desktop_icon || log_failure "Failed to create Alacritty desktop icon"
 
   # Get the IP address
   ip_address=$(get_ip_address)
