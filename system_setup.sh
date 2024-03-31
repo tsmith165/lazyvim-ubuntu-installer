@@ -138,19 +138,6 @@ setup_x11vnc_with_gnome() {
     sleep 5 # Wait a bit to ensure Xorg is ready
   fi
   
-  while true; do
-    read -s -p "Enter the x11vnc password: " x11vnc_password
-    echo
-    read -s -p "Confirm the x11vnc password: " x11vnc_password_confirm
-    echo
-    
-    if [ "$x11vnc_password" = "$x11vnc_password_confirm" ]; then
-      break
-    else
-      echo "Passwords do not match. Please try again."
-    fi
-  done
-  
   cat > ~/.vnc/xstartup <<EOF
 #!/bin/sh
 
@@ -158,17 +145,11 @@ setup_x11vnc_with_gnome() {
 export DISPLAY=:1
 gnome-session &
 
-# Start x11vnc server with the user-provided password
-x11vnc -auth /root/.Xauthority -display :1 -rfbport 5901 -forever -shared -bg -passwd "$x11vnc_password" -o /root/.vnc/x11vnc.log
+# Start x11vnc server with a placeholder for the password
+x11vnc -auth /root/.Xauthority -display :1 -rfbport 5901 -forever -shared -bg -passwd VNCSECRET -o /root/.vnc/x11vnc.log
 EOF
   chmod +x ~/.vnc/xstartup
   log_success "x11vnc setup completed with Xorg display server"
-}
-
-start_x11vnc_with_gnome() {
-  log_info "Step: Starting x11vnc with GNOME desktop..."
-  ~/.vnc/xstartup &
-  log_success "x11vnc server started with GNOME desktop"
 }
 
 stop_x11vnc_with_gnome() {
@@ -280,30 +261,35 @@ main_process() {
   # 14. Set up x11vnc to start with GNOME desktop
   setup_x11vnc_with_gnome || log_failure "Failed to set up x11vnc with GNOME desktop"
 
-  # 15. Start x11vnc with GNOME desktop
-  stop_x11vnc_with_gnome || log_failure "Failed to stop x11vnc server"
-  start_x11vnc_with_gnome || log_failure "Failed to start x11vnc with GNOME desktop"
-
-  # 16. Verify x11vnc listening
+  # 15. Verify x11vnc listening
   verify_x11vnc_listening || log_failure "Failed to verify x11vnc listening"
 
   # Get the IP address
   ip_address=$(get_ip_address)
 
   # Print connection details
-  log_info "--------------------------------------------------------"
   log_info "VNC Connection Details:"
-  echo "IP Address: $ip_address"
-  echo "Port: 5901"
+  echo "VNC IP: $ip_address"
+  echo "VNC Port: 5901"
+
+  # Print instructions for setting VNC password and starting VNC server
+  log_info "To set the VNC password and start the VNC server, run the following commands:"
+  echo "1. Set VNC password: x11vnc -storepasswd YOURNEWPASS ~/.vnc/passwd"
+  echo "2. Start VNC server: ~/.vnc/xstartup &"
 
   # Print installed versions
-  log_info "--------------------------------------------------------"
   log_info "Installation complete. Versions:"
   echo "Node.js version: $(node -v)"
   echo "Yarn version: $(yarn --version)"
   echo "Bun version: $(bun -v)"
   echo "Git version: $(git --version)"
   echo "Visual Studio Code version: $(code --version)"
+
+  log_success "System setup completed successfully"
+  log_info "Run the following commands to set the VNC password and start the VNC server:"
+  log_info "1. Set VNC password: x11vnc -storepasswd YOURNEWPASS ~/.vnc/passwd"
+  log_info "2. Start VNC server: ~/.vnc/xstartup &"
+  log_info "You can now connect to the VNC server using the IP address and port mentioned above."
 }
 
 #######################
