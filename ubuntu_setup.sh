@@ -158,32 +158,102 @@ get_ip_address() {
 }
 
 install_alacritty() {
-  if ! command -v alacritty &> /dev/null; then
-    log_installing "Alacritty"
-    mkdir -p /root/tools
-    sudo apt install -y alacritty
-    sudo ln -s /usr/bin/alacritty /root/tools/alacritty
-    log_success "Alacritty installed"
-  else
-    log_installed "Alacritty"
-  fi
+  log_info "Step: Adding Alacritty PPA..."
+  sudo add-apt-repository ppa:mmstick76/alacritty -y
+  sudo apt update
+  log_installing "Alacritty via PPA"
+  sudo apt install -y alacritty
+  log_success "Alacritty installed via PPA"
 }
 
 configure_alacritty_font() {
   log_info "Step: Configuring Alacritty font..."
   mkdir -p ~/.config/alacritty
   cat > ~/.config/alacritty/alacritty.yml <<EOF
+# Full Screen
+window:
+ dimensions:
+   columns: 0
+   lines: 0
+ padding:
+   x: 0
+   y: 0
+ startup_mode: Fullscreen
+     
+# Font Configuration
 font:
-  normal:
-    family: "FiraCode Nerd Font"
-    style: Regular
-  bold:
-    family: "FiraCode Nerd Font"
-    style: Bold
-  italic:
-    family: "FiraCode Nerd Font"
-    style: Italic
-  size: 12.0
+ normal:
+   family: "Fira Code"
+   style: Regular
+ bold:
+   family: "Fira Code"
+   style: Bold
+ italic:
+   family: "Fira Code"
+   style: Italic
+ size: 14.0
+ offset:
+   x: 0
+   y: 0
+ glyph_offset:
+   x: 0
+   y: 0
+ use_thin_strokes: true
+     
+# Color Scheme
+colors:
+ primary:
+   background: '#1d2021'
+   foreground: '#d5c4a1'
+ normal:
+   black:   '#1d2021'
+   red:     '#fb4934'
+   green:   '#b8bb26'
+   yellow:  '#fabd2f'
+   blue:    '#83a598'
+   magenta: '#d3869b'
+   cyan:    '#8ec07c'
+   white:   '#d5c4a1'
+ bright:
+   black:   '#665c54'
+   red:     '#fb4934'
+   green:   '#b8bb26'
+   yellow:  '#fabd2f'
+   blue:    '#83a598'
+   magenta: '#d3869b'
+   cyan:    '#8ec07c'
+   white:   '#fbf1c7'
+     
+# Key Bindings
+key_bindings:
+ - { key: V,        mods: Control|Shift, action: Paste            }
+ - { key: C,        mods: Control|Shift, action: Copy             }
+ - { key: Q,        mods: Command,       action: Quit             }
+ - { key: N,        mods: Command,       action: SpawnNewInstance }
+ 
+# Cursor
+cursor:
+ style: Block
+ unfocused_hollow: true
+ 
+# Mouse
+mouse:
+ hide_when_typing: true
+
+# Background Opacity
+background_opacity: 1.0
+
+# Shell
+shell:
+ program: /bin/bash
+ args:
+   - --login
+
+# Bracketed paste
+bracketed_paste: false
+
+# GPU Acceleration (disable for now)
+hardware_acceleration: false
 EOF
   log_success "Alacritty font configured"
 }
@@ -246,6 +316,26 @@ run_setup_js_script() {
   chmod +x setup.js
   ./setup.js
   log_success "setup.js script execution completed"
+}
+
+create_x11vnc_service() {
+  log_info "Step: Creating x11vnc service..."
+  cat > /etc/systemd/system/x11vnc.service <<EOF
+[Unit]
+Description=x11vnc VNC server
+After=display-manager.service network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/x11vnc -auth /root/.Xauthority -display :1 -rfbport 5901 -forever -shared -bg -usepw -o /root/.vnc/x11vnc.log
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+  sudo systemctl daemon-reload
+  sudo systemctl enable x11vnc.service
+  log_success "x11vnc service created"
 }
 
 #######################
@@ -322,63 +412,66 @@ main_process() {
   # 11. Create VSCode settings directory
   create_vscode_settings_dir || log_failure "Failed to create VSCode settings directory"
 
-  # 12. Download settings.json
-  download_settings_json || log_failure "Failed to download settings.json"
+12. Download settings.json
+download_settings_json || log_failure "Failed to download settings.json"
 
-  # 13. Install x11vnc
-  install_x11vnc || log_failure "Failed to install x11vnc"
+13. Install x11vnc
+install_x11vnc || log_failure "Failed to install x11vnc"
 
-  # 14. Set up x11vnc to start with GNOME desktop
-  setup_x11vnc_with_gnome || log_failure "Failed to set up x11vnc with GNOME desktop"
+14. Set up x11vnc to start with GNOME desktop
+setup_x11vnc_with_gnome || log_failure "Failed to set up x11vnc with GNOME desktop"
 
-  # 15. Install Alacritty
-  install_alacritty || log_failure "Failed to install Alacritty"
+15. Create x11vnc service
+create_x11vnc_service || log_failure "Failed to create x11vnc service"
 
-  # 16. Configure Alacritty font
-  configure_alacritty_font || log_failure "Failed to configure Alacritty font"
+16. Install Alacritty
+install_alacritty || log_failure "Failed to install Alacritty"
 
-  # 17. Update bashrc
-  update_bashrc || log_failure "Failed to update bashrc"
+17. Configure Alacritty font
+configure_alacritty_font || log_failure "Failed to configure Alacritty font"
 
-  # Source the updated bashrc file
-  source ~/.bashrc
+18. Update bashrc
+update_bashrc || log_failure "Failed to update bashrc"
 
-  # 18. Install Fira Code Nerd Font
-  install_fira_code_nerd_font || log_failure "Failed to install Fira Code Nerd Font"
+Source the updated bashrc file
+source ~/.bashrc
 
-  # 19. Create Alacritty desktop icon
-  create_alacritty_desktop_icon || log_failure "Failed to create Alacritty desktop icon"
+19. Install Fira Code Nerd Font
+install_fira_code_nerd_font || log_failure "Failed to install Fira Code Nerd Font"
 
-  # 20. Clone LazyVim Ubuntu Installer repository
-  clone_lazyvim_installer_repo || log_failure "Failed to clone LazyVim Ubuntu Installer repository"
+20. Create Alacritty desktop icon
+create_alacritty_desktop_icon || log_failure "Failed to create Alacritty desktop icon"
 
-  # 21. Run setup.js script
-  run_setup_js_script || log_failure "Failed to run setup.js script"
+21. Clone LazyVim Ubuntu Installer repository
+clone_lazyvim_installer_repo || log_failure "Failed to clone LazyVim Ubuntu Installer repository"
 
-  # Get the IP address
-  ip_address=$(get_ip_address)
+22. Run setup.js script
+run_setup_js_script || log_failure "Failed to run setup.js script"
 
-  # Print installed versions
-  log_info "--------------------------------------------------------"
-  log_info "Installation complete. Versions:"
-  echo "Node.js version: $(node -v)"
-  echo "Yarn version: $(yarn --version)"
-  echo "Bun version: $(bun -v)"
-  echo "Git version: $(git --version)"
-  echo "Visual Studio Code version: $(code --version)"
-  echo "Alacritty version: $(alacritty --version)"
+Get the IP address
+ip_address=$(get_ip_address)
 
-  # Print connection details
-  log_info "VNC Connection Details:"
-  echo "VNC IP: $ip_address"
-  echo "VNC Port: 5901"
+Print installed versions
+log_info "--------------------------------------------------------"
+log_info "Installation complete. Versions:"
+echo "Node.js version: $(node -v)"
+echo "Yarn version: $(yarn --version)"
+echo "Bun version: $(bun -v)"
+echo "Git version: $(git --version)"
+echo "Visual Studio Code version: $(code --version)"
+echo "Alacritty version: $(alacritty --version)"
 
-  log_success "System setup and LazyVim installation completed successfully"
-  log_info "Run the following commands to set the VNC password and start the VNC server:"
-  log_info "1. Set VNC password: x11vnc -storepasswd"
-  log_info "2. Start VNC server: ~/.vnc/xstartup &"
-  log_info "Once the VNC server is running, you can connect to it using the IP address and port mentioned above."
-  log_info "Everything should be set up and ready to use."
+Print connection details
+log_info "VNC Connection Details:"
+echo "VNC IP: $ip_address"
+echo "VNC Port: 5901"
+
+log_success "System setup and LazyVim installation completed successfully"
+log_info "Run the following command to set the VNC password:"
+log_info "x11vnc -storepasswd"
+log_info "Once the password is set, start the VNC server by running:"
+log_info "sudo systemctl start x11vnc.service"
+log_info "Everything should be set up and ready to use."
 }
 
 #######################
