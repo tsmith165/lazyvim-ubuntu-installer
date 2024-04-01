@@ -18,23 +18,45 @@ function Write-ColorOutput {
 
 Write-ColorOutput "====== Setup Script Start =======" -ForegroundColor Green
 
-# Install JetBrains Mono Nerd Font with elevated permissions
+# Install JetBrains Mono Nerd Font
 Write-ColorOutput "Installing JetBrains Mono Nerd Font..."
 $fontUrl = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/JetBrainsMono.zip"
 $fontZipPath = "$env:TEMP\JetBrainsMono.zip"
-$fontInstallPath = "$env:WINDIR\Fonts"
+$fontExtractPath = "$env:TEMP\JetBrainsMono"
 
 Invoke-WebRequest -Uri $fontUrl -OutFile $fontZipPath
 
-$fontInstallProcess = Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit", "-Command", "Expand-Archive -Path '$fontZipPath' -DestinationPath '$fontInstallPath' -Force" -Verb RunAs -PassThru
-$fontInstallProcess.WaitForExit()
+Expand-Archive -Path $fontZipPath -DestinationPath $fontExtractPath -Force
 
-if ($fontInstallProcess.ExitCode -eq 0) {
-    Remove-Item $fontZipPath
-    Write-ColorOutput "JetBrains Mono Nerd Font installed successfully." -ForegroundColor Green
-} else {
-    Write-ColorOutput "Failed to install JetBrains Mono Nerd Font." -ForegroundColor Red
+$fontsToInstall = Get-ChildItem -Path $fontExtractPath -Include '*.ttf', '*.otf' -Recurse
+
+# Load the necessary Windows API functions
+Add-Type -AssemblyName System.Drawing
+Add-Type -Name User32 -Namespace Win32 -MemberDefinition @"
+    [DllImport("user32.dll")]
+    public static extern int SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
+"@
+
+foreach ($font in $fontsToInstall) {
+    $fontPath = $font.FullName
+    
+    # Install the font using the AddFontResource function
+    $result = [System.Drawing.Text.PrivateFontCollection]::new().AddFontFile($fontPath)
+    
+    if ($result -eq 0) {
+        Write-ColorOutput "Failed to install font: $($font.Name)" -ForegroundColor Red
+    } else {
+        Write-ColorOutput "Installed font: $($font.Name)" -ForegroundColor Green
+    }
 }
+
+# Refresh the font cache
+[Win32.User32]::SendMessage(0xFFFF, 0x1D, 0, 0) | Out-Null
+
+Remove-Item $fontZipPath -Force
+Remove-Item $fontExtractPath -Recurse -Force
+
+Write-ColorOutput "JetBrains Mono Nerd Font installation completed." -ForegroundColor Green
 
 # Enable WSL
 $wslEnabled = (Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux).State -eq "Enabled"
@@ -55,7 +77,7 @@ if (-not $wslEnabled -or -not $vmPlatformEnabled) {
 $wsl2Installed = (Get-ChildItem -Path "$env:ProgramFiles\Linux Integration" -Filter "*lxss*" -Recurse -ErrorAction SilentlyContinue)
 if (-not $wsl2Installed) {
     Write-ColorOutput "Downloading and installing WSL2 Linux Kernel..."
-    $wsl2UpdateUrl = "https://github.com/your-repo/wsl_update_x64.msi"  # Replace with the URL to the WSL2 update file in your repo
+    $wsl2UpdateUrl = "https://github.com/tsmith165/lazyvim-ubuntu-installer/wsl_update_x64.msi"  # Replace with the URL to the WSL2 update file in your repo
     $wsl2UpdatePath = "$env:TEMP\wsl_update_x64.msi"
 
     Invoke-WebRequest -Uri $wsl2UpdateUrl -OutFile $wsl2UpdatePath
