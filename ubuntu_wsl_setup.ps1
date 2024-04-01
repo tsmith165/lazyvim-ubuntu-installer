@@ -2,6 +2,20 @@
 $logFile = "$env:TEMP\setup_log.txt"
 Start-Transcript -Path $logFile -Append
 
+function Write-ColorOutput {
+    param (
+        [Parameter(Mandatory=$true, Position=0)]
+        [String]$Text,
+        [Parameter(Mandatory=$false, Position=1)]
+        [ConsoleColor]$ForegroundColor = $Host.UI.RawUI.ForegroundColor
+    )
+    $currentForegroundColor = $Host.UI.RawUI.ForegroundColor
+    $Host.UI.RawUI.ForegroundColor = $ForegroundColor
+    Write-Output $Text
+    $Host.UI.RawUI.ForegroundColor = $currentForegroundColor
+}
+
+
 Write-ColorOutput "====== Setup Script Start =======" -ForegroundColor Green
 
 # Install JetBrains Mono Nerd Font with elevated permissions
