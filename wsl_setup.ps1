@@ -15,48 +15,57 @@ function Write-ColorOutput {
     $Host.UI.RawUI.ForegroundColor = $currentForegroundColor
 }
 
-
 Write-ColorOutput "====== Setup Script Start =======" -ForegroundColor Green
 
-# Install JetBrains Mono Nerd Font
-Write-ColorOutput "Installing JetBrains Mono Nerd Font..."
-$fontUrl = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/JetBrainsMono.zip"
-$fontZipPath = "$env:TEMP\JetBrainsMono.zip"
-$fontExtractPath = "$env:TEMP\JetBrainsMono"
+# Check if JetBrains Mono Nerd Font is already installed
+$fontName = "JetBrainsMono"
+$fontInstalled = (New-Object System.Drawing.Text.InstalledFontCollection).Families | Where-Object { $_.Name -like "$fontName*" }
 
-Invoke-WebRequest -Uri $fontUrl -OutFile $fontZipPath
+if ($fontInstalled) {
+    Write-ColorOutput "JetBrains Mono Nerd Font is already installed. Skipping installation." -ForegroundColor Yellow
+} else {
+    # Install JetBrains Mono Nerd Font
+    Write-ColorOutput "Installing JetBrains Mono Nerd Font..."
+    $fontUrl = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/JetBrainsMono.zip"
+    $fontZipPath = "$env:TEMP\JetBrainsMono.zip"
+    $fontExtractPath = "$env:TEMP\JetBrainsMono"
 
-Expand-Archive -Path $fontZipPath -DestinationPath $fontExtractPath -Force
+    Write-ColorOutput "Downloading font zip file from: $fontUrl" -ForegroundColor Cyan
+    Invoke-WebRequest -Uri $fontUrl -OutFile $fontZipPath
 
-$fontsToInstall = Get-ChildItem -Path $fontExtractPath -Include '*.ttf', '*.otf' -Recurse
+    Write-ColorOutput "Extracting font files to: $fontExtractPath" -ForegroundColor Cyan
+    Expand-Archive -Path $fontZipPath -DestinationPath $fontExtractPath -Force
 
-# Load the necessary Windows API functions
-Add-Type -AssemblyName System.Drawing
-Add-Type -Name User32 -Namespace Win32 -MemberDefinition @"
-    [DllImport("user32.dll")]
-    public static extern int SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
-"@
+    $fontsToInstall = Get-ChildItem -Path $fontExtractPath -Include '*.ttf', '*.otf' -Recurse
+    Write-ColorOutput "Found $($fontsToInstall.Count) font files to install." -ForegroundColor Cyan
 
-foreach ($font in $fontsToInstall) {
-    $fontPath = $font.FullName
-    
-    # Install the font using the AddFontResource function
-    $result = [System.Drawing.Text.PrivateFontCollection]::new().AddFontFile($fontPath)
-    
-    if ($result -eq 0) {
-        Write-ColorOutput "Failed to install font: $($font.Name)" -ForegroundColor Red
-    } else {
-        Write-ColorOutput "Installed font: $($font.Name)" -ForegroundColor Green
+    $shell = New-Object -ComObject Shell.Application
+    $fontInstallFolder = $shell.Namespace(0x14)
+
+    Write-ColorOutput "Installing fonts to: $($fontInstallFolder.Self.Path)" -ForegroundColor Cyan
+
+    foreach ($font in $fontsToInstall) {
+        $fontPath = $font.FullName
+        
+        Write-ColorOutput "Attempting to install font from: $fontPath" -ForegroundColor Cyan
+        
+        try {
+            $fontInstallFolder.CopyHere($fontPath)
+            Write-ColorOutput "Installed font: $($font.Name)" -ForegroundColor Green
+        }
+        catch {
+            Write-ColorOutput "Failed to install font: $($font.Name)" -ForegroundColor Red
+            Write-ColorOutput "Error message: $($_.Exception.Message)" -ForegroundColor Red
+        }
     }
+
+    Write-ColorOutput "Font installation completed. Font files are located at: $fontExtractPath" -ForegroundColor Yellow
+
+    Write-ColorOutput "JetBrains Mono Nerd Font installation completed." -ForegroundColor Green
 }
 
-# Refresh the font cache
-[Win32.User32]::SendMessage(0xFFFF, 0x1D, 0, 0) | Out-Null
-
-Remove-Item $fontZipPath -Force
-Remove-Item $fontExtractPath -Recurse -Force
-
-Write-ColorOutput "JetBrains Mono Nerd Font installation completed." -ForegroundColor Green
+Write-ColorOutput "====== Setup Script Complete =======" -ForegroundColor Green
+Stop-Transcript
 
 # Enable WSL
 $wslEnabled = (Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux).State -eq "Enabled"
@@ -73,20 +82,18 @@ if (-not $wslEnabled -or -not $vmPlatformEnabled) {
     Write-ColorOutput "WSL and Virtual Machine Platform are already enabled. Skipping..." -ForegroundColor Yellow
 }
 
-# Download and Install WSL2 Linux Kernel
-$wsl2Installed = (Get-ChildItem -Path "$env:ProgramFiles\Linux Integration" -Filter "*lxss*" -Recurse -ErrorAction SilentlyContinue)
-if (-not $wsl2Installed) {
-    Write-ColorOutput "Downloading and installing WSL2 Linux Kernel..."
-    $wsl2UpdateUrl = "https://github.com/tsmith165/lazyvim-ubuntu-installer/wsl_update_x64.msi"  # Replace with the URL to the WSL2 update file in your repo
-    $wsl2UpdatePath = "$env:TEMP\wsl_update_x64.msi"
+# Download WSL2 Linux Kernel update
+$wsl2UpdateUrl = "https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi"
+$wsl2UpdatePath = "$env:USERPROFILE\Downloads\wsl_update_x64.msi"
 
-    Invoke-WebRequest -Uri $wsl2UpdateUrl -OutFile $wsl2UpdatePath
-    Start-Process msiexec.exe -Wait -ArgumentList "/i $wsl2UpdatePath /quiet"
-    Remove-Item $wsl2UpdatePath
+Write-ColorOutput "Downloading WSL2 Linux Kernel update..."
+Invoke-WebRequest -Uri $wsl2UpdateUrl -OutFile $wsl2UpdatePath
 
-    Write-ColorOutput "WSL2 Linux Kernel installed successfully." -ForegroundColor Green
+if ((Test-Path $wsl2UpdatePath) -and ((Get-Item $wsl2UpdatePath).Length -gt 0)) {
+    Write-ColorOutput "WSL2 Linux Kernel update downloaded successfully to: $wsl2UpdatePath" -ForegroundColor Green
 } else {
-    Write-ColorOutput "WSL2 Linux Kernel is already installed. Skipping..." -ForegroundColor Yellow
+    Write-ColorOutput "Failed to download WSL2 Linux Kernel update." -ForegroundColor Red
+    Exit 1
 }
 
 # Install Scoop
@@ -213,17 +220,38 @@ y = 0
 $ubuntuInstalled = (Get-AppxPackage -Name "CanonicalGroupLimited.Ubuntu22.04LTS" -ErrorAction SilentlyContinue)
 if (-not $ubuntuInstalled) {
     Write-ColorOutput "Installing Ubuntu 22.04 from Microsoft Store..."
-    Start-Process "https://apps.microsoft.com/detail/9pn20msr04dw"
+    Start-Process "https://apps.microsoft.com/store/detail/ubuntu-22041-lts/9PN20MSR04DW"
 
     Write-ColorOutput "Ubuntu 22.04 installation started. Complete the installation manually." -ForegroundColor Yellow
 } else {
     Write-ColorOutput "Ubuntu 22.04 is already installed. Skipping..." -ForegroundColor Yellow
 }
 
-# Wrap up
-if ($restartNeeded) {
-    Write-ColorOutput "A restart is required to complete the setup. Please restart your computer." -ForegroundColor Yellow
+Write-ColorOutput "====== Setup Script Complete =======" -ForegroundColor Green
+
+# Write the post-reboot steps to a text file at C:/wsl_setup_post_reboot.txt
+$rebootInstructions = @"
+Please follow these manual steps to complete the setup:
+1. Reboot your system to apply/load the WSL configuration.
+2. Run the following command to set WSL2 as the default version: wsl --set-default-version 2
+3. Install the WSL2 Linux Kernel update by running the MSI installer: $wsl2UpdatePath
+4. Install the Ubuntu 22.04 LTS app from the Microsoft Store.
+5. Open the Ubuntu 22.04 LTS app and configure user/password.
+6. Clone the LazyVim Ubuntu Installer repository:
+   a. Open the Ubuntu 22.04 LTS app.
+   b. Switch to the root user if needed: sudo su
+   c. Run the following command to clone the repository:
+      git clone https://github.com/tsmith165/lazyvim-ubuntu-installer.git /main/scripts/
+   d. Navigate to the cloned repository: cd /main/scripts/
+   e. Run the install script: ./ubuntu_wsl_setup.sh
+"@
+
+$rebootInstructionsPath = "C:\wsl_setup_post_reboot.txt"
+Set-Content -Path $rebootInstructionsPath -Value $rebootInstructions
+
+# Loop the instructions and display them in the console with yellow color
+$rebootInstructions -split "`n" | ForEach-Object {
+    Write-Host $_ -ForegroundColor Yellow
 }
 
-Write-ColorOutput "====== Setup Script Complete =======" -ForegroundColor Green
-Stop-Transcript
+Write-ColorOutput "Post-reboot setup instructions saved to: $rebootInstructionsPath" -ForegroundColor Green
