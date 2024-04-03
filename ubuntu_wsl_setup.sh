@@ -85,35 +85,6 @@ install_bun() {
   fi
 }
 
-install_vscode() {
-  if ! command -v code &> /dev/null; then
-    log_installing "Visual Studio Code"
-    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-    sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
-    sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-    sudo apt update
-    sudo apt install -y code
-    log_success "Visual Studio Code installed"
-  else
-    log_installed "Visual Studio Code"
-  fi
-}
-
-install_vscode_extensions() {
-  log_info "Step: Installing VSCode extensions..."
-  code --user-data-dir /root/.vscode-root --no-sandbox --install-extension torreysmith.copyfilepathandcontent || log_failure "Failed to install extension: torreysmith.copyfilepathandcontent"
-  code --user-data-dir /root/.vscode-root --no-sandbox --install-extension github.copilot || log_failure "Failed to install extension: github.copilot"
-  code --user-data-dir /root/.vscode-root --no-sandbox --install-extension github.copilot-chat || log_failure "Failed to install extension: github.copilot-chat"
-  code --user-data-dir /root/.vscode-root --no-sandbox --install-extension bradlc.vscode-tailwindcss || log_failure "Failed to install extension: bradlc.vscode-tailwindcss"
-  code --user-data-dir /root/.vscode-root --no-sandbox --install-extension vscode-icons-team.vscode-icons || log_failure "Failed to install extension: vscode-icons-team.vscode-icons"
-  code --user-data-dir /root/.vscode-root --no-sandbox --install-extension quick-lint.quick-lint-js || log_failure "Failed to install extension: quick-lint.quick-lint-js"
-  code --user-data-dir /root/.vscode-root --no-sandbox --install-extension ms-python.python || log_failure "Failed to install extension: ms-python.python"
-  code --user-data-dir /root/.vscode-root --no-sandbox --install-extension ms-python.vscode-pylance || log_failure "Failed to install extension: ms-python.vscode-pylance"
-  code --user-data-dir /root/.vscode-root --no-sandbox --install-extension yoavbls.pretty-ts-errors || log_failure "Failed to install extension: yoavbls.pretty-ts-errors"
-  code --user-data-dir /root/.vscode-root --no-sandbox --install-extension pmndrs.pmndrs || log_failure "Failed to install extension: pmndrs.pmndrs"
-  log_success "VSCode extensions installed"
-}
-
 create_vscode_settings_dir() {
   log_info "Step: Creating VSCode settings directory..."
   mkdir -p ~/.config/Code/User
@@ -334,46 +305,37 @@ main_process() {
   # 5. Install Yarn
   install_yarn || log_failure "Failed to install Yarn"
 
-  # 6. Install Snapd
-  install_snapd || log_failure "Failed to install Snapd"
-
-  # 7. Install Bun
+  # 6. Install Bun
   install_bun || log_failure "Failed to install Bun"
 
-  # 8. Install Visual Studio Code
-  install_vscode || log_failure "Failed to install Visual Studio Code"
-
-  # 9. Install VSCode extensions
-  install_vscode_extensions || log_failure "Failed to install VSCode extensions"
-
-  # 10. Create VSCode settings directory
+  # 7. Create VSCode settings directory
   create_vscode_settings_dir || log_failure "Failed to create VSCode settings directory"
 
-  # 11. Download settings.json
+  # 8. Download settings.json
   download_settings_json || log_failure "Failed to download settings.json"
 
-  # 12. Install Alacritty
+  # 9. Install Alacritty
   install_alacritty || log_failure "Failed to install Alacritty"
 
-  # 13. Configure Alacritty font
+  # 10. Configure Alacritty font
   configure_alacritty_font || log_failure "Failed to configure Alacritty font"
 
-  # 14. Update bashrc
+  # 11. Update bashrc
   update_bashrc || log_failure "Failed to update bashrc"
 
   # Source the updated bashrc file
   source ~/.bashrc
 
-  # 15. Install Fira Code Nerd Font
+  # 12. Install Fira Code Nerd Font
   install_fira_code_nerd_font || log_failure "Failed to install Fira Code Nerd Font"
 
-  # 16. Create Alacritty desktop icon
+  # 13. Create Alacritty desktop icon
   create_alacritty_desktop_icon || log_failure "Failed to create Alacritty desktop icon"
 
-  # 17. Clone LazyVim Ubuntu Installer repository
+  # 14. Clone LazyVim Ubuntu Installer repository
   clone_lazyvim_installer_repo || log_failure "Failed to clone LazyVim Ubuntu Installer repository"
 
-  # 18. Run setup.js script
+  # 15. Run setup.js script
   run_setup_js_script || log_failure "Failed to run setup.js script"
 
   # Print installed versions
@@ -383,7 +345,6 @@ main_process() {
   echo "Yarn version: $(yarn --version)"
   echo "Bun version: $(bun -v)"
   echo "Git version: $(git --version)"
-  echo "Visual Studio Code version: $(code --version)"
   echo "Alacritty version: $(alacritty --version)"
 
   log_success "System setup and LazyVim installation completed successfully"
