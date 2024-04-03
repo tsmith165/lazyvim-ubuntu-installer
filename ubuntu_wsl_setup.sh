@@ -256,18 +256,6 @@ install_x_server_dependencies() {
   log_success "X server dependencies installed"
 }
 
-install_vcxsrv() {
-  if ! command -v vcxsrv &> /dev/null; then
-    log_installing "VcXsrv"
-    wget https://downloads.sourceforge.net/project/vcxsrv/vcxsrv/1.20.14.0/vcxsrv-64.1.20.14.0.installer.exe
-    chmod +x vcxsrv-64.1.20.14.0.installer.exe
-    ./vcxsrv-64.1.20.14.0.installer.exe
-    log_success "VcXsrv installed"
-  else
-    log_installed "VcXsrv"
-  fi
-}
-
 #######################
 # Logging Functions
 #######################
@@ -362,9 +350,6 @@ main_process() {
 
   # 17. Install X server dependencies
   install_x_server_dependencies || log_failure "Failed to install X server dependencies"
-
-  # 18. Install VcXsrv
-  install_vcxsrv || log_failure "Failed to install VcXsrv"
 
   # Print installed versions
   log_info "--------------------------------------------------------"
