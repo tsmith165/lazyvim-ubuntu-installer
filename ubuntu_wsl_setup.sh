@@ -65,16 +65,6 @@ install_yarn() {
   fi
 }
 
-install_snapd() {
-  if ! command -v snap &> /dev/null; then
-    log_installing "Snapd"
-    sudo apt install -y snapd
-    log_success "Snapd installed"
-  else
-    log_installed "Snapd"
-  fi
-}
-
 install_bun() {
   if ! command -v bun &> /dev/null; then
     log_installing "Bun"
@@ -119,7 +109,7 @@ window:
    x: 0
    y: 0
  startup_mode: Fullscreen
-     
+
 # Font Configuration
 font:
  normal:
@@ -139,7 +129,7 @@ font:
    x: 0
    y: 0
  use_thin_strokes: true
-     
+
 # Color Scheme
 colors:
  primary:
@@ -163,19 +153,19 @@ colors:
    magenta: '#d3869b'
    cyan:    '#8ec07c'
    white:   '#fbf1c7'
-     
+
 # Key Bindings
 key_bindings:
  - { key: V,        mods: Control|Shift, action: Paste            }
  - { key: C,        mods: Control|Shift, action: Copy             }
  - { key: Q,        mods: Command,       action: Quit             }
  - { key: N,        mods: Command,       action: SpawnNewInstance }
- 
+
 # Cursor
 cursor:
  style: Block
  unfocused_hollow: true
- 
+
 # Mouse
 mouse:
  hide_when_typing: true
@@ -247,6 +237,35 @@ run_setup_js_script() {
   chmod +x setup.js
   ./setup.js
   log_success "setup.js script execution completed"
+}
+
+setup_x_server() {
+  if ! grep -q "export DISPLAY=:0" ~/.bashrc; then
+    log_info "Step: Setting up X server configuration..."
+    echo 'export DISPLAY=:0' >> ~/.bashrc
+    echo 'export LIBGL_ALWAYS_INDIRECT=1' >> ~/.bashrc
+    log_success "X server configuration added to ~/.bashrc"
+  else
+    log_info "X server configuration already exists in ~/.bashrc. Skipping..."
+  fi
+}
+
+install_x_server_dependencies() {
+  log_info "Step: Installing X server dependencies..."
+  sudo apt install -y x11-apps
+  log_success "X server dependencies installed"
+}
+
+install_vcxsrv() {
+  if ! command -v vcxsrv &> /dev/null; then
+    log_installing "VcXsrv"
+    wget https://downloads.sourceforge.net/project/vcxsrv/vcxsrv/1.20.14.0/vcxsrv-64.1.20.14.0.installer.exe
+    chmod +x vcxsrv-64.1.20.14.0.installer.exe
+    ./vcxsrv-64.1.20.14.0.installer.exe
+    log_success "VcXsrv installed"
+  else
+    log_installed "VcXsrv"
+  fi
 }
 
 #######################
@@ -337,6 +356,15 @@ main_process() {
 
   # 15. Run setup.js script
   run_setup_js_script || log_failure "Failed to run setup.js script"
+
+  # 16. Setup X server configuration
+  setup_x_server || log_failure "Failed to setup X server configuration"
+
+  # 17. Install X server dependencies
+  install_x_server_dependencies || log_failure "Failed to install X server dependencies"
+
+  # 18. Install VcXsrv
+  install_vcxsrv || log_failure "Failed to install VcXsrv"
 
   # Print installed versions
   log_info "--------------------------------------------------------"
