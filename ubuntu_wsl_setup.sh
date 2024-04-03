@@ -65,11 +65,20 @@ install_yarn() {
   fi
 }
 
+install_snapd() {
+  if ! command -v snap &> /dev/null; then
+    log_installing "Snapd"
+    sudo apt install -y snapd
+    log_success "Snapd installed"
+  else
+    log_installed "Snapd"
+  fi
+}
+
 install_bun() {
   if ! command -v bun &> /dev/null; then
     log_installing "Bun"
-    mkdir -p /root/tools
-    curl -fsSL https://bun.sh/install | bash -s -- --install-path /root/tools/bun
+    sudo npm install -g bun
     log_success "Bun installed"
   else
     log_installed "Bun"
@@ -298,7 +307,7 @@ log_installing() {
 }
 
 log_installed() {
-  echo -e "[$(date +%Y-%m-%d\ %H:%M:%S)] ${YELLOW}[INSTALLED] $1${NC}"
+  echo -e "[$(date +%Y-%m-%d\ %H:%M:%S)] ${ORANGE}[INSTALLED] $1${NC}"
 }
 
 #######################
@@ -321,43 +330,46 @@ main_process() {
   # 5. Install Yarn
   install_yarn || log_failure "Failed to install Yarn"
 
-  # 6. Install Bun
+  # 6. Install Snapd
+  install_snapd || log_failure "Failed to install Snapd"
+
+  # 7. Install Bun
   install_bun || log_failure "Failed to install Bun"
 
-  # 7. Install Visual Studio Code
+  # 8. Install Visual Studio Code
   install_vscode || log_failure "Failed to install Visual Studio Code"
 
-  # 8. Install VSCode extensions
+  # 9. Install VSCode extensions
   install_vscode_extensions || log_failure "Failed to install VSCode extensions"
 
-  # 9. Create VSCode settings directory
+  # 10. Create VSCode settings directory
   create_vscode_settings_dir || log_failure "Failed to create VSCode settings directory"
 
-  # 10. Download settings.json
+  # 11. Download settings.json
   download_settings_json || log_failure "Failed to download settings.json"
 
-  # 11. Install Alacritty
+  # 12. Install Alacritty
   install_alacritty || log_failure "Failed to install Alacritty"
 
-  # 12. Configure Alacritty font
+  # 13. Configure Alacritty font
   configure_alacritty_font || log_failure "Failed to configure Alacritty font"
 
-  # 13. Update bashrc
+  # 14. Update bashrc
   update_bashrc || log_failure "Failed to update bashrc"
 
   # Source the updated bashrc file
   source ~/.bashrc
 
-  # 14. Install Fira Code Nerd Font
+  # 15. Install Fira Code Nerd Font
   install_fira_code_nerd_font || log_failure "Failed to install Fira Code Nerd Font"
 
-  # 15. Create Alacritty desktop icon
+  # 16. Create Alacritty desktop icon
   create_alacritty_desktop_icon || log_failure "Failed to create Alacritty desktop icon"
 
-  # 16. Clone LazyVim Ubuntu Installer repository
+  # 17. Clone LazyVim Ubuntu Installer repository
   clone_lazyvim_installer_repo || log_failure "Failed to clone LazyVim Ubuntu Installer repository"
 
-  # 17. Run setup.js script
+  # 18. Run setup.js script
   run_setup_js_script || log_failure "Failed to run setup.js script"
 
   # Print installed versions
