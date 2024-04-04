@@ -9,6 +9,8 @@ bashrc_lines=(
   'alias ala="alacritty"'
   'export PATH="$PATH:/root/tools/bun/bin"'
   'export PATH="$PATH:/root/tools/alacritty"'
+  'sudo service xrdp start'
+  'sudo service dbus start'
 )
 
 #######################
@@ -135,7 +137,7 @@ create_alacritty_desktop_icon() {
 Type=Application
 Name=Alacritty
 Exec=alacritty
-Icon=utilities-terminal
+Icon=alacritty
 Terminal=false
 Categories=System;TerminalEmulator;
 EOF
@@ -143,100 +145,23 @@ EOF
   log_success "Alacritty desktop icon created"
 }
 
+download_alacritty_config() {
+  log_info "Step: Downloading Alacritty configuration file..."
+  local config_url="https://raw.githubusercontent.com/tsmith165/lazyvim-ubuntu-installer/main/imports/alacritty.toml"
+  local config_path="~/.config/alacritty/alacritty.toml"
+
+  if ! curl -fsSL "$config_url" -o "$config_path"; then
+    log_failure "Failed to download Alacritty configuration file"
+  fi
+
+  log_success "Alacritty configuration file downloaded"
+}
+
 configure_alacritty() {
   log_info "Step: Configuring Alacritty..."
   mkdir -p ~/.config/alacritty
-
-  # Set Fira Code Nerd Font as the default font
-  font_family="Fira Code Nerd Font"
-
-  cat > ~/.config/alacritty/alacritty.yml <<EOF
-# Full Screen
-window:
- dimensions:
-   columns: 0
-   lines: 0
- padding:
-   x: 0
-   y: 0
- startup_mode: Fullscreen
-
-# Font Configuration
-font:
- normal:
-   family: "$font_family"
-   style: Regular
- bold:
-   family: "$font_family"
-   style: Bold
- italic:
-   family: "$font_family"
-   style: Italic
- size: 14.0
- offset:
-   x: 0
-   y: 0
- glyph_offset:
-   x: 0
-   y: 0
- use_thin_strokes: true
-
-# Color Scheme
-colors:
- primary:
-   background: '#1d2021'
-   foreground: '#d5c4a1'
- normal:
-   black:   '#1d2021'
-   red:     '#fb4934'
-   green:   '#b8bb26'
-   yellow:  '#fabd2f'
-   blue:    '#83a598'
-   magenta: '#d3869b'
-   cyan:    '#8ec07c'
-   white:   '#d5c4a1'
- bright:
-   black:   '#665c54'
-   red:     '#fb4934'
-   green:   '#b8bb26'
-   yellow:  '#fabd2f'
-   blue:    '#83a598'
-   magenta: '#d3869b'
-   cyan:    '#8ec07c'
-   white:   '#fbf1c7'
-
-# Key Bindings
-key_bindings:
- - { key: V,        mods: Control|Shift, action: Paste            }
- - { key: C,        mods: Control|Shift, action: Copy             }
- - { key: Q,        mods: Command,       action: Quit             }
- - { key: N,        mods: Command,       action: SpawnNewInstance }
-
-# Cursor
-cursor:
- style: Block
- unfocused_hollow: true
-
-# Mouse
-mouse:
- hide_when_typing: true
-
-# Background Opacity
-background_opacity: 1.0
-
-# Shell
-shell:
- program: /bin/bash
- args:
-   - --login
-
-# Bracketed paste
-bracketed_paste: false
-
-# GPU Acceleration (disable for now)
-hardware_acceleration: false
-EOF
-  log_success "Alacritty configured with Fira Code Nerd Font"
+  download_alacritty_config
+  log_success "Alacritty configured with Fira Code Mono Nerd Font"
 }
 
 download_alacritty_icon() {
@@ -307,14 +232,14 @@ install_fontconfig() {
 }
 
 install_fira_code_nerd_font() {
-  if ! fc-list | grep -qi "FiraCode Nerd Font"; then
-    log_installing "Fira Code Nerd Font"
+  if ! fc-list | grep -qi "FiraCodeNerdFontMono"; then
+    log_installing "Fira Code Nerd Font Mono"
     mkdir -p ~/.local/share/fonts
-    curl -fLo ~/.local/share/fonts/FiraCodeNerdFontMono-Regular.ttf https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/FiraCodeNerdFontMono-Regular.ttf
+    curl -fLo ~/.local/share/fonts/FiraCodeNerdFontMono-Regular.ttf https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Mono/Regular/FiraCodeNerdFontMono-Regular.ttf
     fc-cache -fv
-    log_success "Fira Code Nerd Font installed"
+    log_success "Fira Code Nerd Font Mono installed"
   else
-    log_installed "Fira Code Nerd Font"
+    log_installed "Fira Code Nerd Font Mono"
   fi
 }
 
@@ -496,8 +421,8 @@ main_process() {
   # 6. Create VSCode settings directory
   create_vscode_settings_dir || log_failure "Failed to create VSCode settings directory"
 
-  # 7. Install Fira Code Nerd Font
-  install_fira_code_nerd_font || log_failure "Failed to install Fira Code Nerd Font"
+  # 7. Install Fira Code Nerd Font Mono
+  install_fira_code_nerd_font || log_failure "Failed to install Fira Code Nerd Font Mono"
 
   # 8. Download settings.json
   download_settings_json || log_failure "Failed to download settings.json"
@@ -561,7 +486,6 @@ main_process() {
 
   # 27. Add Alacritty to XFCE panel
   add_alacritty_to_xfce_panel || log_failure "Failed to add Alacritty to XFCE panel"
-
 
   # Print installed versions
   log_info "--------------------------------------------------------"
