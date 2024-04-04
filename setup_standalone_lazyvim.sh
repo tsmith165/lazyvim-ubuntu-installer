@@ -56,6 +56,7 @@ export LAZYVIM_INSTALLER=true
 
 # Run the Node.js script with the provided arguments
 echo "Launching the Node.js script..."
-node setup.js "$@"
+chmod +x setup_lazyvim.js
+node setup_lazyvim.js "$@"
 
 . ~/.bashrc

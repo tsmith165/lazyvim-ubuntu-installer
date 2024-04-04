@@ -329,8 +329,8 @@ clone_lazyvim_installer_repo() {
 
 run_setup_js_script() {
   log_info "Step: Running setup.js script..."
-  chmod +x setup.js
-  ./setup.js
+  chmod +x setup_lazyvim.js
+  ./setup_lazyvim.js
   log_success "setup.js script execution completed"
 }
 
