@@ -147,12 +147,12 @@ EOF
 
 download_alacritty_config() {
   log_info "Step: Downloading Alacritty configuration file..."
-  local config_url="https://raw.githubusercontent.com/tsmith165/lazyvim-ubuntu-installer/main/imports/alacritty.toml"
-  local config_path="~/.config/alacritty/alacritty.toml"
+  local config_repo_path="./imports/alacritty.toml"
+  local config_os_path="~/.config/alacritty/alacritty.toml"
 
-  if ! curl -fsSL "$config_url" -o "$config_path"; then
-    log_failure "Failed to download Alacritty configuration file"
-  fi
+  # Copy the configuration file to the Alacritty configuration directory
+  log_info "Running command: cp $config_repo_path $config_os_path"
+  cp "$config_repo_path" "$config_os_path" || log_failure "Failed to copy Alacritty configuration file"
 
   log_success "Alacritty configuration file downloaded"
 }
