@@ -77,20 +77,33 @@ download_settings_json() {
 install_alacritty() {
   if ! command -v alacritty &> /dev/null; then
     log_installing "Alacritty"
-    local alacritty_version="0.12.0"
-    local alacritty_url="https://github.com/alacritty/alacritty/releases/download/v${alacritty_version}/Alacritty-v${alacritty_version}-ubuntu_22_04_amd64.deb"
-    local alacritty_deb="/tmp/alacritty.deb"
+    local alacritty_version="0.13.2"
+    local alacritty_url="https://github.com/alacritty/alacritty/archive/refs/tags/v${alacritty_version}.tar.gz"
+    local alacritty_tar="/tmp/alacritty.tar.gz"
+    local alacritty_dir="/tmp/alacritty-${alacritty_version}"
 
-    # Download Alacritty deb package
-    wget -O "$alacritty_deb" "$alacritty_url"
+    # Install build dependencies
+    sudo apt install -y cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
 
-    # Install Alacritty
-    sudo dpkg -i "$alacritty_deb"
+    # Download Alacritty source code
+    if wget -O "$alacritty_tar" "$alacritty_url"; then
+      # Extract the source code
+      tar -xzf "$alacritty_tar" -C "/tmp"
 
-    # Clean up the downloaded deb package
-    rm "$alacritty_deb"
+      # Build and install Alacritty
+      cd "$alacritty_dir"
+      cargo build --release
+      sudo cp target/release/alacritty /usr/local/bin/
 
-    log_success "Alacritty installed"
+      cd - > /dev/null
+
+      # Clean up the downloaded source code
+      rm -rf "$alacritty_dir" "$alacritty_tar"
+
+      log_success "Alacritty installed"
+    else
+      log_failure "Failed to download Alacritty source code"
+    fi
   else
     log_installed "Alacritty"
   fi
