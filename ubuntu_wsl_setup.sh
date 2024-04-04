@@ -239,6 +239,53 @@ EOF
   log_success "Alacritty configured with Fira Code Nerd Font"
 }
 
+download_alacritty_icon() {
+  log_info "Step: Downloading Alacritty icon..."
+  local icon_url="https://raw.githubusercontent.com/alacritty/alacritty/master/extra/logo/alacritty-term.svg"
+  local icon_path="/usr/share/icons/hicolor/scalable/apps/alacritty.svg"
+
+  if ! wget -O "$icon_path" "$icon_url"; then
+    log_failure "Failed to download Alacritty icon"
+  fi
+
+  log_success "Alacritty icon downloaded"
+}
+
+add_alacritty_to_xfce_panel() {
+  log_info "Step: Adding Alacritty to XFCE panel..."
+
+  # Create a temporary launcher file
+  local launcher_file="/tmp/alacritty.desktop"
+  cat > "$launcher_file" <<EOF
+[Desktop Entry]
+Type=Application
+Name=Alacritty
+Exec=alacritty
+Icon=alacritty
+Categories=System;TerminalEmulator;
+EOF
+
+  # Add the launcher to the panel
+  xfce4-panel -r
+  xfce4-panel -q -a "$(xfce4-panel-profiles)/default/panels/panel-1" \
+    -p "$(xfce4-panel-profiles)/default/panels/panel-1/launcher-22" \
+    -re -ln "alacritty" -if "$launcher_file"
+
+  log_success "Alacritty added to XFCE panel"
+}
+
+configure_xfce_desktop() {
+  log_info "Step: Configuring XFCE desktop..."
+
+  # Enable icons on the desktop
+  xfconf-query -c xfce4-desktop -p /desktop-icons/style -n -t string -s UNIX
+
+  # Update XFCE desktop icon cache
+  xfce4-desktop-menu-redefine --restart
+
+  log_success "XFCE desktop configured"
+}
+
 update_library_cache() {
   log_info "Step: Updating library cache..."
   sudo ldconfig
@@ -251,6 +298,12 @@ update_bashrc() {
     echo "$line" >> ~/.bashrc
   done
   log_success "Bashrc updated"
+}
+
+install_fontconfig() {
+  log_info "Step: Installing fontconfig..."
+  sudo apt install -y fontconfig
+  log_success "fontconfig installed"
 }
 
 install_fira_code_nerd_font() {
@@ -467,35 +520,48 @@ main_process() {
   # Source the updated bashrc file
   source ~/.bashrc
 
-  # 14. Create Alacritty desktop icon
+  # 14. Install fontconfig
+  install_fontconfig || log_failure "Failed to install fontconfig"
+
+  # 15. Create Alacritty desktop icon
   create_alacritty_desktop_icon || log_failure "Failed to create Alacritty desktop icon"
 
-  # 15. Clone LazyVim Ubuntu Installer repository
+  # 16. Download Alacritty icon
+  download_alacritty_icon || log_failure "Failed to download Alacritty icon"
+
+  # 17. Configure XFCE desktop
+  configure_xfce_desktop || log_failure "Failed to configure XFCE desktop"
+
+  # 18. Clone LazyVim Ubuntu Installer repository
   clone_lazyvim_installer_repo || log_failure "Failed to clone LazyVim Ubuntu Installer repository"
 
-  # 16. Run setup.js script
+  # 19. Run setup.js script
   run_setup_js_script || log_failure "Failed to run setup.js script"
 
-  # 17. Install XFCE and XRDP components
+  # 20. Install XFCE and XRDP components
   install_xfce_and_xrdp || log_failure "Failed to install XFCE and XRDP components"
 
-  # 18. Configure XRDP
+  # 21. Configure XRDP
   configure_xrdp || log_failure "Failed to configure XRDP"
 
-  # 19. Allow any user to start the X server
+  # 22. Allow any user to start the X server
   allow_any_user_to_start_xserver || log_failure "Failed to allow any user to start the X server"
 
-  # 20. Allow XRDP port through the firewall
+  # 23. Allow XRDP port through the firewall
   allow_xrdp_port_through_firewall || log_failure "Failed to allow XRDP port through the firewall"
 
-  # 21. Fix authentication for creating color-managed devices
+  # 24. Fix authentication for creating color-managed devices
   fix_color_managed_device_auth || log_failure "Failed to fix authentication for creating color-managed devices"
 
-  # 22. Install Google Chrome
+  # 25. Install Google Chrome
   install_google_chrome || log_failure "Failed to install Google Chrome"
 
-  # 23. Start XRDP and D-Bus services
+  # 26. Start XRDP and D-Bus services
   start_xrdp_and_dbus || log_failure "Failed to start XRDP and D-Bus services"
+
+  # 27. Add Alacritty to XFCE panel
+  add_alacritty_to_xfce_panel || log_failure "Failed to add Alacritty to XFCE panel"
+
 
   # Print installed versions
   log_info "--------------------------------------------------------"

@@ -241,7 +241,7 @@ Please follow these manual steps to complete the setup:
    a. Open the Ubuntu 22.04 LTS app.
    b. Switch to the root user if needed: sudo su
    c. Run the following command to clone the repository:
-      git clone https://github.com/tsmith165/lazyvim-ubuntu-installer.git /main/scripts/
+      git clone https://github.com/tsmith165/lazyvim-ubuntu-installer.git /main/scripts/lazyvim-ubuntu-installer/
    d. Navigate to the cloned repository: cd /main/scripts/
    e. Run the install script: ./ubuntu_wsl_setup.sh
 "@
