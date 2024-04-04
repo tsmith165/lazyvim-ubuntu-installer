@@ -146,6 +146,10 @@ EOF
 configure_alacritty() {
   log_info "Step: Configuring Alacritty..."
   mkdir -p ~/.config/alacritty
+
+  # Set Fira Code Nerd Font as the default font
+  font_family="Fira Code Nerd Font"
+
   cat > ~/.config/alacritty/alacritty.yml <<EOF
 # Full Screen
 window:
@@ -160,13 +164,13 @@ window:
 # Font Configuration
 font:
  normal:
-   family: "Fira Code"
+   family: "$font_family"
    style: Regular
  bold:
-   family: "Fira Code"
+   family: "$font_family"
    style: Bold
  italic:
-   family: "Fira Code"
+   family: "$font_family"
    style: Italic
  size: 14.0
  offset:
@@ -232,7 +236,7 @@ bracketed_paste: false
 # GPU Acceleration (disable for now)
 hardware_acceleration: false
 EOF
-  log_success "Alacritty font configured"
+  log_success "Alacritty configured with Fira Code Nerd Font"
 }
 
 update_library_cache() {
@@ -439,29 +443,29 @@ main_process() {
   # 6. Create VSCode settings directory
   create_vscode_settings_dir || log_failure "Failed to create VSCode settings directory"
 
-  # 7. Download settings.json
+  # 7. Install Fira Code Nerd Font
+  install_fira_code_nerd_font || log_failure "Failed to install Fira Code Nerd Font"
+
+  # 8. Download settings.json
   download_settings_json || log_failure "Failed to download settings.json"
 
-  # 8. Install X11 dependencies
+  # 9. Install X11 dependencies
   install_x11_dependencies || log_failure "Failed to install X11 dependencies"
 
-  # 9. Install Alacritty
+  # 10. Install Alacritty
   install_alacritty || log_failure "Failed to install Alacritty"
 
-  # 10. Update library cache
+  # 11. Update library cache
   update_library_cache || log_failure "Failed to update library cache"
 
-  # 11. Configure Alacritty font
-  configure_alacritty || log_failure "Failed to configure Alacritty font"
+  # 12. Configure Alacritty
+  configure_alacritty || log_failure "Failed to configure Alacritty"
 
-  # 12. Update bashrc
+  # 13. Update bashrc
   update_bashrc || log_failure "Failed to update bashrc"
 
   # Source the updated bashrc file
   source ~/.bashrc
-
-  # 13. Install Fira Code Nerd Font
-  install_fira_code_nerd_font || log_failure "Failed to install Fira Code Nerd Font"
 
   # 14. Create Alacritty desktop icon
   create_alacritty_desktop_icon || log_failure "Failed to create Alacritty desktop icon"
