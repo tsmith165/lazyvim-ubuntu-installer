@@ -1,0 +1,83 @@
+# Full Screen
+window:
+    dimensions:
+        columns: 0
+        lines: 0
+    padding:
+        x: 0
+        y: 0
+    startup_mode: Windowed
+
+# Font Configuration
+font:
+    normal:
+        family: 'FiraCode Nerd Font Mono'
+        style: Regular
+    bold:
+        family: 'FiraCode Nerd Font Mono'
+        style: Bold
+    italic:
+        family: 'FiraCode Nerd Font Mono'
+        style: Italic
+    size: 14.0
+    offset:
+        x: 0
+        y: 0
+    glyph_offset:
+        x: 0
+        y: 0
+
+# Color Scheme
+colors:
+    primary:
+        background: '#1d2021'
+        foreground: '#d5c4a1'
+    normal:
+        black: '#1d2021'
+        red: '#fb4934'
+        green: '#b8bb26'
+        yellow: '#fabd2f'
+        blue: '#83a598'
+        magenta: '#d3869b'
+        cyan: '#8ec07c'
+        white: '#d5c4a1'
+    bright:
+        black: '#665c54'
+        red: '#fb4934'
+        green: '#b8bb26'
+        yellow: '#fabd2f'
+        blue: '#83a598'
+        magenta: '#d3869b'
+        cyan: '#8ec07c'
+        white: '#fbf1c7'
+
+# Key Bindings
+key_bindings:
+    - { key: V, mods: Control|Shift, action: Paste }
+    - { key: C, mods: Control|Shift, action: Copy }
+    - { key: Q, mods: Command, action: Quit }
+    - { key: N, mods: Command, action: SpawnNewInstance }
+
+# Cursor
+cursor:
+    style: Block
+    unfocused_hollow: true
+
+# Mouse
+mouse:
+    hide_when_typing: true
+
+# Background Opacity
+background_opacity: 1.0
+
+# Shell
+shell:
+    program: /bin/bash
+    args:
+        - --login
+
+# Bracketed paste
+bracketed_paste: false
+
+# GPU Acceleration (disable for now)
+hardware_acceleration: false

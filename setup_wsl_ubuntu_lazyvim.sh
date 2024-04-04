@@ -147,8 +147,8 @@ EOF
 
 download_alacritty_config() {
   log_info "Step: Downloading Alacritty configuration file..."
-  local config_repo_path="./imports/alacritty.toml"
-  local config_os_path="$HOME/.config/alacritty/alacritty.toml"
+  local config_repo_path="./imports/alacritty.yml"
+  local config_os_path="$HOME/.config/alacritty/alacritty.yml"
 
   # If Alacritty configuration directory does not exist, create it
   if [ ! -d "$HOME/.config/alacritty" ]; then
