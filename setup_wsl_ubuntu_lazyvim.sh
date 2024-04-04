@@ -147,8 +147,8 @@ EOF
 
 download_alacritty_config() {
   log_info "Step: Downloading Alacritty configuration file..."
-  local config_repo_path="./imports/alacritty.yml"
-  local config_os_path="$HOME/.config/alacritty/alacritty.yml"
+  local config_repo_path="./imports/alacritty.toml"
+  local config_os_path="$HOME/.config/alacritty/alacritty.toml"
 
   # If Alacritty configuration directory does not exist, create it
   if [ ! -d "$HOME/.config/alacritty" ]; then
@@ -271,7 +271,7 @@ install_jetbrains_mono_nerd_font() {
     if ! fc-list | grep -qi "JetBrainsMono Nerd Font"; then
       log_failure "Failed to install JetBrains Mono Nerd Font"
     fi
-    
+
     log_success "JetBrains Mono Nerd Font installed"
   else
     log_installed "JetBrains Mono Nerd Font"
