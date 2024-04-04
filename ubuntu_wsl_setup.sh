@@ -278,6 +278,24 @@ start_xrdp_and_dbus() {
   log_success "XRDP and D-Bus services started"
 }
 
+# Get the IP address of the WSL instance
+get_wsl_ip() {
+  local ip=$(ip addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+  echo "$ip"
+}
+
+# Output the connection details
+output_connection_details() {
+  local ip=$(get_wsl_ip)
+  local port=3390
+  
+  log_info "--------------------------------------------------------"
+  log_info "GUI Connection Details:"
+  log_info "IP Address: $ip"
+  log_info "Port: $port"
+  log_info "Use these details to connect to the GUI using an RDP client."
+}
+
 #######################
 # Logging Functions
 #######################
@@ -389,6 +407,9 @@ main_process() {
   echo "Alacritty version: $(alacritty --version)"
 
   log_success "System setup and GUI installation completed successfully"
+
+  # Output connection details
+  output_connection_details
 }
 
 #######################
