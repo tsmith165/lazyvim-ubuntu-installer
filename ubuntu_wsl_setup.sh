@@ -85,6 +85,16 @@ install_alacritty() {
     # Install build dependencies
     sudo apt install -y cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
 
+    # Check if Rust and Cargo are installed
+    if ! command -v rustc &> /dev/null || ! command -v cargo &> /dev/null; then
+      log_installing "Rust and Cargo"
+      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      source "$HOME/.cargo/env"
+      log_success "Rust and Cargo installed"
+    else
+      log_installed "Rust and Cargo"
+    fi
+
     # Download Alacritty source code
     if wget -O "$alacritty_tar" "$alacritty_url"; then
       # Extract the source code
@@ -93,14 +103,18 @@ install_alacritty() {
       # Build and install Alacritty
       cd "$alacritty_dir"
       cargo build --release
-      sudo cp target/release/alacritty /usr/local/bin/
+
+      if [ -f "target/release/alacritty" ]; then
+        sudo cp target/release/alacritty /usr/local/bin/
+        log_success "Alacritty installed"
+      else
+        log_failure "Alacritty build failed"
+      fi
 
       cd - > /dev/null
 
       # Clean up the downloaded source code
       rm -rf "$alacritty_dir" "$alacritty_tar"
-
-      log_success "Alacritty installed"
     else
       log_failure "Failed to download Alacritty source code"
     fi
