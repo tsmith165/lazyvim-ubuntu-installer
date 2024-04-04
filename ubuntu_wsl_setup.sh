@@ -9,6 +9,8 @@ bashrc_lines=(
   'alias ala="alacritty"'
   'export PATH="$PATH:/root/tools/bun/bin"'
   'export PATH="$PATH:/root/tools/alacritty"'
+  'export DISPLAY=$(awk "/nameserver / {print \$2; exit}" /etc/resolv.conf 2>/dev/null):0'
+  'export LIBGL_ALWAYS_INDIRECT=1'
 )
 
 #######################
@@ -240,9 +242,9 @@ run_setup_js_script() {
 }
 
 setup_x_server() {
-  if ! grep -q "export DISPLAY=:0" ~/.bashrc; then
+  if ! grep -q "export DISPLAY=" ~/.bashrc; then
     log_info "Step: Setting up X server configuration..."
-    echo 'export DISPLAY=:0' >> ~/.bashrc
+    echo 'export DISPLAY=$(awk "/nameserver / {print \$2; exit}" /etc/resolv.conf 2>/dev/null):0' >> ~/.bashrc
     echo 'export LIBGL_ALWAYS_INDIRECT=1' >> ~/.bashrc
     log_success "X server configuration added to ~/.bashrc"
   else

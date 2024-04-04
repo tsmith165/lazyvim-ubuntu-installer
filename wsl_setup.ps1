@@ -227,23 +227,24 @@ if (-not $ubuntuInstalled) {
     Write-ColorOutput "Ubuntu 22.04 is already installed. Skipping..." -ForegroundColor Yellow
 }
 
-# Install VcXsrv
-$vcxsrvInstalled = (Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object { $_.DisplayName -like "VcXsrv*" })
-if (-not $vcxsrvInstalled) {
-    Write-ColorOutput "Installing VcXsrv..."
-    $vcxsrvUrl = "https://downloads.sourceforge.net/project/vcxsrv/vcxsrv/1.20.14.0/vcxsrv-64.1.20.14.0.installer.exe"
-    $vcxsrvInstallerPath = "$env:USERPROFILE\Downloads\vcxsrv-64.1.20.14.0.installer.exe"
+# Download and install VcXsrv
+$vcxsrvUrl = "https://github.com/marchaesen/vcxsrv/releases/download/21.1.10/vcxsrv-64.21.1.10.0.installer.exe"
+$vcxsrvInstallerPath = "$env:USERPROFILE\Downloads\vcxsrv-64.21.1.10.0.installer.exe"
 
-    Write-ColorOutput "Downloading VcXsrv installer from: $vcxsrvUrl" -ForegroundColor Cyan
-    Invoke-WebRequest -Uri $vcxsrvUrl -OutFile $vcxsrvInstallerPath
+Write-ColorOutput "Downloading VcXsrv installer..."
+Invoke-WebRequest -Uri $vcxsrvUrl -OutFile $vcxsrvInstallerPath
 
-    Write-ColorOutput "Installing VcXsrv..."
-    Start-Process -FilePath $vcxsrvInstallerPath -ArgumentList "/S" -Wait
-
-    Write-ColorOutput "VcXsrv installation completed." -ForegroundColor Green
+if ((Test-Path $vcxsrvInstallerPath) -and ((Get-Item $vcxsrvInstallerPath).Length -gt 0)) {
+    Write-ColorOutput "VcXsrv installer downloaded successfully to: $vcxsrvInstallerPath" -ForegroundColor Green
 } else {
-    Write-ColorOutput "VcXsrv is already installed. Skipping..." -ForegroundColor Yellow
+    Write-ColorOutput "Failed to download VcXsrv installer." -ForegroundColor Red
+    Exit 1
 }
+
+Write-ColorOutput "Installing VcXsrv..."
+Start-Process -FilePath $vcxsrvInstallerPath -ArgumentList "/S" -Wait
+
+Write-ColorOutput "VcXsrv installation completed." -ForegroundColor Green
 
 Write-ColorOutput "====== Setup Script Complete =======" -ForegroundColor Green
 
