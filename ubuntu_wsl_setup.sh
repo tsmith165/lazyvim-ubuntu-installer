@@ -394,7 +394,7 @@ main_process() {
   install_alacritty || log_failure "Failed to install Alacritty"
 
   # 9. Configure Alacritty font
-  configure_alacritty_font || log_failure "Failed to configure Alacritty font"
+  configure_alacritty || log_failure "Failed to configure Alacritty font"
 
   # 10. Update bashrc
   update_bashrc || log_failure "Failed to update bashrc"
