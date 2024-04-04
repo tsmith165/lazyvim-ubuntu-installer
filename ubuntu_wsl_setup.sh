@@ -247,9 +247,21 @@ configure_xrdp() {
   sed -i 's@.*if test -r /etc/profile.*@unset DBUS_SESSION_BUS_ADDRESS\n&@' /etc/xrdp/startwm.sh
   sed -i 's@.*if test -r /etc/profile.*@unset XDG_RUNTIME_DIR\n&@' /etc/xrdp/startwm.sh
 
-  sudo systemctl enable xrdp
-  sudo systemctl enable dbus
+  sudo update-rc.d xrdp defaults
+  sudo update-rc.d dbus defaults
   log_success "XRDP configured"
+}
+
+allow_any_user_to_start_xserver() {
+  log_info "Step: Allowing any user to start the X server..."
+  sudo sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapper.config
+  log_success "Any user is now allowed to start the X server"
+}
+
+allow_xrdp_port_through_firewall() {
+  log_info "Step: Allowing XRDP port through the firewall..."
+  sudo ufw allow 3390/tcp
+  log_success "XRDP port allowed through the firewall"
 }
 
 fix_color_managed_device_auth() {
@@ -272,9 +284,9 @@ install_google_chrome() {
 
 start_xrdp_and_dbus() {
   log_info "Step: Starting XRDP and D-Bus services..."
-  sudo systemctl start xrdp
-  sudo systemctl start dbus
-  sudo systemctl status xrdp
+  sudo service xrdp start
+  sudo service dbus start
+  sudo service xrdp status
   log_success "XRDP and D-Bus services started"
 }
 
@@ -284,6 +296,14 @@ get_wsl_ip() {
   echo "$ip"
 }
 
+output_useful_commands() {
+  log_info "--------------------------------------------------------"
+  log_info "Useful Commands:"
+  log_info "To check the status of XRDP service: sudo service xrdp status"
+  log_info "To check the status of D-Bus service: sudo service dbus status"
+  log_info "To check for active RDP connections: sudo netstat -tulpn | grep 3390"
+}
+
 # Output the connection details
 output_connection_details() {
   local ip=$(get_wsl_ip)
@@ -291,8 +311,7 @@ output_connection_details() {
   
   log_info "--------------------------------------------------------"
   log_info "GUI Connection Details:"
-  log_info "IP Address: $ip"
-  log_info "Port: $port"
+  log_success "IP Address/Port: $ip:$port"
   log_info "Use these details to connect to the GUI using an RDP client."
 }
 
@@ -388,13 +407,19 @@ main_process() {
   # 16. Configure XRDP
   configure_xrdp || log_failure "Failed to configure XRDP"
 
-  # 17. Fix authentication for creating color-managed devices
+  # 17. Allow any user to start the X server
+  allow_any_user_to_start_xserver || log_failure "Failed to allow any user to start the X server"
+
+  # 18. Allow XRDP port through the firewall
+  allow_xrdp_port_through_firewall || log_failure "Failed to allow XRDP port through the firewall"
+
+  # 19. Fix authentication for creating color-managed devices
   fix_color_managed_device_auth || log_failure "Failed to fix authentication for creating color-managed devices"
 
-  # 18. Install Google Chrome
+  # 20. Install Google Chrome
   install_google_chrome || log_failure "Failed to install Google Chrome"
 
-  # 19. Start XRDP and D-Bus services
+  # 21. Start XRDP and D-Bus services
   start_xrdp_and_dbus || log_failure "Failed to start XRDP and D-Bus services"
 
   # Print installed versions
@@ -410,6 +435,9 @@ main_process() {
 
   # Output connection details
   output_connection_details
+
+  # Output useful commands
+  output_useful_commands
 }
 
 #######################
