@@ -227,25 +227,6 @@ if (-not $ubuntuInstalled) {
     Write-ColorOutput "Ubuntu 22.04 is already installed. Skipping..." -ForegroundColor Yellow
 }
 
-# Download and install VcXsrv
-$vcxsrvUrl = "https://github.com/marchaesen/vcxsrv/releases/download/21.1.10/vcxsrv-64.21.1.10.0.installer.exe"
-$vcxsrvInstallerPath = "$env:USERPROFILE\Downloads\vcxsrv-64.21.1.10.0.installer.exe"
-
-Write-ColorOutput "Downloading VcXsrv installer..."
-Invoke-WebRequest -Uri $vcxsrvUrl -OutFile $vcxsrvInstallerPath
-
-if ((Test-Path $vcxsrvInstallerPath) -and ((Get-Item $vcxsrvInstallerPath).Length -gt 0)) {
-    Write-ColorOutput "VcXsrv installer downloaded successfully to: $vcxsrvInstallerPath" -ForegroundColor Green
-} else {
-    Write-ColorOutput "Failed to download VcXsrv installer." -ForegroundColor Red
-    Exit 1
-}
-
-Write-ColorOutput "Installing VcXsrv..."
-Start-Process -FilePath $vcxsrvInstallerPath -ArgumentList "/S" -Wait
-
-Write-ColorOutput "VcXsrv installation completed." -ForegroundColor Green
-
 Write-ColorOutput "====== Setup Script Complete =======" -ForegroundColor Green
 
 # Write the post-reboot steps to a text file at C:/wsl_setup_post_reboot.txt
