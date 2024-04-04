@@ -150,6 +150,21 @@ download_alacritty_config() {
   local config_repo_path="./imports/alacritty.toml"
   local config_os_path="~/.config/alacritty/alacritty.toml"
 
+  # If Alacritty configuration directory does not exist, create it
+  if [ ! -d ~/.config/alacritty ]; then
+    log_info "Creating Alacritty configuration directory at ~/.config/alacritty"
+    mkdir -p ~/.config/alacritty
+  fi
+
+  # If the configuration file already exists, back it up
+  if [ -f "$config_os_path" ]; then
+    # Add timestamp to the backup file name.
+    local timestamp=$(date +"%Y%m%d%H%M%S")
+    local backup_file_path="${config_os_path}.bak.${timestamp}"
+    log_info "Backing up existing Alacritty configuration file to $backup_file_path"
+    mv "$config_os_path" "$backup_file_path" || log_failure "Failed to back up existing Alacritty configuration file"
+  fi
+
   # Copy the configuration file to the Alacritty configuration directory
   log_info "Running command: cp $config_repo_path $config_os_path"
   cp "$config_repo_path" "$config_os_path" || log_failure "Failed to copy Alacritty configuration file"
