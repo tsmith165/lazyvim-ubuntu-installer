@@ -85,6 +85,11 @@ install_alacritty() {
     # Install build dependencies
     sudo apt install -y cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
 
+    # Install xkbcommon library
+    log_installing "xkbcommon library"
+    sudo apt install -y libxkbcommon-dev
+    log_success "xkbcommon library installed"
+
     # Check if Rust and Cargo are installed
     if ! command -v rustc &> /dev/null || ! command -v cargo &> /dev/null; then
       log_installing "Rust and Cargo"
@@ -228,6 +233,12 @@ bracketed_paste: false
 hardware_acceleration: false
 EOF
   log_success "Alacritty font configured"
+}
+
+update_library_cache() {
+  log_info "Step: Updating library cache..."
+  sudo ldconfig
+  log_success "Library cache updated"
 }
 
 update_bashrc() {
@@ -420,46 +431,49 @@ main_process() {
   # 8. Install Alacritty
   install_alacritty || log_failure "Failed to install Alacritty"
 
-  # 9. Configure Alacritty font
+  # 9. Update library cache
+  update_library_cache || log_failure "Failed to update library cache"
+
+  # 10. Configure Alacritty font
   configure_alacritty || log_failure "Failed to configure Alacritty font"
 
-  # 10. Update bashrc
+  # 11. Update bashrc
   update_bashrc || log_failure "Failed to update bashrc"
 
   # Source the updated bashrc file
   source ~/.bashrc
 
-  # 11. Install Fira Code Nerd Font
+  # 12. Install Fira Code Nerd Font
   install_fira_code_nerd_font || log_failure "Failed to install Fira Code Nerd Font"
 
-  # 12. Create Alacritty desktop icon
+  # 13. Create Alacritty desktop icon
   create_alacritty_desktop_icon || log_failure "Failed to create Alacritty desktop icon"
 
-  # 13. Clone LazyVim Ubuntu Installer repository
+  # 14. Clone LazyVim Ubuntu Installer repository
   clone_lazyvim_installer_repo || log_failure "Failed to clone LazyVim Ubuntu Installer repository"
 
-  # 14. Run setup.js script
+  # 15. Run setup.js script
   run_setup_js_script || log_failure "Failed to run setup.js script"
 
-  # 15. Install XFCE and XRDP components
+  # 16. Install XFCE and XRDP components
   install_xfce_and_xrdp || log_failure "Failed to install XFCE and XRDP components"
 
-  # 16. Configure XRDP
+  # 17. Configure XRDP
   configure_xrdp || log_failure "Failed to configure XRDP"
 
-  # 17. Allow any user to start the X server
+  # 18. Allow any user to start the X server
   allow_any_user_to_start_xserver || log_failure "Failed to allow any user to start the X server"
 
-  # 18. Allow XRDP port through the firewall
+  # 19. Allow XRDP port through the firewall
   allow_xrdp_port_through_firewall || log_failure "Failed to allow XRDP port through the firewall"
 
-  # 19. Fix authentication for creating color-managed devices
+  # 20. Fix authentication for creating color-managed devices
   fix_color_managed_device_auth || log_failure "Failed to fix authentication for creating color-managed devices"
 
-  # 20. Install Google Chrome
+  # 21. Install Google Chrome
   install_google_chrome || log_failure "Failed to install Google Chrome"
 
-  # 21. Start XRDP and D-Bus services
+  # 22. Start XRDP and D-Bus services
   start_xrdp_and_dbus || log_failure "Failed to start XRDP and D-Bus services"
 
   # Print installed versions
