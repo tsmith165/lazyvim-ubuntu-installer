@@ -10,16 +10,17 @@ window:
 
 # Font Configuration
 font:
-    normal:
-        family: 'FiraCode Nerd Font Mono'
-        style: Regular
-    bold:
-        family: 'FiraCode Nerd Font Mono'
-        style: Bold
-    italic:
-        family: 'FiraCode Nerd Font Mono'
-        style: Italic
-    size: 14.0
+font:
+  normal:
+    family: 'JetBrainsMono Nerd Font'
+    style: Regular
+  bold:
+    family: 'JetBrainsMono Nerd Font'
+    style: Bold
+  italic:
+    family: 'JetBrainsMono Nerd Font'
+    style: Italic
+  size: 14.0
     offset:
         x: 0
         y: 0
@@ -67,9 +68,6 @@ cursor:
 mouse:
     hide_when_typing: true
 
-# Background Opacity
-background_opacity: 1.0
-
 # Shell
 shell:
     program: /bin/bash
@@ -78,6 +76,3 @@ shell:
 
 # Bracketed paste
 bracketed_paste: false
-
-# GPU Acceleration (disable for now)
-hardware_acceleration: false

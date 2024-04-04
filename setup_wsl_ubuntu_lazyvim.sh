@@ -258,6 +258,26 @@ install_fira_code_nerd_font() {
   fi
 }
 
+install_jetbrains_mono_nerd_font() {
+  if ! fc-list | grep -qi "JetBrainsMono Nerd Font"; then
+    log_installing "JetBrains Mono Nerd Font"
+    mkdir -p ~/.local/share/fonts
+    curl -fLo ~/.local/share/fonts/JetBrainsMono.zip https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip
+    unzip ~/.local/share/fonts/JetBrainsMono.zip -d ~/.local/share/fonts/
+    rm ~/.local/share/fonts/JetBrainsMono.zip
+    fc-cache -fv
+
+    # check if the font is installed
+    if ! fc-list | grep -qi "JetBrainsMono Nerd Font"; then
+      log_failure "Failed to install JetBrains Mono Nerd Font"
+    fi
+    
+    log_success "JetBrains Mono Nerd Font installed"
+  else
+    log_installed "JetBrains Mono Nerd Font"
+  fi
+}
+
 clone_lazyvim_installer_repo() {
   log_info "Step: Cloning LazyVim Ubuntu Installer repository..."
   mkdir -p /root/dev/setup
@@ -436,8 +456,9 @@ main_process() {
   # 6. Create VSCode settings directory
   create_vscode_settings_dir || log_failure "Failed to create VSCode settings directory"
 
-  # 7. Install Fira Code Nerd Font Mono
-  install_fira_code_nerd_font || log_failure "Failed to install Fira Code Nerd Font Mono"
+  # 7. Install Nerd Font
+  # install_fira_code_nerd_font || log_failure "Failed to install Fira Code Nerd Font Mono"
+  install_jetbrains_mono_nerd_font || log_failure "Failed to install JetBrains Mono Nerd Font"
 
   # 8. Download settings.json
   download_settings_json || log_failure "Failed to download settings.json"

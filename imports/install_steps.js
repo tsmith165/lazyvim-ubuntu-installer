@@ -13,29 +13,6 @@ const installSteps = [
         },
     },
     {
-        name: 'Git',
-        preCheck: 'git --version',
-        installCommands: ['sudo apt-get install -y git'],
-        postCheck: {
-            command: 'git --version',
-            minVersion: '2.19.0',
-        },
-    },
-    {
-        name: 'Fontconfig',
-        preCheck: 'fc-cache --version',
-        installCommands: ['sudo apt-get install -y fontconfig'],
-    },
-    {
-        name: 'Fira Code Nerd Font',
-        preCheck: 'fc-list | grep -i "Fira Code Nerd Font"',
-        installCommands: [
-            'mkdir -p ~/.local/share/fonts',
-            'cd ~/.local/share/fonts && curl -fLo "Fira Code Regular Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/FiraCodeNerdFontMono-Regular.ttf',
-            'fc-cache -fv',
-        ],
-    },
-    {
         name: 'C Compiler',
         preCheck: 'gcc --version',
         installCommands: ['sudo apt-get install -y gcc'],
@@ -83,15 +60,6 @@ const installSteps = [
                 minVersion: '3.10.0',
             },
         ],
-    },
-    {
-        name: 'Yarn',
-        preCheck: 'yarn --version',
-        installCommands: ['sudo npm install -g yarn'],
-        postCheck: {
-            command: 'yarn --version',
-            minVersion: '1.0.0',
-        },
     },
     {
         name: 'xsel',
