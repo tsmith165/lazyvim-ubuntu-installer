@@ -75,16 +75,44 @@ download_settings_json() {
 }
 
 install_alacritty() {
-  log_info "Step: Adding Alacritty PPA..."
-  sudo add-apt-repository ppa:mmstick76/alacritty -y
-  sudo apt update
-  log_installing "Alacritty via PPA"
-  sudo apt install -y alacritty
-  log_success "Alacritty installed via PPA"
+  if ! command -v alacritty &> /dev/null; then
+    log_installing "Alacritty"
+    local alacritty_version="0.12.0"
+    local alacritty_url="https://github.com/alacritty/alacritty/releases/download/v${alacritty_version}/Alacritty-v${alacritty_version}-ubuntu_22_04_amd64.deb"
+    local alacritty_deb="/tmp/alacritty.deb"
+
+    # Download Alacritty deb package
+    wget -O "$alacritty_deb" "$alacritty_url"
+
+    # Install Alacritty
+    sudo dpkg -i "$alacritty_deb"
+
+    # Clean up the downloaded deb package
+    rm "$alacritty_deb"
+
+    log_success "Alacritty installed"
+  else
+    log_installed "Alacritty"
+  fi
 }
 
-configure_alacritty_font() {
-  log_info "Step: Configuring Alacritty font..."
+create_alacritty_desktop_icon() {
+  log_info "Step: Creating Alacritty desktop icon..."
+  cat > /usr/share/applications/alacritty.desktop <<EOF
+[Desktop Entry]
+Type=Application
+Name=Alacritty
+Exec=alacritty
+Icon=utilities-terminal
+Terminal=false
+Categories=System;TerminalEmulator;
+EOF
+  sudo chmod +x /usr/share/applications/alacritty.desktop
+  log_success "Alacritty desktop icon created"
+}
+
+configure_alacritty() {
+  log_info "Step: Configuring Alacritty..."
   mkdir -p ~/.config/alacritty
   cat > ~/.config/alacritty/alacritty.yml <<EOF
 # Full Screen
@@ -193,21 +221,6 @@ install_fira_code_nerd_font() {
   else
     log_installed "Fira Code Nerd Font"
   fi
-}
-
-create_alacritty_desktop_icon() {
-  log_info "Step: Creating Alacritty desktop icon..."
-  cat > ~/Desktop/alacritty.desktop <<EOF
-[Desktop Entry]
-Type=Application
-Name=Alacritty
-Exec=alacritty
-Icon=utilities-terminal
-Terminal=false
-Categories=System;TerminalEmulator;
-EOF
-  chmod +x ~/Desktop/alacritty.desktop
-  log_success "Alacritty desktop icon created"
 }
 
 clone_lazyvim_installer_repo() {
