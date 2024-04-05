@@ -32,25 +32,23 @@ Before running the setup script, ensure that your system meets the following req
 iwr -useb https://raw.githubusercontent.com/tsmith165/lazyvim-ubuntu-installer/main/wsl_setup.ps1 | iex
 ```
 
-2. Follow the post-reboot instructions provided by the script to complete the WSL setup:
-
--   Reboot your system to apply/load the WSL configuration.
--   Run the following command to set WSL2 as the default version: `wsl --set-default-version 2`
--   Install the WSL2 Linux Kernel update by running the MSI installer downloaded by the script (or download yourself at https://learn.microsoft.com/en-us/windows/wsl/install-manual)
--   Install the Ubuntu 22.04 LTS app from the Microsoft Store.
--   Open the Ubuntu 22.04 LTS app and configure user/password.
-
-3. Clone the `AutoUbuntuLazyVim` repository and run the `setup_wsl_ubuntu.sh` script to set up the Ubuntu environment. Make sure to run the commands as root using:
+2. Reboot your system to apply/load the WSL configuration.
+3. Run `wsl --set-default-version 2` in an elevated powershell session to set WSL2 as the default version
+4. Install the WSL2 Linux Kernel update by running the MSI installer in your user downloads folder
+    - Or download the kernel update yourself at: https://learn.microsoft.com/en-us/windows/wsl/install-manual
+5. Install the Ubuntu 22.04 LTS app from the Microsoft Store (https://apps.microsoft.com/detail/9pn20msr04dw?hl=en-us&gl=US)
+6. Open the Ubuntu 22.04 LTS app to allow it to fully install. It will then ask you to configure user/password.
+7. Clone the `Lazy Ubuntu Installer` repository and run the `setup_wsl_ubuntu.sh` script with:
 
 ```
 sudo git clone https://github.com/tsmith165/lazyvim-ubuntu-installer.git /main/scripts/lazyvim-ubuntu-installer && sudo sh -c 'cd /main/scripts/lazyvim-ubuntu-installer && ./setup_wsl_ubuntu_lazyvim.sh'
 ```
 
-4. Once the setup is complete, use an RDP client (Windows RDP, MobaXTerm, etc.) to connect to the provided IP address and port.
+8. Once the setup is complete, use an RDP client (Windows RDP, MobaXTerm) to connect to the provided IP address and port.
 
-5. To open the Alacritty terminal, click the top left button for "Applications" > "System" > "Alacritty"
+9. To open the Alacritty terminal, click the top left button for "Applications" > "System" > "Alacritty"
 
-6. To open LazyVim, run:
+10. To open LazyVim, run:
 
 ```
 sudo nvim
