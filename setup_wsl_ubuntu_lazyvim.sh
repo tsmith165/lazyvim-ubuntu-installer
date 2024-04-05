@@ -243,6 +243,7 @@ update_bashrc() {
 install_fontconfig() {
   log_info "Step: Installing fontconfig..."
   sudo apt install -y fontconfig
+  sudo apt install -y unzip
   log_success "fontconfig installed"
 }
 
