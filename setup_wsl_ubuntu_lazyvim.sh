@@ -285,29 +285,6 @@ install_jetbrains_mono_nerd_font() {
   log_success "JetBrains Mono Nerd Font installed"
 }
 
-set_xfce_appearance() {
-  log_info "Step: Setting XFCE appearance..."
-
-  # Set the GTK theme to Greybird Dark
-  xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
-
-  # Set the window manager theme to Greybird Dark
-  xfconf-query -c xfwm4 -p /general/theme -s "Greybird-dark"
-
-  # Set the icon theme to elementary Xfce Dark
-  xfconf-query -c xsettings -p /Net/IconThemeName -s "elementary-xfce-dark"
-
-  # Set the font to JetBrains Mono Nerd Font
-  xfconf-query -c xsettings -p /Gtk/FontName -s "JetBrains Mono Nerd Font 10"
-  xfconf-query -c xfwm4 -p /general/title_font -s "JetBrains Mono Nerd Font Bold 10"
-
-  # Apply the settings for all users
-  sudo cp -R /root/.config/xfce4 /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/
-  sudo cp -R /root/.config/gtk-3.0 /etc/gtk-3.0/
-
-  log_success "XFCE appearance set"
-}
-
 clone_lazyvim_installer_repo() {
   log_info "Step: Cloning LazyVim Ubuntu Installer repository..."
   mkdir -p /root/dev/setup
@@ -329,6 +306,46 @@ install_xfce_and_xrdp() {
   sudo apt update
   sudo apt install -y xrdp xfce4 xfce4-goodies
   log_success "XFCE and RDP components installed"
+}
+
+create_xfce_appearance_script() {
+  log_info "Step: Creating XFCE appearance script..."
+
+  sudo tee /usr/local/bin/set_xfce_appearance.sh > /dev/null <<EOT
+#!/bin/bash
+
+# Set the GTK theme to Greybird Dark
+xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-Dark"
+
+# Set the window manager theme to Greybird Dark
+xfconf-query -c xfwm4 -p /general/theme -s "Greybird-Dark"
+
+# Set the icon theme to elementary Xfce Dark
+xfconf-query -c xsettings -p /Net/IconThemeName -s "elementary-xfce-dark"
+
+# Set the font to JetBrains Mono Nerd Font
+xfconf-query -c xsettings -p /Gtk/FontName -s "JetBrains Mono Nerd Font 10"
+xfconf-query -c xfwm4 -p /general/title_font -s "JetBrains Mono Nerd Font Bold 10"
+EOT
+
+  sudo chmod +x /usr/local/bin/set_xfce_appearance.sh
+
+  log_success "XFCE appearance script created"
+}
+
+configure_xfce_autostart() {
+  log_info "Step: Configuring XFCE autostart..."
+
+  sudo tee /etc/xdg/autostart/set_xfce_appearance.desktop > /dev/null <<EOT
+[Desktop Entry]
+Type=Application
+Name=Set XFCE Appearance
+Exec=/usr/local/bin/set_xfce_appearance.sh
+Terminal=false
+NoDisplay=true
+EOT
+
+  log_success "XFCE autostart configured"
 }
 
 configure_xrdp() {
@@ -554,8 +571,11 @@ main_process() {
   # 27. Add Alacritty to XFCE panel
   add_alacritty_to_xfce_panel || log_failure "Failed to add Alacritty to XFCE panel"
 
-  # 28. Set XFCE appearance
-  set_xfce_appearance || log_failure "Failed to set XFCE appearance"
+  # 28. Create XFCE appearance script
+  create_xfce_appearance_script || log_failure "Failed to create XFCE appearance script"
+
+  # 29. Configure XFCE autostart
+  configure_xfce_autostart || log_failure "Failed to configure XFCE autostart"
 
   # Print installed versions
   log_info "--------------------------------------------------------"
