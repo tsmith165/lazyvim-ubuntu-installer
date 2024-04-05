@@ -285,6 +285,25 @@ install_jetbrains_mono_nerd_font() {
   log_success "JetBrains Mono Nerd Font installed"
 }
 
+set_xfce_appearance() {
+  log_info "Step: Setting XFCE appearance..."
+
+  # Set the GTK theme to Greybird Dark
+  xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-Dark"
+
+  # Set the window manager theme to Greybird Dark
+  xfconf-query -c xfwm4 -p /general/theme -s "Greybird-Dark"
+
+  # Set the icon theme to elementary Xfce Dark
+  xfconf-query -c xsettings -p /Net/IconThemeName -s "elementary-xfce-dark"
+
+  # Set the font to JetBrains Mono Nerd Font
+  xfconf-query -c xsettings -p /Gtk/FontName -s "JetBrains Mono Nerd Font 10"
+  xfconf-query -c xfwm4 -p /general/title_font -s "JetBrains Mono Nerd Font Bold 10"
+
+  log_success "XFCE appearance set"
+}
+
 clone_lazyvim_installer_repo() {
   log_info "Step: Cloning LazyVim Ubuntu Installer repository..."
   mkdir -p /root/dev/setup
@@ -530,6 +549,9 @@ main_process() {
 
   # 27. Add Alacritty to XFCE panel
   add_alacritty_to_xfce_panel || log_failure "Failed to add Alacritty to XFCE panel"
+
+  # 28. Set XFCE appearance
+  set_xfce_appearance || log_failure "Failed to set XFCE appearance"
 
   # Print installed versions
   log_info "--------------------------------------------------------"
