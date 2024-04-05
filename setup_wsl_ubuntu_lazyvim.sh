@@ -7,7 +7,7 @@ log_info "Starting Ubuntu WSL Setup..."
 # Run individual installer scripts
 ./installers/base_tools.sh
 ./installers/fonts.sh
-./installers/vscode.sh
+# ./installers/vscode.sh
 ./installers/xfce.sh
 ./installers/xrdp.sh
 ./installers/alacritty.sh
