@@ -257,7 +257,7 @@ install_fira_code_nerd_font() {
   log_installing "Fira Code Nerd Font Mono"
   mkdir -p /usr/share/fonts
   mkdir -p /tmp/fonts
-  curl -fLo /usr/share/fonts/FiraCodeNerdFontMono-Regular.ttf https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Mono/Regular/FiraCodeNerdFontMono-Regular.ttf
+  curl -fLo /tmp/fonts/FiraCodeNerdFontMono-Regular.ttf https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Mono/Regular/FiraCodeNerdFontMono-Regular.ttf
   fc-cache -fv
   log_success "Fira Code Nerd Font Mono installed"
 }
@@ -273,8 +273,8 @@ install_jetbrains_mono_nerd_font() {
   mkdir -p /usr/share/fonts/JetBrainsMonoNerdFont
   mkdir -p /tmp/fonts
   curl -fLo /tmp/fonts/JetBrainsMono.zip https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip
-  unzip /tmp/JetBrainsMono.zip -d /usr/share/fonts/JetBrainsMonoNerdFont/
-  rm /tmp/JetBrainsMono.zip
+  unzip /tmp/fonts/JetBrainsMono.zip -d /usr/share/fonts/JetBrainsMonoNerdFont/
+  rm -rf /tmp/fonts
   fc-cache -fv
 
   # check if the font is installed
