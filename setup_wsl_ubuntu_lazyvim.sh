@@ -8,9 +8,9 @@ log_info "Starting Ubuntu WSL Setup..."
 ./installers/base_tools.sh
 ./installers/fonts.sh
 # ./installers/vscode.sh
+./installers/alacritty.sh
 ./installers/xfce.sh
 ./installers/xrdp.sh
-./installers/alacritty.sh
 ./installers/lazyvim.sh
 ./installers/system_setup.sh
 log_success "Ubuntu WSL Setup completed successfully"
