@@ -40,13 +40,10 @@ iwr -useb https://raw.githubusercontent.com/tsmith165/lazyvim-ubuntu-installer/m
 -   Install the Ubuntu 22.04 LTS app from the Microsoft Store.
 -   Open the Ubuntu 22.04 LTS app and configure user/password.
 
-3. Clone the `AutoUbuntuLazyVim` repository and run the `setup_wsl_ubuntu.sh` script to set up the Ubuntu environment. Make sure to run the commands as root using `sudo su`:
+3. Clone the `AutoUbuntuLazyVim` repository and run the `setup_wsl_ubuntu.sh` script to set up the Ubuntu environment. Make sure to run the commands as root using:
 
 ```
-sudo su
-git clone https://github.com/tsmith165/lazyvim-ubuntu-installer.git /main/scripts/lazyvim-ubuntu-installer
-cd /main/scripts/lazyvim-ubuntu-installer
-./setup_wsl_ubuntu_lazyvim.sh
+sudo git clone https://github.com/tsmith165/lazyvim-ubuntu-installer.git /main/scripts/lazyvim-ubuntu-installer && sudo sh -c 'cd /main/scripts/lazyvim-ubuntu-installer && ./setup_wsl_ubuntu_lazyvim.sh'
 ```
 
 4. Once the setup is complete, use an RDP client (Windows RDP, MobaXTerm, etc.) to connect to the provided IP address and port.
@@ -56,8 +53,7 @@ cd /main/scripts/lazyvim-ubuntu-installer
 6. To open LazyVim, run:
 
 ```
-sudo su
-nvim
+sudo nvim
 ```
 
 ![LazyVim Screenshot](assets/lazyvim-screenshot.png)
