@@ -1,65 +1,70 @@
 # LazyVim Ubuntu Installer
 
-![LazyVim Logo](assets/lazyvim-ubuntu-installer-logo.png)
+![LazyVim Ubuntu Installer Logo](assets/lazyvim-ubuntu-installer-logo.png)
 
-A comprehensive setup script (`ubuntu_setup.sh`) to automate the installation and configuration of a GUI environment from a headless Ubuntu 22.04 image, along with the installation of LazyVim (Neovim config) and various development tools.
+A comprehensive setup script (`setup_wsl_ubuntu.sh`) to automate the setup of WSL (Windows Subsystem for Linux) and install/configure Ubuntu with a GUI environment, RDP access, graphics-accelerated terminal, fonts/themes/icons, pre-configured Neovim (LazyVim), and various development tools for a quick dev environment startup.
 
 ## Features
 
--   Installs and configures a desktop GUI (GNOME) on a headless Ubuntu 22.04 image
--   Sets up VNC server (x11vnc) for remote access to the GUI environment
--   Installs and configures Alacritty terminal emulator with Fira Code Nerd Font
+-   Sets up WSL and installs Ubuntu 22.04 LTS
+-   Installs and configures a desktop GUI (XFCE) on Ubuntu
+-   Sets up XRDP for remote access to the GUI environment via RDP
+-   Installs and configures Alacritty graphics accelerated terminal emulator
+-   Configures JetBrains Mono Nerd Font accross tools
 -   Installs Node.js, Yarn, and Bun for modern JavaScript development
 -   Installs and configures Visual Studio Code with essential extensions
 -   Installs and sets up LazyVim (Neovim config) with LSPs, plugins, and custom keybinds
 -   Configures devicons for enhanced visual file type recognition in Neovim
--   Configures gnome-desktop to be able to render in 2560x1440
+-   Installs and configures various tools like tmux, Python, and more
 
 ## Prerequisites
 
 Before running the setup script, ensure that your system meets the following requirements:
 
--   Ubuntu 22.04 (headless or server image)
+-   Windows 10 or later with WSL2 support
 -   Internet connection
 
 ## Usage
 
-1. Run the following command to execute the system setup script:
+1. Download and run the `wsl_setup.ps1` PowerShell script to set up WSL and install Ubuntu 22.04 LTS:
 
-```
-curl -fsSL https://raw.githubusercontent.com/tsmith165/lazyvim-ubuntu-installer/main/ubuntu_setup.sh | bash
-```
-
-2. Set the VNC password:
-
-```
-x11vnc -storepasswd
+```powershell
+iwr -useb https://raw.githubusercontent.com/tsmith165/lazyvim-ubuntu-installer/main/wsl_setup.ps1 | iex
 ```
 
-3. Start the VNC server:
+2. Follow the post-reboot instructions provided by the script to complete the WSL setup:
+
+-   Reboot your system to apply/load the WSL configuration.
+-   Run the following command to set WSL2 as the default version: `wsl --set-default-version 2`
+-   Install the WSL2 Linux Kernel update by running the MSI installer downloaded by the script (or download yourself at https://learn.microsoft.com/en-us/windows/wsl/install-manual)
+-   Install the Ubuntu 22.04 LTS app from the Microsoft Store.
+-   Open the Ubuntu 22.04 LTS app and configure user/password.
+
+3. Clone the `AutoUbuntuLazyVim` repository and run the `setup_wsl_ubuntu.sh` script to set up the Ubuntu environment. Make sure to run the commands as root using `sudo su`:
 
 ```
-~/.vnc/xstartup &
+sudo su
+git clone https://github.com/tsmith165/lazyvim-ubuntu-installer.git /main/scripts/lazyvim-ubuntu-installer
+cd /main/scripts/lazyvim-ubuntu-installer
+./setup_wsl_ubuntu_lazyvim.sh
 ```
 
-4. Open a VNC session using the IP address and port provided by the script, and enter the user-defined password.
+4. Once the setup is complete, use an RDP client (Windows RDP, MobaXTerm, etc.) to connect to the provided IP address and port.
 
-5. Once connected to the VNC session, everything should be set up and ready to use
+5. To open the Alacritty terminal, click the top left button for "Applications" > "System" > "Alacritty"
 
-6. To open the Alacritty terminal use one of the following options:
-
-    - During setup we created a desktop icon, if you see it on the gnome-desktop, double click it.
-    - Alternatively you can run `ctrl + alt + t` to open the default ubuntu terminal. In the terminal run `alacritty`.
-
-7. To open LazyVim run:
+6. To open LazyVim, run:
 
 ```
+sudo su
 nvim
 ```
 
-![LazyVim Logo](assets/lazyvim-screenshot.png)
+![LazyVim Screenshot](assets/lazyvim-screenshot.png)
 
 ## Customization
+
+### LazyVim
 
 If you want to customize the LazyVim configuration, you can modify the files in the `~/.config/nvim` directory.
 
@@ -68,9 +73,22 @@ For information on the custom keybinds and plugins, refer to the following files
 -   [Plugin and Custom Keybinds](VIM_PLUGIN_KEYBINDS.md)
 -   [Generic Vim/Tmux/Linux Keybinds](VIM_MOTION_KEYBINDS.md)
 
+### Alacritty
+
+To customize Alacritty, modify the `~/.config/alacritty/alacritty.conf` file.
+
+For information on Alacritty config, refer to: https://alacritty.org/config-alacritty.html
+
+### Dev Icons
+
+To add Dev Icons for file types we dont support by default, modify the `~/.config/nvim/lua/config/devicons.lua` file.
+
+Refer to this Nerd Font cheat sheet for choosing Dev Icons: https://www.nerdfonts.com/cheat-sheet
+Not all Dev Icons may be supported by the nerd font we installed or that you configured yourself.
+
 ## Troubleshooting
 
-If you encounter any issues during the setup process, please check the log files generated by the setup script for detailed information and error messages.
+If you encounter any issues during the setup process, please check the log files generated by the setup scripts for detailed information and error messages.
 
 ## License
 
