@@ -1,11 +1,11 @@
 const fs = require('fs');
 const path = require('path');
-const { log } = require('./utils/logger');
+const { log } = require('../utils/logger');
 const { runCommand } = require('./system_helper');
-const plugins = require('./imports/plugins');
-const keymaps = require('./imports/keymaps');
-const extras = require('./imports/extras');
-const neoTreeConfig = require('./imports/neo_tree');
+const plugins = require('../imports/plugins');
+const keymaps = require('../imports/keymaps');
+const extras = require('../imports/extras');
+const neoTreeConfig = require('../imports/neo_tree');
 
 function cloneLazyVimStarterTemplate() {
     log('Cloning the LazyVim starter template repository...');
