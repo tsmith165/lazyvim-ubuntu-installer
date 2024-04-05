@@ -9,7 +9,7 @@ bashrc_lines=(
   'alias ala="alacritty"'
   'export PATH="$PATH:/root/tools/bun/bin"'
   'export PATH="$PATH:/root/tools/alacritty"'
-  'export ALACRITTY_CONFIG="~/.config/alacritty/alacritty.toml'
+  'export ALACRITTY_CONFIG="~/.config/alacritty/alacritty.toml"'
   'sudo service xrdp start'
   'sudo service dbus start'
 )
@@ -289,10 +289,10 @@ set_xfce_appearance() {
   log_info "Step: Setting XFCE appearance..."
 
   # Set the GTK theme to Greybird Dark
-  xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-Dark"
+  xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
 
   # Set the window manager theme to Greybird Dark
-  xfconf-query -c xfwm4 -p /general/theme -s "Greybird-Dark"
+  xfconf-query -c xfwm4 -p /general/theme -s "Greybird-dark"
 
   # Set the icon theme to elementary Xfce Dark
   xfconf-query -c xsettings -p /Net/IconThemeName -s "elementary-xfce-dark"
@@ -300,6 +300,10 @@ set_xfce_appearance() {
   # Set the font to JetBrains Mono Nerd Font
   xfconf-query -c xsettings -p /Gtk/FontName -s "JetBrains Mono Nerd Font 10"
   xfconf-query -c xfwm4 -p /general/title_font -s "JetBrains Mono Nerd Font Bold 10"
+
+  # Apply the settings for all users
+  sudo cp -R /root/.config/xfce4 /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/
+  sudo cp -R /root/.config/gtk-3.0 /etc/gtk-3.0/
 
   log_success "XFCE appearance set"
 }
