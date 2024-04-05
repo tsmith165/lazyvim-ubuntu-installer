@@ -5,15 +5,14 @@ source ./utils/shell_logger.sh
 log_info "Starting Ubuntu WSL Setup..."
 
 # Run individual installer scripts
-"$script_dir/installers/base_tools.sh" "$script_dir"
-"$script_dir/installers/fonts.sh" "$script_dir"
-"$script_dir/installers/vscode.sh" "$script_dir"
-"$script_dir/installers/xfce.sh" "$script_dir"
-"$script_dir/installers/xrdp.sh" "$script_dir"
-"$script_dir/installers/alacritty.sh" "$script_dir"
-"$script_dir/installers/lazyvim.sh" "$script_dir"
-"$script_dir/installers/system_setup.sh" "$script_dir"
-
+./installers/base_tools.sh
+./installers/fonts.sh
+# ./installers/vscode.sh
+./installers/xfce.sh
+./installers/xrdp.sh
+./installers/alacritty.sh
+./installers/lazyvim.sh
+./installers/system_setup.sh
 log_success "Ubuntu WSL Setup completed successfully"
 
 # Get the IP address of the WSL instance
