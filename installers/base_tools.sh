@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../utils/logger.sh
+source ./utils/logger.sh
 
 update_package_lists() {
   log_info "Step: Updating package lists..."

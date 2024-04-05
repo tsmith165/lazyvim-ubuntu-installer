@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../utils/logger.sh
+source ./utils/logger.sh
 
 configure_xrdp() {
   log_info "Step: Configuring XRDP..."

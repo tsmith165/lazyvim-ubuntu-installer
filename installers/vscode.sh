@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../utils/logger.sh
+source ./utils/logger.sh
 
 create_vscode_settings_dir() {
   log_info "Step: Creating VSCode settings directory..."

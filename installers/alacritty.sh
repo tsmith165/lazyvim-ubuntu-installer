@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../utils/logger.sh
+source ./utils/logger.sh
 
 install_alacritty() {
   if ! command -v alacritty &> /dev/null; then

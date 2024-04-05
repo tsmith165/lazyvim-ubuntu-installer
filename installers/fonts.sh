@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../utils/logger.sh
+source ./utils/logger.sh
 
 install_fontconfig() {
   log_info "Step: Installing fontconfig..."

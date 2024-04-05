@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../utils/logger.sh
+source ./utils/logger.sh
 
 install_xfce_and_xrdp() {
   log_info "Step: Installing XFCE and RDP components..."

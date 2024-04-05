@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../utils/logger.sh
+source ./utils/logger.sh
 
 bashrc_lines=(
   'alias code="code --user-data-dir /root/.vscode-root --no-sandbox"'
