@@ -456,33 +456,33 @@ main_process() {
   # 6. Create VSCode settings directory
   create_vscode_settings_dir || log_failure "Failed to create VSCode settings directory"
 
-  # 7. Install Nerd Font
+  # 7. Install fontconfig
+  install_fontconfig || log_failure "Failed to install fontconfig"
+
+  # 8. Install Nerd Font
   # install_fira_code_nerd_font || log_failure "Failed to install Fira Code Nerd Font Mono"
   install_jetbrains_mono_nerd_font || log_failure "Failed to install JetBrains Mono Nerd Font"
 
-  # 8. Download settings.json
+  # 9. Download settings.json
   download_settings_json || log_failure "Failed to download settings.json"
 
-  # 9. Install X11 dependencies
+  # 10. Install X11 dependencies
   install_x11_dependencies || log_failure "Failed to install X11 dependencies"
 
-  # 10. Install Alacritty
+  # 11. Install Alacritty
   install_alacritty || log_failure "Failed to install Alacritty"
 
-  # 11. Update library cache
+  # 12. Update library cache
   update_library_cache || log_failure "Failed to update library cache"
 
-  # 12. Configure Alacritty
+  # 13. Configure Alacritty
   configure_alacritty || log_failure "Failed to configure Alacritty"
 
-  # 13. Update bashrc
+  # 14. Update bashrc
   update_bashrc || log_failure "Failed to update bashrc"
 
   # Source the updated bashrc file
   source ~/.bashrc
-
-  # 14. Install fontconfig
-  install_fontconfig || log_failure "Failed to install fontconfig"
 
   # 15. Create Alacritty desktop icon
   create_alacritty_desktop_icon || log_failure "Failed to create Alacritty desktop icon"
