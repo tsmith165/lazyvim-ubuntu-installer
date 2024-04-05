@@ -117,99 +117,23 @@ if (-not $alacrittyInstalled) {
     scoop bucket add extras
     scoop install alacritty-themes
 
-    $alacrittyConfigPath = "$env:USERPROFILE\.config\alacritty\alacritty.yml"
-    $alacrittyConfig = @"
-#background_opacity = 1.0
-#bracketed_paste = false
+    # Copy config from this repo at ./imports/alacritty.toml to the user's alacritty config path
+    $alacrittyConfigPath = "$env:USERPROFILE\.config\alacritty\alacritty.toml"
+    $alacrittyConfigImportPath = "$PSScriptRoot\imports\alacritty.toml"
 
-[colors.bright]
-black = "#665c54"
-blue = "#83a598"
-cyan = "#8ec07c"
-green = "#b8bb26"
-magenta = "#d3869b"
-red = "#fb4934"
-white = "#fbf1c7"
-yellow = "#fabd2f"
+    if (-not (Test-Path $alacrittyConfigPath)) {
+        Write-ColorOutput "Copying Alacritty config from: $alacrittyConfigImportPath to: $alacrittyConfigPath"
+        Copy-Item -Path $alacrittyConfigImportPath -Destination $alacrittyConfigPath
+    } else {
+        Write-ColorOutput "Alacritty config already exists at: $alacrittyConfigPath. Skipping copy." -ForegroundColor Yellow
+    }
 
-[colors.normal]
-black = "#1d2021"
-blue = "#83a598"
-cyan = "#8ec07c"
-green = "#b8bb26"
-magenta = "#d3869b"
-red = "#fb4934"
-white = "#d5c4a1"
-yellow = "#fabd2f"
-
-[colors.primary]
-background = "#1d2021"
-foreground = "#d5c4a1"
-
-[cursor]
-style = "Block"
-unfocused_hollow = true
-
-[font]
-size = 14.0
-
-[font.bold]
-family = "JetBrainsMono Nerd Font"
-style = "Bold"
-
-[font.glyph_offset]
-x = 0
-y = 0
-
-[font.italic]
-family = "JetBrainsMono Nerd Font"
-style = "Italic"
-
-[font.normal]
-family = "JetBrainsMono Nerd Font"
-style = "Regular"
-
-[font.offset]
-x = 0
-y = 0
-
-[[keyboard.bindings]]
-action = "Paste"
-key = "V"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "Copy"
-key = "C"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "Quit"
-key = "Q"
-mods = "Command"
-
-[[keyboard.bindings]]
-action = "SpawnNewInstance"
-key = "N"
-mods = "Command"
-
-[mouse]
-hide_when_typing = true
-
-[window]
-startup_mode = "Windowed"
-
-[window.dimensions]
-columns = 0
-lines = 0
-
-[window.padding]
-x = 0
-y = 0
-"@
-
-    New-Item -Path "$env:USERPROFILE\.config\alacritty" -ItemType Directory -Force | Out-Null
-    Set-Content -Path $alacrittyConfigPath -Value $alacrittyConfig
+    # Set the Alacritty config path in the Windows Registry
+    $alacrittyRegistryKey = "HKCU:\Software\Alacritty"
+    if (-not (Test-Path $alacrittyRegistryKey)) {
+        New-Item -Path $alacrittyRegistryKey -Force | Out-Null
+    }
+    Set-ItemProperty -Path $alacrittyRegistryKey -Name "config_file" -Value $alacrittyConfigPath
 
     Write-ColorOutput "Alacritty installed and configured successfully." -ForegroundColor Green
 } else {

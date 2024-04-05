@@ -1,79 +1,85 @@
-# /imports/alacritty.yml
+# Alacritty configuration file
 
-# Full Screen
-[window]
-dimensions = { columns = 0, lines = 0 }
-padding = { x = 0, y = 0 }
-startup_mode = "Windowed"
+############################################
+# Theme configuration
+############################################
 
-# Font Configuration
-[font]
-normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
-bold = { family = "JetBrainsMono Nerd Font", style = "Bold" }
-italic = { family = "JetBrainsMono Nerd Font", style = "Italic" }
-size = 14.0
-offset = { x = 0, y = 0 }
-glyph_offset = { x = 0, y = 0 }
+[colors.bright]
+black = "#665c54"
+blue = "#83a598"
+cyan = "#8ec07c"
+green = "#b8bb26"
+magenta = "#d3869b"
+red = "#fb4934"
+white = "#fbf1c7"
+yellow = "#fabd2f"
 
-# Color Scheme
+[colors.normal]
+black = "#1d2021"
+blue = "#83a598"
+cyan = "#8ec07c"
+green = "#b8bb26"
+magenta = "#d3869b"
+red = "#fb4934"
+white = "#d5c4a1"
+yellow = "#fabd2f"
+
 [colors.primary]
 background = "#1d2021"
 foreground = "#d5c4a1"
 
-[colors.normal]
-black = "#1d2021"
-red = "#fb4934"
-green = "#b8bb26"
-yellow = "#fabd2f"
-blue = "#83a598"
-magenta = "#d3869b"
-cyan = "#8ec07c"
-white = "#d5c4a1"
+############################################
+# Font configuration
+############################################
 
-[colors.bright]
-black = "#665c54"
-red = "#fb4934"
-green = "#b8bb26"
-yellow = "#fabd2f"
-blue = "#83a598"
-magenta = "#d3869b"
-cyan = "#8ec07c"
-white = "#fbf1c7"
+[font]
+size = 12.0
 
-# Key Bindings
-[[key_bindings]]
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+style = "Regular"
+
+[font.bold]
+family = "JetBrainsMono Nerd Font"
+style = "Bold"
+
+[font.italic]
+family = "JetBrainsMono Nerd Font"
+style = "Italic"
+
+############################################
+# Key bindings
+############################################
+[[keyboard.bindings]]
+action = "Paste"
 key = "V"
 mods = "Control|Shift"
-action = "Paste"
 
-[[key_bindings]]
+[[keyboard.bindings]]
+action = "Copy"
 key = "C"
 mods = "Control|Shift"
-action = "Copy"
 
-[[key_bindings]]
+[[keyboard.bindings]]
+action = "Quit"
 key = "Q"
 mods = "Command"
-action = "Quit"
 
-[[key_bindings]]
+[[keyboard.bindings]]
+action = "SpawnNewInstance"
 key = "N"
 mods = "Command"
-action = "SpawnNewInstance"
 
-# Cursor
-[cursor]
-style = { shape = "Block", blinking = "On" }
-unfocused_hollow = true
+############################################
+# Misc configuration
+############################################
 
-# Mouse
 [mouse]
 hide_when_typing = true
 
-# Shell
 [shell]
-program = "/bin/bash"
 args = ["--login"]
+program = "/bin/bash"
 
-# Bracketed paste
-bracketed_paste = false
+[window]
+startup_mode = "Windowed"

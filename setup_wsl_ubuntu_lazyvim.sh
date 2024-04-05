@@ -9,6 +9,7 @@ bashrc_lines=(
   'alias ala="alacritty"'
   'export PATH="$PATH:/root/tools/bun/bin"'
   'export PATH="$PATH:/root/tools/alacritty"'
+  'export ALACRITTY_CONFIG="~/.config/alacritty/alacritty.toml'
   'sudo service xrdp start'
   'sudo service dbus start'
 )
@@ -248,35 +249,38 @@ install_fontconfig() {
 }
 
 install_fira_code_nerd_font() {
-  if ! fc-list | grep -qi "FiraCodeNerdFontMono"; then
-    log_installing "Fira Code Nerd Font Mono"
-    mkdir -p ~/.local/share/fonts
-    curl -fLo ~/.local/share/fonts/FiraCodeNerdFontMono-Regular.ttf https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Mono/Regular/FiraCodeNerdFontMono-Regular.ttf
-    fc-cache -fv
-    log_success "Fira Code Nerd Font Mono installed"
-  else
-    log_installed "Fira Code Nerd Font Mono"
+  if fc-list | grep "FiraCodeNerdFontMono"; then
+    log_success "JetBrains Mono Nerd Font is already installed."
+    return
   fi
+
+  log_installing "Fira Code Nerd Font Mono"
+  mkdir -p /usr/share/fonts
+  curl -fLo /usr/share/fonts/FiraCodeNerdFontMono-Regular.ttf https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Mono/Regular/FiraCodeNerdFontMono-Regular.ttf
+  fc-cache -fv
+  log_success "Fira Code Nerd Font Mono installed"
 }
 
 install_jetbrains_mono_nerd_font() {
-  if ! fc-list | grep -qi "JetBrainsMono Nerd Font"; then
-    log_installing "JetBrains Mono Nerd Font"
-    mkdir -p ~/.local/share/fonts
-    curl -fLo ~/.local/share/fonts/JetBrainsMono.zip https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip
-    unzip ~/.local/share/fonts/JetBrainsMono.zip -d ~/.local/share/fonts/
-    rm ~/.local/share/fonts/JetBrainsMono.zip
-    fc-cache -fv
-
-    # check if the font is installed
-    if ! fc-list | grep -qi "JetBrainsMono Nerd Font"; then
-      log_failure "Failed to install JetBrains Mono Nerd Font"
-    fi
-
-    log_success "JetBrains Mono Nerd Font installed"
-  else
-    log_installed "JetBrains Mono Nerd Font"
+  # if jetbrains font is installed, log that and exit.
+  if fc-list | grep "JetBrainsMono Nerd Font"; then
+    log_success "JetBrains Mono Nerd Font is already installed."
+    return
   fi
+
+  log_installing "JetBrains Mono Nerd Font"
+  mkdir -p /usr/share/fonts
+  curl -fLo /tmp/fonts/JetBrainsMono.zip https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip
+  unzip /tmp/JetBrainsMono.zip -d /usr/share/fonts/JetBrainsMonoNerdFont/
+  rm /tmp/JetBrainsMono.zip
+  fc-cache -fv
+
+  # check if the font is installed
+  if ! fc-list | grep "JetBrainsMono Nerd Font"; then
+    log_failure "Failed to install JetBrains Mono Nerd Font"
+  fi
+
+  log_success "JetBrains Mono Nerd Font installed"
 }
 
 clone_lazyvim_installer_repo() {
@@ -385,6 +389,7 @@ output_useful_commands() {
   log_info "To check the status of XRDP service: sudo service xrdp status"
   log_info "To check the status of D-Bus service: sudo service dbus status"
   log_info "To check for active RDP connections: sudo netstat -tulpn | grep 3390"
+  log_info "To launch Alacritty from default terminal: HOME=/home/your-username alacritty -v"
 }
 
 # Output the connection details

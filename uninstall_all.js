@@ -30,8 +30,7 @@ runCommand('sudo apt-get autoremove -y');
 
 // Remove the installed fonts
 log('Removing installed fonts...');
-runCommand('rm -rf ~/.local/share/fonts/JetBrainsMono.zip');
-runCommand('rm -rf ~/.local/share/fonts/JetBrains*.ttf');
+runCommand('rm -rf /usr/share/fonts/JetBrains*');
 runCommand('fc-cache -fv');
 
 // Uninstall Yarn
