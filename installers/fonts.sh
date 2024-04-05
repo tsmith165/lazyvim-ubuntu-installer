@@ -1,6 +1,9 @@
 #!/bin/bash
 
-source ./utils/logger.sh
+# Get the directory of the current script and use that to source the shell logger
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+project_root="$(dirname "$script_dir")"
+source "$project_root/utils/shell_logger.sh"
 
 install_fontconfig() {
   log_info "Step: Installing fontconfig..."

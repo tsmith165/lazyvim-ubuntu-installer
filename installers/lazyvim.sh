@@ -1,6 +1,9 @@
 #!/bin/bash
 
-source ./utils/logger.sh
+# Get the directory of the current script and use that to source the shell logger
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+project_root="$(dirname "$script_dir")"
+source "$project_root/utils/shell_logger.sh"
 
 clone_lazyvim_installer_repo() {
   log_info "Step: Cloning LazyVim Ubuntu Installer repository..."
@@ -14,7 +17,7 @@ clone_lazyvim_installer_repo() {
 run_setup_js_script() {
   log_info "Step: Running setup.js script..."
   chmod +x setup_lazyvim.js
-  ./setup_lazyvim.js
+  node setup_lazyvim.js
   log_success "setup.js script execution completed"
 }
 
