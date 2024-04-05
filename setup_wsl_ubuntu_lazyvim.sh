@@ -315,10 +315,10 @@ create_xfce_appearance_script() {
 #!/bin/bash
 
 # Set the GTK theme to Greybird Dark
-xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-Dark"
+xfconf-query -c xsettings -p /Net/ThemeName -s "Greybird-dark"
 
 # Set the window manager theme to Greybird Dark
-xfconf-query -c xfwm4 -p /general/theme -s "Greybird-Dark"
+xfconf-query -c xfwm4 -p /general/theme -s "Greybird-dark"
 
 # Set the icon theme to elementary Xfce Dark
 xfconf-query -c xsettings -p /Net/IconThemeName -s "elementary-xfce-dark"
