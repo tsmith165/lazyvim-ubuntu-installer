@@ -64,5 +64,6 @@ This document provides an overview of the generic keybinds for Vim and Tmux.
 -   `Ctrl+b "`: Create a horizontal split
 -   `Ctrl+b {arrow key}`: Switch between panes
 -   `Ctrl+b c`: Create a new window
+-   `Crtl+b x`: Delete current window
 -   `Ctrl+b n`: Move to the next window
 -   `Ctrl+b p`: Move to the previous window

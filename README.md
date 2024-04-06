@@ -26,6 +26,8 @@ Before running the setup script, ensure that your system meets the following req
 
 ## Usage
 
+Refer to this video for details about the tech stack and setup process: https://www.youtube.com/watch?v=ZvGonjdK1TQ
+
 1. Download and run the `wsl_setup.ps1` PowerShell script to set up WSL and install Ubuntu 22.04 LTS:
 
 ```powershell
